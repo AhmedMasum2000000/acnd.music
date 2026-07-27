@@ -1,4 +1,4 @@
-import { platformLabel, releases, type Release } from '../../data/acnd';
+import { acts, platformLabel, releases, type Release } from '../../data/acnd';
 import { AsciiCover } from '../AsciiCover';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
@@ -33,7 +33,7 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
             {release.tags.join(' / ')}
           </p>
 
-          <p className="release__blurb">{release.blurb}</p>
+          {release.blurb ? <p className="release__blurb">{release.blurb}</p> : null}
 
           <ul className="release__links">
             {platforms.map(([p, url]) => (
@@ -70,16 +70,20 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
  */
 export const Catalog = () => {
   const sorted = [...releases].sort((a, b) => b.year - a.year);
+  const act = acts.find((a) => a.id === 'catalog');
+  const single = releases.length === 1;
 
   return (
     <section id="catalog" className="act act--catalog" aria-labelledby="catalog-h">
       <div className="shell">
-        <p className="label">04 — THE CATALOG</p>
+        <p className="label">{act?.index} — THE CATALOG</p>
         <GlitchText as="h2" className="display act__h" duration={0.7}>
-          THE RECORDS
+          {single ? 'THE RECORD' : 'THE RECORDS'}
         </GlitchText>
         <p className="act__lede">
-          {releases.length} releases. Every one of them started at an hour nobody should be awake.
+          {single
+            ? 'Where it starts. Out now on every platform below.'
+            : `${releases.length} releases, out now on every platform below.`}
         </p>
 
         <ul className="catalog__grid">

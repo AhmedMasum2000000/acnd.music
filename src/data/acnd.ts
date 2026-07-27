@@ -46,8 +46,8 @@ export interface Release {
   type: 'Single' | 'EP' | 'Album' | 'Remix' | 'Collab';
   /** Genre tags shown on the card. Keep to 1–3 for layout reasons. */
   tags: string[];
-  /** One line of copy. Shown in the detail panel. */
-  blurb: string;
+  /** One line of copy. Optional — omit it rather than inventing one. */
+  blurb?: string;
   /**
    * Cover artwork. Path relative to /public, e.g. '/covers/aurora.jpg'.
    * Leave undefined and the site generates a deterministic ASCII cover
@@ -110,8 +110,12 @@ export const artist = {
     'The work sits where melodic techno meets the weight of dubstep and the restlessness of drum & bass — with house underneath and ambient holding the edges. Euphoric, but never weightless. Built to be felt in the chest before it is understood in the head.',
     'Every record starts the same way: a room, a late hour, and a sound that will not leave. What comes out is emotion-driven electronic music for people who want to be moved, not just moved around.',
   ],
-  /** Booking / business enquiries. Shown in Act 06. */
-  bookingEmail: 'booking@acnd.live', // TODO: real address
+  /**
+   * Booking / business enquiries, shown in Act 06.
+   * Leave empty and the whole booking block is hidden — better than
+   * publishing an address that bounces.
+   */
+  bookingEmail: '',
   /**
    * Canonical site URL — used for the canonical tag, OG url, sitemap
    * and JSON-LD @id. Change this the moment you know your domain.
@@ -130,15 +134,39 @@ export const artist = {
    Order matters — this is the order they appear in the marquee and footer.
    ─────────────────────────────────────────────────────────────────────── */
 
+/*
+  Only real, working links live here — nothing invented. These currently point
+  at the "Her..." release rather than artist profile pages, because that is
+  what exists today; swap each `url` for the profile page when you have it and
+  nothing else needs to change.
+
+  To add a platform, uncomment a line below and drop in the real URL. Anything
+  in this array automatically appears in the header dropdown, in the footer
+  grid, in the marquee, and in the page's structured data.
+*/
 export const socials: SocialLink[] = [
-  { platform: 'spotify', handle: 'ACND', url: 'https://open.spotify.com/artist/' }, // TODO: real link
-  { platform: 'soundcloud', handle: '@acnd', url: 'https://soundcloud.com/acnd' }, // TODO: real link
-  { platform: 'youtube', handle: '@acnd', url: 'https://youtube.com/@acnd' }, // TODO: real link
-  { platform: 'apple', handle: 'ACND', url: 'https://music.apple.com/artist/' }, // TODO: real link
-  { platform: 'instagram', handle: '@acnd', url: 'https://instagram.com/acnd' }, // TODO: real link
-  { platform: 'bandcamp', handle: 'acnd', url: 'https://acnd.bandcamp.com' }, // TODO: real link
-  { platform: 'beatport', handle: 'ACND', url: 'https://beatport.com/artist/acnd' }, // TODO: real link
-  { platform: 'email', handle: 'booking@acnd.live', url: 'mailto:booking@acnd.live' }, // TODO: real address
+  {
+    platform: 'spotify',
+    handle: 'ACND',
+    url: 'https://open.spotify.com/track/1728ckXv0wfIEBhUsGP7TN',
+  },
+  {
+    platform: 'youtube',
+    handle: 'ACND',
+    url: 'https://music.youtube.com/watch?v=s_b17eFeZgM',
+  },
+  {
+    platform: 'apple',
+    handle: 'ACND',
+    url: 'https://music.apple.com/us/song/her/6794554132',
+  },
+
+  // { platform: 'instagram', handle: '@youhandle', url: 'https://instagram.com/…' },
+  // { platform: 'soundcloud', handle: '@yourhandle', url: 'https://soundcloud.com/…' },
+  // { platform: 'tiktok', handle: '@yourhandle', url: 'https://tiktok.com/@…' },
+  // { platform: 'bandcamp', handle: 'acnd', url: 'https://acnd.bandcamp.com' },
+  // { platform: 'beatport', handle: 'ACND', url: 'https://beatport.com/artist/…' },
+  // { platform: 'email', handle: 'you@example.com', url: 'mailto:you@example.com' },
 ];
 
 /* ───────────────────────────────────────────────────────────────────────
@@ -149,92 +177,20 @@ export const socials: SocialLink[] = [
 
 export const releases: Release[] = [
   {
-    id: 'nocturne-protocol',
-    title: 'Nocturne Protocol',
-    year: 2025,
-    date: '2025-11-14',
-    type: 'EP',
-    tags: ['Melodic Techno', 'Ambient'],
-    blurb:
-      'Four tracks written between 2am and sunrise. Wide pads, a kick that refuses to quit, and the sound of a city that never fully sleeps.',
-    links: {
-      spotify: 'https://open.spotify.com/', // TODO
-      soundcloud: 'https://soundcloud.com/', // TODO
-      youtube: 'https://youtube.com/', // TODO
-    },
-  },
-  {
-    id: 'monsoon-static',
-    title: 'Monsoon Static',
-    year: 2025,
-    date: '2025-06-02',
+    id: 'her',
+    title: 'Her...',
+    year: 2026,
+    date: '2026-07-24',
     type: 'Single',
-    tags: ['Drum & Bass'],
-    blurb:
-      'Written during a week of rain that would not stop. 174 BPM, breakbeats cut like water off a tin roof.',
+    tags: ['Electronic'],
+    // Metadata taken from the release pages themselves. Add a `blurb` here
+    // when you want one — better to say nothing than to say something invented.
+    durationSec: 697,
     links: {
-      spotify: 'https://open.spotify.com/', // TODO
-      soundcloud: 'https://soundcloud.com/', // TODO
+      spotify: 'https://open.spotify.com/track/1728ckXv0wfIEBhUsGP7TN',
+      youtube: 'https://music.youtube.com/watch?v=s_b17eFeZgM',
+      apple: 'https://music.apple.com/us/song/her/6794554132',
     },
-    durationSec: 248,
-  },
-  {
-    id: 'weight-of-light',
-    title: 'Weight of Light',
-    year: 2024,
-    date: '2024-10-18',
-    type: 'Single',
-    tags: ['Dubstep', 'Melodic'],
-    blurb:
-      'The heaviest thing here, and somehow the most tender. A drop that arrives like a held breath finally released.',
-    links: {
-      spotify: 'https://open.spotify.com/', // TODO
-      youtube: 'https://youtube.com/', // TODO
-      beatport: 'https://beatport.com/', // TODO
-    },
-    durationSec: 212,
-  },
-  {
-    id: 'concrete-bloom',
-    title: 'Concrete Bloom',
-    year: 2024,
-    date: '2024-04-09',
-    type: 'EP',
-    tags: ['House', 'Melodic Techno'],
-    blurb:
-      'Warm, four-to-the-floor, and unapologetically hopeful. Made for rooms where nobody is checking their phone.',
-    links: {
-      spotify: 'https://open.spotify.com/', // TODO
-      bandcamp: 'https://bandcamp.com/', // TODO
-    },
-  },
-  {
-    id: 'signal-lost',
-    title: 'Signal / Lost',
-    year: 2023,
-    date: '2023-08-25',
-    type: 'Single',
-    tags: ['Ambient', 'Downtempo'],
-    blurb:
-      'Two movements, no drums until the last ninety seconds. The quietest record in the catalogue and the one people write about.',
-    links: {
-      spotify: 'https://open.spotify.com/', // TODO
-      soundcloud: 'https://soundcloud.com/', // TODO
-    },
-    durationSec: 386,
-  },
-  {
-    id: 'first-transmission',
-    title: 'First Transmission',
-    year: 2023,
-    date: '2023-01-20',
-    type: 'Single',
-    tags: ['Melodic Techno'],
-    blurb: 'Where it started. Rougher than everything after it, and better for it.',
-    links: {
-      soundcloud: 'https://soundcloud.com/', // TODO
-    },
-    durationSec: 301,
   },
 ];
 
@@ -242,44 +198,12 @@ export const releases: Release[] = [
    PLAYLISTS & SETS — Act 05, THE SETS
    ─────────────────────────────────────────────────────────────────────── */
 
-export const playlists: Playlist[] = [
-  {
-    id: 'after-hours',
-    title: 'AFTER HOURS',
-    note: 'Melodic techno for the drive home at 4am.',
-    trackCount: 32,
-    runtime: '2h 41m',
-    url: 'https://open.spotify.com/playlist/', // TODO
-    platform: 'spotify',
-  },
-  {
-    id: 'heavy-water',
-    title: 'HEAVY WATER',
-    note: 'Dubstep and DnB. Loud rooms only.',
-    trackCount: 24,
-    runtime: '1h 38m',
-    url: 'https://open.spotify.com/playlist/', // TODO
-    platform: 'spotify',
-  },
-  {
-    id: 'live-dhaka',
-    title: 'LIVE IN DHAKA',
-    note: 'Full DJ set, recorded live. One take, no edits.',
-    trackCount: 1,
-    runtime: '1h 04m',
-    url: 'https://soundcloud.com/', // TODO
-    platform: 'soundcloud',
-  },
-  {
-    id: 'ambient-works',
-    title: 'AMBIENT WORKS',
-    note: 'No kick drums. For working, or for not working.',
-    trackCount: 18,
-    runtime: '1h 55m',
-    url: 'https://open.spotify.com/playlist/', // TODO
-    platform: 'spotify',
-  },
-];
+/*
+  Empty on purpose. Act 05 removes itself entirely — from the page, the HUD
+  and the progress rail — until there is a real playlist or DJ set to link to.
+  Add one and the act reappears, renumbered automatically.
+*/
+export const playlists: Playlist[] = [];
 
 /* ───────────────────────────────────────────────────────────────────────
    THE SPECTRUM — Act 03
@@ -330,14 +254,31 @@ export interface Act {
   accent: string;
 }
 
-export const acts: Act[] = [
-  { id: 'signal', index: '01', label: 'SIGNAL', mode: 'RAIN', accent: '#ff2e4d' },
-  { id: 'artist', index: '02', label: 'THE ARTIST', mode: 'PORTRAIT', accent: '#ff5c2b' },
-  { id: 'spectrum', index: '03', label: 'THE SPECTRUM', mode: 'WAVE', accent: '#22e0ff' },
-  { id: 'catalog', index: '04', label: 'THE CATALOG', mode: 'GRID', accent: '#7b5cff' },
-  { id: 'sets', index: '05', label: 'THE SETS', mode: 'TUNNEL', accent: '#37ff8b' },
-  { id: 'transmission', index: '06', label: 'TRANSMISSION', mode: 'NOISE', accent: '#ff2e4d' },
+/**
+ * The journey.
+ *
+ * An act with nothing to show removes itself — no empty section, no dead entry
+ * in the progress rail. Numbering is derived from position rather than written
+ * down, so the HUD always reads "02 / 05" and never disagrees with reality.
+ */
+const actDefs: (Omit<Act, 'index'> & { when?: () => boolean })[] = [
+  { id: 'signal', label: 'SIGNAL', mode: 'RAIN', accent: '#ff2e4d' },
+  { id: 'artist', label: 'THE ARTIST', mode: 'PORTRAIT', accent: '#ff5c2b' },
+  { id: 'spectrum', label: 'THE SPECTRUM', mode: 'WAVE', accent: '#22e0ff' },
+  { id: 'catalog', label: 'THE CATALOG', mode: 'GRID', accent: '#7b5cff', when: () => releases.length > 0 },
+  { id: 'sets', label: 'THE SETS', mode: 'TUNNEL', accent: '#37ff8b', when: () => playlists.length > 0 },
+  { id: 'transmission', label: 'TRANSMISSION', mode: 'NOISE', accent: '#ff2e4d' },
 ];
+
+export const acts: Act[] = actDefs
+  .filter((a) => (a.when ? a.when() : true))
+  .map(({ when: _when, ...a }, i) => ({ ...a, index: String(i + 1).padStart(2, '0') }));
+
+/** True when an act is present in this build — components use it to render. */
+export const hasAct = (id: string): boolean => acts.some((a) => a.id === id);
+
+/** An act's displayed number. Never hard-code these — they shift as acts drop out. */
+export const actIndex = (id: string): string => acts.find((a) => a.id === id)?.index ?? '';
 
 /* ───────────────────────────────────────────────────────────────────────
    BOOT SEQUENCE — Act 00, the gate.
@@ -360,7 +301,7 @@ export const bootLines: string[] = [
 export const platformLabel: Record<Platform, string> = {
   spotify: 'Spotify',
   soundcloud: 'SoundCloud',
-  youtube: 'YouTube',
+  youtube: 'YouTube Music',
   apple: 'Apple Music',
   bandcamp: 'Bandcamp',
   beatport: 'Beatport',

@@ -52,7 +52,7 @@ export const buildStructuredData = (): unknown => {
       addressLocality: 'Dhaka',
       addressCountry: 'BD',
     },
-    email: `mailto:${artist.bookingEmail}`,
+    ...(artist.bookingEmail ? { email: `mailto:${artist.bookingEmail}` } : {}),
     sameAs: socials.filter((s) => s.platform !== 'email').map((s) => s.url),
   };
 
@@ -132,9 +132,10 @@ export const buildFallback = (): string => {
       const links = Object.entries(r.links)
         .map(([p, url]) => `<a href="${esc(url)}" rel="noopener">${esc(p)}</a>`)
         .join(' · ');
+      const blurb = r.blurb ? `<br />${esc(r.blurb)}` : '';
       return `<li><strong>${esc(r.title)}</strong> — ${r.year} · ${esc(r.type)} · ${esc(
         r.tags.join(', '),
-      )}<br />${esc(r.blurb)}${links ? `<br />${links}` : ''}</li>`;
+      )}${blurb}${links ? `<br />${links}` : ''}</li>`;
     })
     .join('\n        ');
 
@@ -161,18 +162,14 @@ export const buildFallback = (): string => {
         ${releaseItems}
       </ul>
 
-      <h2>Playlists &amp; Sets</h2>
-      <ul>
-        ${setItems}
-      </ul>
+      ${setItems ? `<h2>Playlists &amp; Sets</h2>\n      <ul>${setItems}</ul>` : ''}
 
       <h2>Follow</h2>
       <ul>
         ${socialItems}
       </ul>
 
-      <h2>Bookings</h2>
-      <p><a href="mailto:${esc(artist.bookingEmail)}">${esc(artist.bookingEmail)}</a></p>
+      ${artist.bookingEmail ? `<h2>Bookings</h2>\n      <p><a href="mailto:${esc(artist.bookingEmail)}">${esc(artist.bookingEmail)}</a></p>` : ''}
     </div>`;
 };
 

@@ -1,5 +1,6 @@
 import { acts } from '../data/acnd';
 import { useStage } from '../hooks/useStage';
+import { SocialMenu } from './SocialMenu';
 import './Hud.css';
 
 interface Props {
@@ -37,19 +38,23 @@ export const Hud = ({ activeIndex }: Props) => {
           <span className="hud__act-label">{act.label}</span>
         </p>
 
-        <button
-          className={`hud__sound ${soundOn ? 'is-on' : ''}`}
-          onClick={toggleSound}
-          aria-pressed={soundOn}
-        >
-          <span className="hud__sound-bars" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-          </span>
-          SOUND {soundOn ? 'ON' : 'OFF'}
-        </button>
+        <div className="hud__right">
+          <button
+            className={`hud__sound ${soundOn ? 'is-on' : ''}`}
+            onClick={toggleSound}
+            aria-pressed={soundOn}
+          >
+            <span className="hud__sound-bars" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            SOUND {soundOn ? 'ON' : 'OFF'}
+          </button>
+
+          <SocialMenu />
+        </div>
       </header>
 
       {/* Vertical rail: position, and a jump target for every act. */}

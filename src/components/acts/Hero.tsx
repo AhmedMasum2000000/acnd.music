@@ -1,4 +1,4 @@
-import { artist } from '../../data/acnd';
+import { actIndex, artist } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
 
@@ -14,7 +14,7 @@ export const Hero = () => {
   return (
     <section id="signal" className="act act--hero" aria-labelledby="hero-name">
       <div className="shell hero__grid">
-        <p className="label hero__eyebrow">01 — SIGNAL</p>
+        <p className="label hero__eyebrow">{actIndex('signal')} — SIGNAL</p>
 
         <h1 id="hero-name" className="display hero__name">
           {artist.name}

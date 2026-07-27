@@ -1,4 +1,4 @@
-import { platformLabel, playlists } from '../../data/acnd';
+import { actIndex, platformLabel, playlists } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
 
@@ -15,7 +15,7 @@ export const Sets = () => {
   return (
     <section id="sets" className="act act--sets" aria-labelledby="sets-h">
       <div className="shell">
-        <p className="label">05 — THE SETS</p>
+        <p className="label">{actIndex('sets')} — THE SETS</p>
         <GlitchText as="h2" className="display act__h" duration={0.7}>
           PLAYLISTS &amp; SETS
         </GlitchText>

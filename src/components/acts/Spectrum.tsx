@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { genres } from '../../data/acnd';
+import { actIndex, genres } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
 import { readVar } from '../../lib/css';
@@ -40,7 +40,7 @@ export const Spectrum = () => {
       onPointerLeave={blur}
     >
       <div className="shell">
-        <p className="label">03 — THE SPECTRUM</p>
+        <p className="label">{actIndex('spectrum')} — THE SPECTRUM</p>
         <GlitchText as="h2" className="display act__h" duration={0.7}>
           FIVE WAYS TO FEEL IT
         </GlitchText>

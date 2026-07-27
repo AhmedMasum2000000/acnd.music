@@ -54,6 +54,21 @@
   color: var(--bone-dim);
 }
 
+.hud__right {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 1.5vw, 12px);
+}
+
+/* Below ~430px the act label, the sound toggle and the menu cannot all fit.
+   The label goes first: the progress rail and the section anchors still tell
+   the visitor where they are, but the two controls have no substitute. */
+@media (max-width: 430px) {
+  .hud__act-label {
+    display: none;
+  }
+}
+
 /* ── sound toggle ──────────────────────────────────────────────────── */
 
 .hud__sound {

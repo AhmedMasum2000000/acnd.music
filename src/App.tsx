@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { acts, artist } from './data/acnd';
+import { acts, artist, hasAct } from './data/acnd';
 import { AsciiRenderer } from './engine/renderer';
 import { AudioEngine } from './engine/audio';
 import type { FieldParams } from './engine/field';
@@ -247,12 +247,14 @@ export const App = () => {
 
       <Hud activeIndex={activeIndex} />
 
+      {/* Acts render only when they have something to show — see `acts` in
+          src/data/acnd.ts, which is also what drives the HUD numbering. */}
       <main id="top" ref={mainRef} tabIndex={-1}>
         <Hero />
         <Artist />
         <Spectrum />
-        <Catalog />
-        <Sets />
+        {hasAct('catalog') && <Catalog />}
+        {hasAct('sets') && <Sets />}
         <Transmission />
       </main>
     </StageContext.Provider>

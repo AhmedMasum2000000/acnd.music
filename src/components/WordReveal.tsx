@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { useInView } from '../hooks/useInView';
 import './WordReveal.css';
 
@@ -24,14 +25,21 @@ export const WordReveal = ({ children, className, stagger = 0.028, delay = 0 }: 
   return (
     <p ref={ref} className={`word-reveal ${inView ? 'is-in' : ''} ${className ?? ''}`}>
       {words.map((w, i) => (
-        <span
-          key={i}
-          className="word-reveal__w"
-          style={{ transitionDelay: `${delay + i * stagger}s` }}
-        >
-          {w}
-          {i < words.length - 1 ? ' ' : ''}
-        </span>
+        <Fragment key={i}>
+          <span
+            className="word-reveal__w"
+            style={{ transitionDelay: `${delay + i * stagger}s` }}
+          >
+            {w}
+          </span>
+          {/*
+            The separating space has to sit *outside* the span. Each word is an
+            inline-block for the transform to work, and whitespace at the end of
+            an inline-block is collapsed away — put the space inside and every
+            word in the paragraph runs together.
+          */}
+          {i < words.length - 1 ? ' ' : null}
+        </Fragment>
       ))}
     </p>
   );

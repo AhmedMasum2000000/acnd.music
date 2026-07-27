@@ -78,11 +78,13 @@ export const Boot = ({ onEnter }: Props) => {
       for (let i = 0; i < target.length; i++) {
         const ch = target[i];
         if (ch === '\n') { out += ch; continue; }
-        // Cells resolve in a random-but-stable order, so the logo materialises
-        // as a cloud condensing rather than a left-to-right wipe.
-        out += Math.random() < p * p ? ch : (ch === ' ' && Math.random() > 0.12)
-          ? ' '
-          : SCRAMBLE[(Math.random() * SCRAMBLE.length) | 0];
+        // Cells resolve in a random order, so the logo materialises as a cloud
+        // condensing rather than a left-to-right wipe. Blank cells stay mostly
+        // blank — filling them with noise as often as the lit cells buries the
+        // letterforms, which on a small screen just reads as a garbled block.
+        if (Math.random() < p * p) out += ch;
+        else if (ch === ' ' && Math.random() > 0.05) out += ' ';
+        else out += SCRAMBLE[(Math.random() * SCRAMBLE.length) | 0];
       }
       el.textContent = out;
       if (p < 1) raf = requestAnimationFrame(frame);

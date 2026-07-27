@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { artist } from '../../data/acnd';
+import { actIndex, artist } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { WordReveal } from '../WordReveal';
 import { useSectionProgress } from '../../hooks/useSectionProgress';
@@ -38,7 +38,7 @@ export const Artist = () => {
     <section id="artist" className="act act--artist" ref={ref} aria-labelledby="artist-h">
       <div className="shell artist__grid">
         <div className="artist__lead">
-          <p className="label">02 — THE ARTIST</p>
+          <p className="label">{actIndex('artist')} — THE ARTIST</p>
           <GlitchText as="h2" className="display act__h" duration={0.7}>
             WHO IS ACND
           </GlitchText>

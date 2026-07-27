@@ -1,0 +1,107 @@
+.smenu {
+  position: relative;
+}
+
+.smenu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-display);
+  font-size: clamp(8px, 1.6vw, 10px);
+  letter-spacing: 0.18em;
+  color: var(--bone-dim);
+  padding: 10px 8px;
+  border: var(--rule) solid transparent;
+  white-space: nowrap;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.smenu__trigger:hover,
+.smenu__trigger:focus-visible,
+.smenu__trigger.is-open {
+  color: var(--accent);
+  border-color: var(--line);
+}
+
+.smenu__caret {
+  font-size: 7px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.smenu__trigger.is-open .smenu__caret {
+  transform: rotate(180deg);
+}
+
+.smenu__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 190px;
+  background: var(--void);
+  border: var(--rule) solid var(--line);
+  /* The field animates directly behind this, so the panel needs a solid
+     backing or the links sit on top of moving glyphs and become unreadable. */
+  box-shadow: 0 18px 40px rgba(7, 7, 10, 0.9);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.smenu__panel.is-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+  `hidden` is what actually removes the panel from the tab order and from
+  assistive tech; the opacity transition above is purely cosmetic. Without
+  this override the attribute would be defeated by the display rules.
+*/
+.smenu__panel[hidden] {
+  display: none;
+}
+
+.smenu__panel a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 14px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--bone-dim);
+  border-bottom: var(--rule) solid var(--line);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.smenu__panel li:last-child a {
+  border-bottom: 0;
+}
+
+.smenu__panel a:hover,
+.smenu__panel a:focus-visible {
+  background: var(--accent);
+  color: var(--void);
+}
+
+.smenu__go {
+  opacity: 0.6;
+}
+
+/* Tighten up where the header is most cramped. */
+@media (max-width: 420px) {
+  .smenu__trigger {
+    padding-inline: 4px;
+  }
+
+  .smenu__panel {
+    min-width: 160px;
+  }
+}

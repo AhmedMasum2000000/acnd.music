@@ -1,4 +1,4 @@
-import { artist, platformLabel, socials } from '../../data/acnd';
+import { actIndex, artist, platformLabel, socials } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
 
@@ -24,7 +24,7 @@ export const Transmission = () => {
       </div>
 
       <div className="shell">
-        <p className="label">06 — TRANSMISSION</p>
+        <p className="label">{actIndex('transmission')} — TRANSMISSION</p>
         <GlitchText as="h2" className="display act__h act__h--big" duration={0.8}>
           STAY ON THE SIGNAL
         </GlitchText>
@@ -53,16 +53,19 @@ export const Transmission = () => {
           ))}
         </ul>
 
-        <div className="booking">
-          <p className="label">BOOKINGS &amp; ENQUIRIES</p>
-          <a
-            className="display booking__mail"
-            href={`mailto:${artist.bookingEmail}`}
-            onClick={() => tick(700, 0.18)}
-          >
-            {artist.bookingEmail}
-          </a>
-        </div>
+        {/* No address, no block. An email that bounces is worse than none. */}
+        {artist.bookingEmail ? (
+          <div className="booking">
+            <p className="label">BOOKINGS &amp; ENQUIRIES</p>
+            <a
+              className="display booking__mail"
+              href={`mailto:${artist.bookingEmail}`}
+              onClick={() => tick(700, 0.18)}
+            >
+              {artist.bookingEmail}
+            </a>
+          </div>
+        ) : null}
 
         <footer className="foot">
           <hr className="rule" />
