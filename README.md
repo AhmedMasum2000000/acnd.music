@@ -125,25 +125,25 @@ output — the budget is 90 kB of gzipped JS.
 
 ## Deploying
 
-The build is static files in `dist/` with root-relative paths, so it works anywhere.
+**GitHub Pages — already set up.** [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)
+builds and publishes on every push. It enables Pages via the API on first run, so there is nothing to
+click in the repository settings, and it passes the subpath to the build itself:
+
+| Variable | Value on Pages | What it fixes |
+| --- | --- | --- |
+| `BASE_PATH` | `/mahiiiiiiiiiiiiii` | Asset URLs. A project site is served from a subpath, so `/portrait-1200.webp` would 404. |
+| `SITE_URL` | `https://<user>.github.io/<repo>` | Canonical tag, Open Graph URL, sitemap and JSON-LD. |
+
+Both are read at build time only — `vite.config.ts` normalises the trailing slash, and `src/lib/asset.ts`
+resolves runtime asset paths against the base.
 
 **Vercel / Netlify** — connect the repo. Build command `npm run build`, output directory `dist`.
-Nothing else to configure.
+Neither variable is needed; the defaults are root-relative.
 
-**Any static host** — upload `dist/`.
+**Any other static host** — `npm run build` and upload `dist/`.
 
-**GitHub Pages (project site)** — the site is served from a subpath, so set the base first:
-
-```ts
-// vite.config.ts
-export default defineConfig({ base: '/mahiiiiiiiiiiiiii/', ... });
-```
-
-Then build and publish `dist/`. If you use a custom domain or a user site (`<user>.github.io`), leave
-`base` as `'/'`.
-
-Whichever you choose, set `artist.siteUrl` in `src/data/acnd.ts` to the final URL so the canonical
-tag, sitemap and structured data point at the right place.
+If you move to a custom domain, set `artist.siteUrl` in `src/data/acnd.ts` and drop the two variables
+from the workflow.
 
 ---
 

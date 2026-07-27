@@ -6,6 +6,7 @@ import type { FieldParams } from './engine/field';
 import { StageContext, type Stage } from './hooks/useStage';
 import { useReducedMotion } from './hooks/useReducedMotion';
 import { setAccent as setCssAccent } from './lib/css';
+import { asset } from './lib/asset';
 import { clamp } from './lib/lerp';
 
 import { Boot } from './components/Boot';
@@ -43,7 +44,7 @@ export const App = () => {
     if (!canvas) return;
 
     const r = new AsciiRenderer(canvas, {
-      portraitSrc: artist.portrait.src,
+      portraitSrc: asset(artist.portrait.src),
       accent: acts[0].accent,
       reducedMotion,
     });

@@ -5,6 +5,7 @@ import { WordReveal } from '../WordReveal';
 import { useSectionProgress } from '../../hooks/useSectionProgress';
 import { useStage } from '../../hooks/useStage';
 import { clamp, smoothstep } from '../../lib/lerp';
+import { asset } from '../../lib/asset';
 
 /**
  * Act 02 — THE ARTIST.
@@ -74,8 +75,8 @@ export const Artist = () => {
         */}
         <figure className="artist__plate">
           <img
-            src={artist.portrait.src}
-            srcSet={`${artist.portrait.lowSrc} 480w, ${artist.portrait.src} 1200w`}
+            src={asset(artist.portrait.src)}
+            srcSet={`${asset(artist.portrait.lowSrc)} 480w, ${asset(artist.portrait.src)} 1200w`}
             sizes="(max-width: 767px) 45vw, 260px"
             alt={artist.portrait.alt}
             width="260"

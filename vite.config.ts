@@ -23,10 +23,19 @@ const seoPlugin = (): Plugin => ({
   },
 });
 
-// Root-relative base keeps the build host-agnostic (Vercel / Netlify / any
-// static host). For a GitHub Pages project site, set base to '/<repo>/'.
+/*
+  Root-relative by default, which is what Vercel, Netlify and any plain static
+  host want. A GitHub Pages *project* site serves from `/<repo>/` instead, so
+  the deploy workflow sets BASE_PATH and SITE_URL rather than this file
+  hard-coding one host's layout.
+*/
+// Vite requires a trailing slash; `actions/configure-pages` reports the path
+// without one, so normalise rather than making the workflow do string surgery.
+const rawBase = process.env.BASE_PATH || '/';
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+
 export default defineConfig({
-  base: '/',
+  base,
   plugins: [react(), seoPlugin()],
   build: {
     target: 'es2020',

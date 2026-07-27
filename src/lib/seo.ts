@@ -10,6 +10,16 @@ import { artist, playlists, releases, socials } from '../data/acnd';
  * out of sync with the visible content, because both read the same file.
  */
 
+/**
+ * The canonical origin, without a trailing slash.
+ *
+ * Defaults to whatever `acnd.ts` declares, but the deploy workflow can
+ * override it — a GitHub Pages project site lives at a URL the content file
+ * has no way of knowing. This module only ever runs in Node, at build time,
+ * so reading the environment here is safe.
+ */
+const SITE = (process.env.SITE_URL || artist.siteUrl).replace(/\/$/, '');
+
 const esc = (s: string): string =>
   s
     .replace(/&/g, '&amp;')
@@ -17,7 +27,7 @@ const esc = (s: string): string =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-const abs = (path: string): string => `${artist.siteUrl.replace(/\/$/, '')}${path}`;
+const abs = (path: string): string => `${SITE}${path}`;
 
 export const pageTitle = `${artist.name} (${artist.legalName}) — ${artist.role}`;
 
@@ -26,11 +36,11 @@ export const pageTitle = `${artist.name} (${artist.legalName}) — ${artist.role
 export const buildStructuredData = (): unknown => {
   const musicGroup = {
     '@type': 'MusicGroup',
-    '@id': `${artist.siteUrl}/#artist`,
+    '@id': `${SITE}/#artist`,
     name: artist.name,
     alternateName: artist.legalName,
     description: artist.tagline,
-    url: artist.siteUrl,
+    url: SITE,
     image: abs(artist.portrait.src),
     genre: ['Melodic Techno', 'Dubstep', 'Drum and Bass', 'House', 'Ambient', 'Electronic'],
     foundingLocation: {
@@ -48,9 +58,9 @@ export const buildStructuredData = (): unknown => {
 
   const albums = releases.map((r) => ({
     '@type': r.type === 'Album' || r.type === 'EP' ? 'MusicAlbum' : 'MusicRecording',
-    '@id': `${artist.siteUrl}/#${r.id}`,
+    '@id': `${SITE}/#${r.id}`,
     name: r.title,
-    byArtist: { '@id': `${artist.siteUrl}/#artist` },
+    byArtist: { '@id': `${SITE}/#artist` },
     datePublished: r.date ?? String(r.year),
     genre: r.tags,
     description: r.blurb,
@@ -60,12 +70,12 @@ export const buildStructuredData = (): unknown => {
 
   const website = {
     '@type': 'WebSite',
-    '@id': `${artist.siteUrl}/#website`,
-    url: artist.siteUrl,
+    '@id': `${SITE}/#website`,
+    url: SITE,
     name: pageTitle,
     description: artist.tagline,
     inLanguage: 'en',
-    publisher: { '@id': `${artist.siteUrl}/#artist` },
+    publisher: { '@id': `${SITE}/#artist` },
   };
 
   return { '@context': 'https://schema.org', '@graph': [musicGroup, website, ...albums] };
@@ -81,7 +91,7 @@ export const buildHeadTags = (): string => {
   return [
     `<title>${title}</title>`,
     `<meta name="description" content="${desc}" />`,
-    `<link rel="canonical" href="${artist.siteUrl}/" />`,
+    `<link rel="canonical" href="${SITE}/" />`,
     `<meta name="author" content="${esc(artist.legalName)}" />`,
     `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Bangladeshi producer, Dhaka electronic music, melodic techno, dubstep, drum and bass, house, ambient, DJ, composer" />`,
 
@@ -89,7 +99,7 @@ export const buildHeadTags = (): string => {
     `<meta property="og:site_name" content="${esc(artist.name)}" />`,
     `<meta property="og:title" content="${title}" />`,
     `<meta property="og:description" content="${desc}" />`,
-    `<meta property="og:url" content="${artist.siteUrl}/" />`,
+    `<meta property="og:url" content="${SITE}/" />`,
     `<meta property="og:image" content="${ogImage}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
@@ -172,7 +182,7 @@ export const buildSitemap = (): string =>
   `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${artist.siteUrl}/</loc>
+    <loc>${SITE}/</loc>
     <lastmod>${new Date().toISOString().slice(0, 10)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
@@ -184,5 +194,5 @@ export const buildRobots = (): string =>
   `User-agent: *
 Allow: /
 
-Sitemap: ${artist.siteUrl}/sitemap.xml
+Sitemap: ${SITE}/sitemap.xml
 `;
