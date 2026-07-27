@@ -1,18 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { bootLines } from '../data/acnd';
 import { useStage } from '../hooks/useStage';
+import { PixelMark } from './PixelMark';
 import './Boot.css';
-
-/** ACND rendered in a 5-row block face. Decorative — the real <h1> is in the hero. */
-const LOGO = [
-  ' ███   ████ █   █ ████ ',
-  '█   █ █     ██  █ █   █',
-  '█████ █     █ █ █ █   █',
-  '█   █ █     █  ██ █   █',
-  '█   █  ████ █   █ ████ ',
-];
-
-const SCRAMBLE = '▓▒░#%*+=-·';
 
 interface Props {
   onEnter: (withSound: boolean) => void;
@@ -34,7 +24,6 @@ export const Boot = ({ onEnter }: Props) => {
   const [line, setLine] = useState(reducedMotion ? bootLines.length : 0);
   const [ready, setReady] = useState(reducedMotion);
   const [leaving, setLeaving] = useState(false);
-  const logoRef = useRef<HTMLPreElement>(null);
 
   const finish = useCallback(
     (withSound: boolean) => {
@@ -62,39 +51,6 @@ export const Boot = ({ onEnter }: Props) => {
     return () => window.clearTimeout(t);
   }, [line, reducedMotion, tick]);
 
-  /* Assemble the logo out of static once the log has finished. */
-  useEffect(() => {
-    const el = logoRef.current;
-    if (!el || !ready || reducedMotion) return;
-
-    const target = LOGO.join('\n');
-    let raf = 0;
-    let start = 0;
-
-    const frame = (ts: number) => {
-      if (!start) start = ts;
-      const p = Math.min(1, (ts - start) / 620);
-      let out = '';
-      for (let i = 0; i < target.length; i++) {
-        const ch = target[i];
-        if (ch === '\n') { out += ch; continue; }
-        // Cells resolve in a random order, so the logo materialises as a cloud
-        // condensing rather than a left-to-right wipe. Blank cells stay mostly
-        // blank — filling them with noise as often as the lit cells buries the
-        // letterforms, which on a small screen just reads as a garbled block.
-        if (Math.random() < p * p) out += ch;
-        else if (ch === ' ' && Math.random() > 0.05) out += ' ';
-        else out += SCRAMBLE[(Math.random() * SCRAMBLE.length) | 0];
-      }
-      el.textContent = out;
-      if (p < 1) raf = requestAnimationFrame(frame);
-      else el.textContent = target;
-    };
-
-    raf = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(raf);
-  }, [ready, reducedMotion]);
-
   /* Any key skips ahead. Enter/Space commits. */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -119,20 +75,15 @@ export const Boot = ({ onEnter }: Props) => {
           {!ready && <span className="boot__caret">█</span>}
         </pre>
 
-        <pre
-          ref={logoRef}
-          className={`boot__logo ${ready ? 'is-on' : ''}`}
-          aria-label="ACND"
-          role="img"
-        >
-          {LOGO.join('\n')}
-        </pre>
+        <div className={`boot__logo ${ready ? 'is-on' : ''}`}>
+          {ready && <PixelMark delay={0.05} />}
+        </div>
 
         <div className={`boot__actions ${ready ? 'is-on' : ''}`}>
-          <button className="boot__btn is-primary" onClick={() => finish(false)} disabled={!ready}>
+          <button data-magnetic className="boot__btn is-primary" onClick={() => finish(false)} disabled={!ready}>
             [ ENTER ]
           </button>
-          <button className="boot__btn" onClick={() => finish(true)} disabled={!ready}>
+          <button data-magnetic className="boot__btn" onClick={() => finish(true)} disabled={!ready}>
             [ ENTER WITH SOUND ]
           </button>
           <p className="boot__hint">

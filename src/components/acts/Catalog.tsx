@@ -12,6 +12,16 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
       className={`release ${featured ? 'is-featured' : ''}`}
       data-cover-host
       onPointerEnter={() => tick(1900, 0.07)}
+      // Light follows the cursor across the artwork. Written straight to the
+      // element as custom properties — routing this through state would
+      // re-render the card on every pointer move.
+      onPointerMove={(e) => {
+        const el = e.currentTarget.querySelector<HTMLElement>('.release__art');
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+        el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+      }}
     >
       <article>
         <div className="release__art">

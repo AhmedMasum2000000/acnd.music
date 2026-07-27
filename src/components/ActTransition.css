@@ -1,0 +1,85 @@
+.xfade {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/*
+  One animation on the container drives the whole cut. Children read their
+  timing from it rather than running their own, so the three layers can never
+  drift out of sync with each other.
+*/
+.xfade.is-firing {
+  animation: xfade-fire 520ms var(--ease-snap) forwards;
+}
+
+@keyframes xfade-fire {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Horizontal tear bars sweeping down the screen. */
+.xfade__bars {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 6px,
+      var(--accent-soft) 6px 7px,
+      transparent 7px 22px
+    );
+  mix-blend-mode: screen;
+}
+
+.xfade.is-firing .xfade__bars {
+  animation: xfade-bars 520ms var(--ease-snap) forwards;
+}
+
+@keyframes xfade-bars {
+  0% { transform: translateY(-40%) scaleY(0.6); filter: blur(0); }
+  40% { transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(40%) scaleY(0.4); filter: blur(3px); }
+}
+
+/* The act's name, stamped across the middle with a chromatic split. */
+.xfade__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(13px, 2.6vw, 22px);
+  letter-spacing: 0.34em;
+  white-space: nowrap;
+  color: var(--bone);
+  text-shadow:
+    -3px 0 var(--signal),
+    3px 0 var(--cyan);
+}
+
+.xfade.is-firing .xfade__label {
+  animation: xfade-label 520ms var(--ease-out) forwards;
+}
+
+@keyframes xfade-label {
+  0% { opacity: 0; letter-spacing: 0.9em; }
+  30% { opacity: 1; letter-spacing: 0.34em; }
+  70% { opacity: 1; }
+  100% { opacity: 0; letter-spacing: 0.2em; }
+}
+
+/*
+  The whole thing is decorative motion with no informational content of its
+  own — the HUD already names the current act — so under reduced motion it
+  simply never renders.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .xfade {
+    display: none;
+  }
+}

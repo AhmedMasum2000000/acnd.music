@@ -1,5 +1,6 @@
 import { actIndex, artist } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
+import { PixelMark } from '../PixelMark';
 import { useStage } from '../../hooks/useStage';
 
 /**
@@ -16,8 +17,13 @@ export const Hero = () => {
       <div className="shell hero__grid">
         <p className="label hero__eyebrow">{actIndex('signal')} — SIGNAL</p>
 
-        <h1 id="hero-name" className="display hero__name">
-          {artist.name}
+        {/*
+          The visible mark is a graphic, so the heading carries the real text
+          for crawlers and screen readers and the SVG is decorative alongside it.
+        */}
+        <h1 id="hero-name" className="hero__name">
+          <span className="visually-hidden">{artist.name}</span>
+          <PixelMark delay={0.1} />
         </h1>
 
         <p className="hero__legal mono">{artist.legalName}</p>
@@ -44,7 +50,7 @@ export const Hero = () => {
           <li>{artist.origin}</li>
         </ul>
 
-        <a className="hero__cue" href="#artist" onClick={() => tick(700, 0.16)}>
+        <a data-magnetic className="hero__cue" href="#artist" onClick={() => tick(700, 0.16)}>
           <span className="hero__cue-text label">BEGIN THE JOURNEY</span>
           <span className="hero__cue-arrow" aria-hidden="true">
             ▼

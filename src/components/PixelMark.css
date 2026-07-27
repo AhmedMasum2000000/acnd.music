@@ -1,0 +1,98 @@
+.pmark-wrap {
+  position: relative;
+  display: block;
+}
+
+/* Bloom behind the mark. One blurred gradient on one element — cheaper than a
+   glow on each of the ~80 cells, which would be 80 blur passes per frame. */
+.pmark-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -14% -8%;
+  background: radial-gradient(50% 60% at 50% 50%, var(--accent-soft), transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.pmark {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pmark rect {
+  /* Written per cell by the pointer handler, 0 → 1. */
+  --lit: 0;
+  /* Lit cells bloom toward bone and lift out of the grid, so the mark reads as
+     an LED panel responding under the hand rather than a static picture. */
+  fill: color-mix(in srgb, var(--bone) calc(var(--lit) * 100%), var(--accent));
+  transform: translateY(calc(var(--lit) * -0.18px));
+}
+
+/* ── intro: cells condense out of nothing ──────────────────────────── */
+
+.pmark.is-animating rect {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pmark-in 420ms var(--ease-out) forwards;
+}
+
+@keyframes pmark-in {
+  0% { opacity: 0; transform: scale(2.6); }
+  55% { opacity: 1; transform: scale(0.86); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/*
+  Chromatic aberration as a single filter on the whole SVG rather than extra
+  copies of the mark in the DOM. Two offset drop-shadows cost one composite;
+  duplicating 80 rects twice over would cost 160 more elements per instance.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .pmark-wrap {
+    animation: pmark-glitch 6s steps(1, end) infinite;
+  }
+}
+
+@keyframes pmark-glitch {
+  0%, 90%, 100% {
+    filter: none;
+    transform: translate(0, 0);
+  }
+  91% {
+    filter: drop-shadow(-3px 0 var(--signal)) drop-shadow(3px 0 var(--cyan));
+    transform: translate(2px, -1px);
+  }
+  93% {
+    filter: drop-shadow(4px 0 var(--signal)) drop-shadow(-4px 0 var(--cyan));
+    transform: translate(-3px, 1px);
+  }
+  95% {
+    filter: drop-shadow(-2px 0 var(--cyan)) drop-shadow(2px 0 var(--signal));
+    transform: translate(1px, 0);
+  }
+  97% {
+    filter: none;
+    transform: translate(0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pmark rect {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+
+  .pmark-wrap {
+    animation: none;
+  }
+
+  .pmark-wrap::before {
+    filter: none;
+    opacity: 0.4;
+  }
+}

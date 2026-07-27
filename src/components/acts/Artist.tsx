@@ -73,18 +73,35 @@ export const Artist = () => {
           alt text, it is what image search indexes, and it quietly tells the
           visitor what they have been looking at for the last few seconds.
         */}
-        <figure className="artist__plate">
-          <img
-            src={asset(artist.portrait.src)}
-            srcSet={`${asset(artist.portrait.lowSrc)} 480w, ${asset(artist.portrait.src)} 1200w`}
-            sizes="(max-width: 767px) 45vw, 260px"
-            alt={artist.portrait.alt}
-            width="260"
-            height="347"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption className="label">SOURCE PLATE — DHAKA</figcaption>
+        <figure className="plate">
+          <div className="plate__frame">
+            {/* Corner brackets and the scan sweep are decorative overlays drawn
+                by CSS, so the photograph itself stays a plain, indexable img. */}
+            <span className="plate__bracket plate__bracket--tl" aria-hidden="true" />
+            <span className="plate__bracket plate__bracket--tr" aria-hidden="true" />
+            <span className="plate__bracket plate__bracket--bl" aria-hidden="true" />
+            <span className="plate__bracket plate__bracket--br" aria-hidden="true" />
+
+            <div className="plate__img">
+              <img
+                src={asset(artist.portrait.src)}
+                srcSet={`${asset(artist.portrait.lowSrc)} 480w, ${asset(artist.portrait.src)} 1200w`}
+                sizes="(max-width: 899px) 80vw, 420px"
+                alt={artist.portrait.alt}
+                width="420"
+                height="560"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="plate__scan" aria-hidden="true" />
+              <span className="plate__grid" aria-hidden="true" />
+            </div>
+          </div>
+
+          <figcaption className="plate__cap">
+            <span className="label">ACND — DHAKA</span>
+            <span className="label plate__coord">23.8103°N 90.4125°E</span>
+          </figcaption>
         </figure>
       </div>
     </section>

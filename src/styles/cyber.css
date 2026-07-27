@@ -1,0 +1,197 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Cyberpunk surface treatment
+
+   Everything here is decoration layered on top of markup that already works
+   without it. Nothing in this file carries meaning, which is why all of it
+   can be switched off wholesale under reduced motion.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── section headings: neon with a chromatic edge ──────────────────── */
+
+.act__h {
+  position: relative;
+  /* A tight double shadow in the two accent colours reads as a misconverged
+     CRT rather than as a drop shadow, and costs one paint. */
+  text-shadow:
+    -2px 0 rgba(255, 46, 77, 0.55),
+    2px 0 rgba(34, 224, 255, 0.45),
+    0 0 34px var(--accent-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .act__h {
+    animation: cyber-flicker 7s steps(1, end) infinite;
+  }
+}
+
+@keyframes cyber-flicker {
+  0%, 92%, 100% {
+    text-shadow:
+      -2px 0 rgba(255, 46, 77, 0.55),
+      2px 0 rgba(34, 224, 255, 0.45),
+      0 0 34px var(--accent-soft);
+  }
+  93% {
+    text-shadow:
+      -6px 0 rgba(255, 46, 77, 0.9),
+      6px 0 rgba(34, 224, 255, 0.8),
+      0 0 44px var(--accent-soft);
+  }
+  95% {
+    text-shadow:
+      5px 0 rgba(255, 46, 77, 0.7),
+      -5px 0 rgba(34, 224, 255, 0.7),
+      0 0 20px var(--accent-soft);
+  }
+}
+
+/* ── act eyebrow: a targeting tick before the number ───────────────── */
+
+.act .label:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  margin-right: 10px;
+  vertical-align: middle;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* ── panels: corner brackets ───────────────────────────────────────── */
+
+/*
+  Applied to the boxed surfaces — release cards, the terminal, the socials
+  grid. Drawn with two gradient layers on the existing element rather than
+  four extra spans, so no component needs new markup to get them.
+*/
+.release,
+.sets__terminal,
+.socials {
+  position: relative;
+}
+
+.release::after,
+.sets__terminal::after,
+.socials::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--accent), var(--accent)) 0 0 / 12px 2px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 0 0 / 2px 12px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 100% 0 / 12px 2px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 100% 0 / 2px 12px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 0 100% / 12px 2px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 0 100% / 2px 12px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 100% 100% / 12px 2px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) 100% 100% / 2px 12px no-repeat;
+  opacity: 0.4;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.release:hover::after,
+.release:focus-within::after,
+.sets__terminal:hover::after,
+.socials:hover::after {
+  opacity: 1;
+}
+
+/* ── HUD: a live status readout ────────────────────────────────────── */
+
+.hud__act-idx {
+  position: relative;
+  text-shadow: 0 0 10px var(--accent);
+}
+
+.hud__mark {
+  position: relative;
+}
+
+.hud__mark::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.hud__mark:hover::after,
+.hud__mark:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* ── magnetic elements need a transition to settle back ────────────── */
+
+[data-magnetic] {
+  transition: transform 420ms var(--ease-out);
+}
+
+/* While the pointer is driving it, the element must track instantly or the
+   pull feels like lag rather than attraction. */
+[data-magnetic]:hover {
+  transition: transform 90ms linear;
+}
+
+/* ── release cards: light follows the cursor ───────────────────────── */
+
+.release__art {
+  position: relative;
+}
+
+.release__art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%), var(--accent-soft), transparent 70%);
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.release:hover .release__art::after {
+  opacity: 1;
+}
+
+/* ── scanline sweep over the whole page, very slow ─────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .fx__scan::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 22vh;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.028), transparent);
+    animation: cyber-sweep 7s linear infinite;
+  }
+}
+
+@keyframes cyber-sweep {
+  0% { top: -22vh; }
+  100% { top: 100vh; }
+}
+
+/* ── opt out ───────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .act__h {
+    animation: none;
+    text-shadow: none;
+  }
+
+  .fx__scan::after {
+    display: none;
+  }
+
+  [data-magnetic] {
+    transition: none;
+    transform: none !important;
+  }
+}

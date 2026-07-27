@@ -5,10 +5,12 @@ import { AudioEngine } from './engine/audio';
 import type { FieldParams } from './engine/field';
 import { StageContext, type Stage } from './hooks/useStage';
 import { useReducedMotion } from './hooks/useReducedMotion';
+import { useMagnetic } from './hooks/useMagnetic';
 import { setAccent as setCssAccent } from './lib/css';
 import { asset } from './lib/asset';
 import { clamp } from './lib/lerp';
 
+import { ActTransition } from './components/ActTransition';
 import { Boot } from './components/Boot';
 import { Hud } from './components/Hud';
 import { Cursor, Overlays } from './components/Overlays';
@@ -20,11 +22,14 @@ import { Sets } from './components/acts/Sets';
 import { Transmission } from './components/acts/Transmission';
 
 import './components/acts/acts.css';
+// Loaded after the act styles so the surface treatment can layer on top.
+import './styles/cyber.css';
 
 const ENTERED_KEY = 'acnd:entered';
 
 export const App = () => {
   const reducedMotion = useReducedMotion();
+  useMagnetic();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const rendererRef = useRef<AsciiRenderer | null>(null);
@@ -245,6 +250,7 @@ export const App = () => {
 
       {!booted && <Boot onEnter={onEnter} />}
 
+      <ActTransition activeIndex={activeIndex} />
       <Hud activeIndex={activeIndex} />
 
       {/* Acts render only when they have something to show — see `acts` in

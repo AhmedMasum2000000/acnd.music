@@ -48,21 +48,15 @@
   }
 }
 
+/*
+  The mark is an SVG that scales to its container, so the container is what
+  gets sized. Capping the width keeps it from becoming a billboard on a wide
+  monitor while still going nearly edge-to-edge on a phone.
+*/
 .boot__logo {
-  font-family: var(--font-mono);
-  /*
-    The logo is a fixed 23-column block, so its size has to come from the
-    viewport width rather than a font scale — this keeps it edge-to-edge on
-    a phone and comfortably large on a desktop without ever wrapping.
-  */
-  font-size: min(3.6vw, 22px);
-  line-height: 1.02;
-  letter-spacing: 0.06em;
-  white-space: pre;
-  margin: 0;
-  color: var(--signal);
+  width: min(78vw, 380px);
+  min-height: calc(min(78vw, 380px) * 7 / 23);
   opacity: 0;
-  text-shadow: 0 0 22px var(--accent-soft);
   transition: opacity var(--dur) var(--ease-out);
 }
 

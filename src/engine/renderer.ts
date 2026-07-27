@@ -163,8 +163,13 @@ export class AsciiRenderer {
    * the image anyway (there is nowhere else for it to go), so it runs full
    * width and the act's scrim carries the legibility instead.
    */
+  /*
+    On a wide screen the layout is three columns — heading, bio, and a third
+    left deliberately empty. The portrait takes that empty column and nothing
+    else, so the dithered face never lands underneath the paragraphs.
+  */
   private portraitRegion(): PortraitRegion {
-    return window.innerWidth >= 900 ? { x: 0.34, w: 0.66 } : { x: 0, w: 1 };
+    return window.innerWidth >= 900 ? { x: 0.6, w: 0.4 } : { x: 0, w: 1 };
   }
 
   private async initPortrait(): Promise<void> {
