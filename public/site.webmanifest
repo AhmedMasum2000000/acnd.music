@@ -1,0 +1,16 @@
+{
+  "name": "ACND — A H Al Masum",
+  "short_name": "ACND",
+  "description": "Bangladeshi electronic producer, DJ and composer blending melodic techno, dubstep, drum & bass, house and ambient.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07070a",
+  "theme_color": "#07070a",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

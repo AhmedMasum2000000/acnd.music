@@ -1,0 +1,200 @@
+.hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: var(--hud-h);
+  padding-inline: clamp(12px, 3vw, 28px);
+  background: linear-gradient(to bottom, rgba(7, 7, 10, 0.92), rgba(7, 7, 10, 0));
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.hud > * {
+  pointer-events: auto;
+}
+
+.hud__mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(14px, 2.6vw, 17px);
+  letter-spacing: 0.2em;
+  color: var(--bone);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hud__mark:hover,
+.hud__mark:focus-visible {
+  color: var(--accent);
+}
+
+.hud__act {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(8px, 1.6vw, 10px);
+  letter-spacing: 0.2em;
+  color: var(--bone-faint);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.hud__act-idx {
+  color: var(--accent);
+}
+
+.hud__act-label {
+  margin-left: 8px;
+  color: var(--bone-dim);
+}
+
+/* ── sound toggle ──────────────────────────────────────────────────── */
+
+.hud__sound {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-display);
+  font-size: clamp(8px, 1.6vw, 10px);
+  letter-spacing: 0.18em;
+  color: var(--bone-faint);
+  padding: 10px 4px 10px 10px;
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hud__sound:hover,
+.hud__sound:focus-visible,
+.hud__sound.is-on {
+  color: var(--bone);
+}
+
+.hud__sound-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.hud__sound-bars i {
+  width: 2px;
+  height: 3px;
+  background: currentColor;
+  transition: height var(--dur-fast) var(--ease-out);
+}
+
+/*
+  The bars only dance while sound is actually on. An animated equaliser next
+  to the word OFF is a small lie, and small lies in an interface are what
+  make people stop trusting the rest of it.
+*/
+.hud__sound.is-on .hud__sound-bars i {
+  background: var(--accent);
+  animation: eq 900ms ease-in-out infinite alternate;
+}
+
+.hud__sound.is-on .hud__sound-bars i:nth-child(2) { animation-delay: 130ms; }
+.hud__sound.is-on .hud__sound-bars i:nth-child(3) { animation-delay: 290ms; }
+.hud__sound.is-on .hud__sound-bars i:nth-child(4) { animation-delay: 70ms; }
+
+@keyframes eq {
+  from { height: 3px; }
+  to { height: 12px; }
+}
+
+/* ── the rail ──────────────────────────────────────────────────────── */
+
+.rail {
+  position: fixed;
+  right: clamp(10px, 2.2vw, 26px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rail__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.rail__dot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 5px 2px;
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--bone-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.rail__dot:hover,
+.rail__dot:focus-visible {
+  color: var(--bone);
+}
+
+.rail__dot.is-active {
+  color: var(--accent);
+}
+
+.rail__name {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    max-width var(--dur) var(--ease-out),
+    opacity var(--dur) var(--ease-out);
+}
+
+.rail__dot:hover .rail__name,
+.rail__dot:focus-visible .rail__name,
+.rail__dot.is-active .rail__name {
+  max-width: 140px;
+  opacity: 1;
+}
+
+.rail__track {
+  position: relative;
+  width: 2px;
+  height: 120px;
+  background: var(--line);
+}
+
+.rail__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top;
+  transform: scaleY(var(--scroll-progress, 0));
+}
+
+/* On phones the rail collapses to the progress bar alone — six labels on a
+   390px screen is clutter, and the HUD already names the current act. */
+@media (max-width: 767px) {
+  .rail__list {
+    display: none;
+  }
+
+  .rail {
+    right: 8px;
+    height: 40vh;
+  }
+
+  .rail__track {
+    height: 100%;
+  }
+}

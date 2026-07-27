@@ -1,0 +1,70 @@
+/*
+  Palette lifted from the reference photograph: a rain-slicked Dhaka street
+  at night under neon. Black asphalt, red billboard bleeding into puddles,
+  one cold cyan sign, a single acid-green flare.
+*/
+
+:root {
+  /* Surfaces */
+  --void: #07070a;
+  --ink: #0e0e14;
+  --ink-2: #14141d;
+  --line: #1e1e2b;
+
+  /* Text */
+  --bone: #e8e4dc;
+  --bone-dim: #8b8798;
+  --bone-faint: #4a4757;
+
+  /* Accents */
+  --signal: #ff2e4d;
+  --ember: #ff5c2b;
+  --cyan: #22e0ff;
+  --acid: #37ff8b;
+  --haze: #7b5cff;
+
+  /* The live accent — swapped at runtime as the visitor moves through acts. */
+  --accent: var(--signal);
+  --accent-soft: #ff2e4d33;
+
+  /* Typography */
+  --font-display: 'Silkscreen', 'Courier New', monospace;
+  --font-mono: 'VT323', 'Courier New', monospace;
+
+  /* The character cell. Every measurement on this site is a multiple of it. */
+  --cell: 10px;
+  --gutter: calc(var(--cell) * 2);
+  --rule: 1px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.7, 0, 0.2, 1);
+  --dur-fast: 140ms;
+  --dur: 320ms;
+  --dur-slow: 640ms;
+
+  /* Layout */
+  --max: 1240px;
+  --hud-h: calc(var(--cell) * 4.4);
+
+  color-scheme: dark;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --cell: 12px;
+  }
+}
+
+/*
+  Reduced motion is honoured everywhere, not just in the canvas. Durations
+  collapse to zero so transitions still *apply* (no layout surprises) but
+  resolve instantly.
+*/
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+}

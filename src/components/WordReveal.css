@@ -1,0 +1,31 @@
+.word-reveal__w {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(0.35em);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    filter var(--dur-slow) var(--ease-out);
+}
+
+.word-reveal.is-in .word-reveal__w {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/*
+  With reduced motion the words are simply present. The stagger delays are
+  inline styles so they can't be overridden here — zeroing the duration is
+  what makes them resolve together instead of dribbling in.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .word-reveal__w {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+    transition-delay: 0s !important;
+  }
+}

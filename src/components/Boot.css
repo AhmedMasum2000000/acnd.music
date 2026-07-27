@@ -1,0 +1,150 @@
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--void);
+  padding: clamp(16px, 5vw, 48px);
+}
+
+/*
+  The exit is a vertical wipe rather than a fade — it reads as a shutter
+  opening onto the world behind it, which is the whole point of a gate.
+*/
+.boot.is-leaving {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 460ms var(--ease-snap);
+}
+
+.boot__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 4vh, 40px);
+  width: 100%;
+  max-width: 640px;
+}
+
+.boot__log {
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 3.1vw, 15px);
+  line-height: 1.5;
+  color: var(--bone-dim);
+  white-space: pre;
+  min-height: 13.5em;
+  width: 100%;
+  margin: 0;
+}
+
+.boot__caret {
+  color: var(--signal);
+  animation: boot-blink 900ms steps(2, start) infinite;
+}
+
+@keyframes boot-blink {
+  to {
+    opacity: 0;
+  }
+}
+
+.boot__logo {
+  font-family: var(--font-mono);
+  /*
+    The logo is a fixed 23-column block, so its size has to come from the
+    viewport width rather than a font scale — this keeps it edge-to-edge on
+    a phone and comfortably large on a desktop without ever wrapping.
+  */
+  font-size: min(3.6vw, 22px);
+  line-height: 1.02;
+  letter-spacing: 0.06em;
+  white-space: pre;
+  margin: 0;
+  color: var(--signal);
+  opacity: 0;
+  text-shadow: 0 0 22px var(--accent-soft);
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.boot__logo.is-on {
+  opacity: 1;
+}
+
+.boot__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.boot__actions.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.boot__btn {
+  font-family: var(--font-display);
+  font-size: clamp(11px, 2.6vw, 14px);
+  letter-spacing: 0.16em;
+  color: var(--bone-dim);
+  padding: 12px 20px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.boot__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.boot__btn.is-primary {
+  color: var(--bone);
+  font-size: clamp(14px, 3.4vw, 19px);
+}
+
+.boot__btn:not(:disabled):hover,
+.boot__btn:not(:disabled):focus-visible {
+  color: var(--signal);
+}
+
+.boot__hint {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--bone-faint);
+  margin-top: 6px;
+}
+
+.boot__skip {
+  position: absolute;
+  right: clamp(16px, 4vw, 34px);
+  bottom: clamp(16px, 4vw, 34px);
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: var(--bone-faint);
+  padding: 8px;
+}
+
+.boot__skip:hover,
+.boot__skip:focus-visible {
+  color: var(--bone);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot.is-leaving {
+    transition: none;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .boot__caret {
+    animation: none;
+  }
+
+  .boot__log {
+    min-height: 0;
+  }
+}

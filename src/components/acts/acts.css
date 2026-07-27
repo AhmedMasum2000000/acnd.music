@@ -1,0 +1,757 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Shared act furniture
+   ═══════════════════════════════════════════════════════════════════ */
+
+.act__h {
+  font-size: clamp(34px, 7.4vw, 88px);
+  margin: 0.16em 0 0.34em;
+  color: var(--bone);
+  text-wrap: balance;
+}
+
+.act__h--big {
+  font-size: clamp(38px, 9vw, 112px);
+}
+
+.act__lede {
+  max-width: 46ch;
+  color: var(--bone-dim);
+  font-size: clamp(18px, 1.4vw + 14px, 24px);
+  margin-bottom: clamp(40px, 7vh, 84px);
+}
+
+/*
+  Every act carries a soft scrim between the field and its own content.
+
+  This is the single thing that makes the site readable. The animation stays
+  fully visible at the edges of the screen where it does its work, while the
+  area under the copy is pulled down far enough that text always wins. It sits
+  inside the act's stacking context, so it darkens the canvas without touching
+  the act's own children.
+*/
+.act::before {
+  content: '';
+  position: absolute;
+  inset: -6vh 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 74% at 34% 50%,
+    rgba(7, 7, 10, 0.93) 0%,
+    rgba(7, 7, 10, 0.74) 42%,
+    rgba(7, 7, 10, 0.28) 72%,
+    transparent 92%
+  );
+}
+
+.act > .shell > * {
+  position: relative;
+}
+
+/* Copy gets a tight shadow as a second line of defence — where a bright
+   glyph does punch through the scrim, the text still separates from it. */
+.act p,
+.act li,
+.act dd,
+.act h2,
+.act h3 {
+  text-shadow: 0 1px 10px rgba(7, 7, 10, 0.9);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   01 — SIGNAL
+   ═══════════════════════════════════════════════════════════════════ */
+
+.act--hero {
+  min-height: 100svh;
+  display: grid;
+  align-items: center;
+  padding-block: var(--hud-h) clamp(60px, 12vh, 120px);
+}
+
+.hero__grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero__eyebrow {
+  color: var(--accent);
+  margin-bottom: 1.6em;
+}
+
+.hero__name {
+  font-size: clamp(72px, 21vw, 260px);
+  letter-spacing: 0.02em;
+  line-height: 0.86;
+  /* The name is the loudest thing on the site; the glow ties it to the
+     accent so it re-tints as the visitor moves between acts. */
+  text-shadow: 0 0 60px var(--accent-soft);
+}
+
+.hero__legal {
+  font-size: clamp(16px, 3.4vw, 22px);
+  color: var(--bone-dim);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  margin-top: 0.4em;
+}
+
+.hero__lines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1em 0.6em;
+  margin-top: clamp(24px, 4vh, 44px);
+}
+
+.hero__line {
+  font-size: clamp(18px, 3.6vw, 34px);
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+.hero__line:nth-child(2) {
+  color: var(--bone);
+}
+
+.hero__line:nth-child(3) {
+  color: var(--bone-dim);
+}
+
+.hero__tagline {
+  max-width: 52ch;
+  margin-top: clamp(22px, 4vh, 40px);
+  color: var(--bone-dim);
+  font-size: clamp(17px, 1.2vw + 13px, 21px);
+}
+
+.hero__meta {
+  display: flex;
+  gap: 0.8em;
+  margin-top: 1.6em;
+  color: var(--bone-faint);
+}
+
+.hero__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(36px, 7vh, 72px);
+  padding: 14px 20px 14px 0;
+  color: var(--bone-dim);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hero__cue:hover,
+.hero__cue:focus-visible {
+  color: var(--accent);
+}
+
+.hero__cue-text {
+  color: inherit;
+}
+
+.hero__cue-arrow {
+  font-size: 14px;
+  animation: cue-bob 1.7s var(--ease-out) infinite;
+}
+
+@keyframes cue-bob {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   02 — THE ARTIST
+   ═══════════════════════════════════════════════════════════════════ */
+
+.act--artist {
+  /* Tall on purpose: the portrait needs scroll distance to resolve, hold
+     and dissolve. Rushing that ruins the one moment the site is selling. */
+  min-height: 220svh;
+}
+
+/*
+  Act 02 is the exception to the scrim rule. Everywhere else the field is
+  atmosphere behind the copy; here it *is* the content — a dithered portrait
+  of ACND resolving out of the noise. So the darkening runs left-to-right,
+  covering the columns the text occupies and leaving the right side of the
+  frame, where the face lands, completely clear.
+*/
+.act--artist::before {
+  background: linear-gradient(
+    to right,
+    rgba(7, 7, 10, 0.94) 0%,
+    rgba(7, 7, 10, 0.9) 26%,
+    rgba(7, 7, 10, 0.4) 40%,
+    transparent 52%
+  );
+}
+
+/* On a phone there is no clear side to give the portrait, so the copy sits
+   over the image and needs a full scrim behind it instead. */
+@media (max-width: 899px) {
+  .act--artist::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(7, 7, 10, 0.9) 0%,
+      rgba(7, 7, 10, 0.68) 30%,
+      rgba(7, 7, 10, 0.68) 70%,
+      rgba(7, 7, 10, 0.9) 100%
+    );
+  }
+}
+
+.artist__grid {
+  display: grid;
+  gap: clamp(28px, 5vw, 64px);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.artist__lead {
+  position: sticky;
+  top: calc(var(--hud-h) + 16px);
+}
+
+.artist__body {
+  max-width: 58ch;
+}
+
+.artist__para {
+  margin-bottom: 1.15em;
+  font-size: clamp(18px, 1.3vw + 14px, 23px);
+  color: var(--bone);
+}
+
+.artist__para:first-child {
+  color: var(--bone);
+  font-size: clamp(21px, 1.8vw + 15px, 30px);
+}
+
+.artist__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 18px;
+  margin-top: clamp(28px, 5vh, 52px);
+  padding-top: 22px;
+  border-top: var(--rule) solid var(--line);
+}
+
+.artist__facts dt {
+  margin-bottom: 6px;
+}
+
+.artist__facts dd {
+  color: var(--bone);
+  font-size: 18px;
+}
+
+.artist__plate {
+  width: clamp(150px, 34vw, 260px);
+  border: var(--rule) solid var(--line);
+  padding: 8px 8px 6px;
+  background: rgba(14, 14, 20, 0.72);
+}
+
+.artist__plate img {
+  width: 100%;
+  height: auto;
+  filter: grayscale(0.35) contrast(1.12);
+  /* Chunky upscaling on purpose — the plate should look like a low-res
+     reference print, not a hero photograph competing with the ASCII. */
+  image-rendering: pixelated;
+}
+
+.artist__plate figcaption {
+  margin-top: 8px;
+  color: var(--bone-faint);
+}
+
+@media (min-width: 900px) {
+  /*
+    The empty third column is deliberate: it reserves the right side of the
+    viewport for the portrait so no copy ever lands on the face.
+  */
+  .artist__grid {
+    grid-template-columns: 0.85fr 1.15fr 0.95fr;
+    grid-template-areas:
+      'lead body .'
+      'plate body .';
+    align-content: start;
+  }
+
+  .artist__lead { grid-area: lead; }
+  .artist__body { grid-area: body; }
+  .artist__plate { grid-area: plate; margin-top: 8px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   03 — THE SPECTRUM
+   ═══════════════════════════════════════════════════════════════════ */
+
+.spectrum__list {
+  border-top: var(--rule) solid var(--line);
+}
+
+.spectrum__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'idx name'
+    '.   line'
+    '.   bar';
+  gap: 4px 16px;
+  width: 100%;
+  text-align: left;
+  padding: clamp(16px, 2.6vh, 26px) 4px;
+  border-bottom: var(--rule) solid var(--line);
+  transition: background var(--dur) var(--ease-out);
+}
+
+.spectrum__idx {
+  grid-area: idx;
+  color: var(--bone-faint);
+  padding-top: 0.55em;
+}
+
+.spectrum__name {
+  grid-area: name;
+  font-size: clamp(22px, 5vw, 52px);
+  color: var(--bone-dim);
+  transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+
+.spectrum__line {
+  grid-area: line;
+  color: var(--bone-faint);
+  font-size: clamp(15px, 1vw + 12px, 19px);
+  max-width: 52ch;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.spectrum__bar {
+  grid-area: bar;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--line);
+  margin-top: 6px;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.spectrum__item:hover,
+.spectrum__item:focus-visible,
+.spectrum__item.is-active {
+  background: linear-gradient(to right, var(--accent-soft), transparent 62%);
+}
+
+.spectrum__item:hover .spectrum__name,
+.spectrum__item:focus-visible .spectrum__name,
+.spectrum__item.is-active .spectrum__name {
+  color: var(--bone);
+  transform: translateX(8px);
+}
+
+.spectrum__item:hover .spectrum__line,
+.spectrum__item.is-active .spectrum__line {
+  color: var(--bone-dim);
+}
+
+.spectrum__item:hover .spectrum__bar,
+.spectrum__item.is-active .spectrum__bar {
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   04 — THE CATALOG
+   ═══════════════════════════════════════════════════════════════════ */
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+  gap: clamp(20px, 3vw, 34px);
+}
+
+.release {
+  border: var(--rule) solid var(--line);
+  background: rgba(14, 14, 20, 0.66);
+  transition:
+    border-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    background var(--dur) var(--ease-out);
+}
+
+.release:hover,
+.release:focus-within {
+  border-color: var(--accent);
+  background: rgba(20, 20, 29, 0.86);
+  transform: translateY(-4px);
+}
+
+.release.is-featured {
+  grid-column: span 1;
+}
+
+@media (min-width: 900px) {
+  .release.is-featured {
+    grid-column: span 2;
+  }
+
+  .release.is-featured .release__title {
+    font-size: clamp(28px, 3.4vw, 46px);
+  }
+}
+
+.release__art {
+  position: relative;
+  overflow: hidden;
+  border-bottom: var(--rule) solid var(--line);
+  padding: 14px 10px;
+  display: grid;
+  place-items: center;
+  background: #0a0a10;
+}
+
+.ascii-cover {
+  font-family: var(--font-mono);
+  font-size: clamp(7px, 1.5vw, 11px);
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  white-space: pre;
+  margin: 0;
+  /* Gradient-clipped text: the whole cover is tinted for the price of one
+     background, with no per-character elements. */
+  background: linear-gradient(140deg, var(--accent), var(--cyan) 55%, var(--haze));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.82;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.release:hover .ascii-cover,
+.release:focus-within .ascii-cover {
+  opacity: 1;
+}
+
+.release__type {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: var(--bone-faint);
+  background: rgba(7, 7, 10, 0.8);
+  padding: 3px 7px;
+}
+
+.release__meta {
+  padding: clamp(14px, 2vw, 22px);
+}
+
+.release__title {
+  font-size: clamp(19px, 2.2vw, 26px);
+  color: var(--bone);
+  margin-bottom: 8px;
+  text-wrap: balance;
+}
+
+.release__sub {
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.release__blurb {
+  color: var(--bone-dim);
+  font-size: 17px;
+  margin-bottom: 16px;
+}
+
+.release__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 12px;
+  border-top: var(--rule) solid var(--line);
+}
+
+.release__links a {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  padding: 4px 0;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.release__links a:hover,
+.release__links a:focus-visible {
+  color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   05 — THE SETS
+   ═══════════════════════════════════════════════════════════════════ */
+
+.sets__terminal {
+  border: var(--rule) solid var(--line);
+  background: rgba(10, 10, 16, 0.78);
+  padding: clamp(14px, 2.4vw, 26px);
+}
+
+.sets__prompt {
+  color: var(--bone-faint);
+  margin-bottom: 14px;
+  font-size: 16px;
+}
+
+.sets__caret {
+  color: var(--accent);
+  margin-right: 8px;
+}
+
+.sets__link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'glyph title go'
+    '.     note  note'
+    '.     stats stats';
+  gap: 2px 12px;
+  padding: 16px 6px;
+  border-top: var(--rule) solid var(--line);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sets__row:first-child .sets__link {
+  border-top: 0;
+}
+
+.sets__glyph {
+  grid-area: glyph;
+  color: var(--accent);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.sets__title {
+  grid-area: title;
+  font-size: clamp(16px, 2.4vw, 24px);
+  color: var(--bone);
+  letter-spacing: 0.06em;
+}
+
+.sets__note {
+  grid-area: note;
+  color: var(--bone-dim);
+  font-size: 17px;
+}
+
+.sets__stats {
+  grid-area: stats;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 4px;
+}
+
+.sets__stat {
+  color: var(--bone-faint);
+  white-space: nowrap;
+}
+
+.sets__go {
+  grid-area: go;
+  color: var(--bone-faint);
+  transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.sets__link:hover,
+.sets__link:focus-visible {
+  background: var(--accent-soft);
+}
+
+.sets__link:hover .sets__glyph {
+  transform: translateX(4px);
+}
+
+.sets__link:hover .sets__go,
+.sets__link:focus-visible .sets__go {
+  color: var(--accent);
+  transform: translate(3px, -3px);
+}
+
+/* On a wide screen the stats move up onto the title row, where a directory
+   listing would put them. */
+@media (min-width: 860px) {
+  .sets__link {
+    grid-template-columns: auto minmax(160px, 0.9fr) minmax(200px, 1.3fr) auto auto;
+    grid-template-areas: 'glyph title note stats go';
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  .sets__stats {
+    margin-top: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   06 — TRANSMISSION
+   ═══════════════════════════════════════════════════════════════════ */
+
+.act--transmission {
+  padding-bottom: clamp(48px, 8vh, 90px);
+}
+
+.marquee {
+  overflow: hidden;
+  border-block: var(--rule) solid var(--line);
+  padding-block: 10px;
+  margin-bottom: clamp(48px, 9vh, 110px);
+  user-select: none;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  font-family: var(--font-display);
+  font-size: clamp(13px, 2.4vw, 20px);
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  white-space: nowrap;
+  animation: marquee 26s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.socials {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: var(--rule) solid var(--line);
+}
+
+.socials__link {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: clamp(16px, 2.4vw, 24px);
+  background: var(--void);
+  height: 100%;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.socials__plat {
+  font-size: clamp(14px, 1.6vw, 18px);
+  letter-spacing: 0.1em;
+  color: var(--bone);
+}
+
+.socials__handle {
+  color: var(--bone-faint);
+  font-size: 16px;
+}
+
+.socials__go {
+  margin-left: auto;
+  color: var(--bone-faint);
+  transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.socials__link:hover,
+.socials__link:focus-visible {
+  background: var(--accent);
+}
+
+.socials__link:hover .socials__plat,
+.socials__link:hover .socials__handle,
+.socials__link:hover .socials__go,
+.socials__link:focus-visible .socials__plat,
+.socials__link:focus-visible .socials__handle,
+.socials__link:focus-visible .socials__go {
+  color: var(--void);
+}
+
+.socials__link:hover .socials__go {
+  transform: translate(3px, -3px);
+}
+
+.booking {
+  margin-top: clamp(48px, 9vh, 100px);
+  text-align: center;
+}
+
+.booking .label {
+  margin-bottom: 14px;
+}
+
+.booking__mail {
+  display: inline-block;
+  font-size: clamp(20px, 5.4vw, 56px);
+  color: var(--bone);
+  letter-spacing: 0.01em;
+  word-break: break-word;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+
+.booking__mail:hover,
+.booking__mail:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.foot {
+  margin-top: clamp(56px, 11vh, 130px);
+}
+
+.foot__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-top: 18px;
+}
+
+.foot__sig {
+  color: var(--bone-faint);
+  font-size: 15px;
+}
+
+.foot__ascii {
+  margin-top: clamp(30px, 6vh, 60px);
+  text-align: center;
+  color: var(--line);
+  font-size: clamp(12px, 2.4vw, 18px);
+  letter-spacing: 0.3em;
+}
+
+/* ── motion opt-out ────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cue-arrow,
+  .marquee__track {
+    animation: none;
+  }
+
+  .release:hover,
+  .release:focus-within {
+    transform: none;
+  }
+
+  .spectrum__item:hover .spectrum__name,
+  .spectrum__item.is-active .spectrum__name {
+    transform: none;
+  }
+
+  .act--artist {
+    min-height: 0;
+  }
+}

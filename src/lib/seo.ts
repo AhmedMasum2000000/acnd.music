@@ -1,0 +1,188 @@
+import { artist, playlists, releases, socials } from '../data/acnd';
+
+/**
+ * Everything a crawler needs, generated from `src/data/acnd.ts`.
+ *
+ * This module runs at *build* time (from the Vite plugin in vite.config.ts),
+ * not in the browser. The head tags, the JSON-LD and the no-JS fallback are
+ * baked into the shipped `index.html`, which means the site is fully
+ * indexable without executing a line of JavaScript — and it can never drift
+ * out of sync with the visible content, because both read the same file.
+ */
+
+const esc = (s: string): string =>
+  s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+const abs = (path: string): string => `${artist.siteUrl.replace(/\/$/, '')}${path}`;
+
+export const pageTitle = `${artist.name} (${artist.legalName}) — ${artist.role}`;
+
+/* ── JSON-LD ─────────────────────────────────────────────────────────── */
+
+export const buildStructuredData = (): unknown => {
+  const musicGroup = {
+    '@type': 'MusicGroup',
+    '@id': `${artist.siteUrl}/#artist`,
+    name: artist.name,
+    alternateName: artist.legalName,
+    description: artist.tagline,
+    url: artist.siteUrl,
+    image: abs(artist.portrait.src),
+    genre: ['Melodic Techno', 'Dubstep', 'Drum and Bass', 'House', 'Ambient', 'Electronic'],
+    foundingLocation: {
+      '@type': 'Place',
+      name: artist.origin,
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Dhaka',
+      addressCountry: 'BD',
+    },
+    email: `mailto:${artist.bookingEmail}`,
+    sameAs: socials.filter((s) => s.platform !== 'email').map((s) => s.url),
+  };
+
+  const albums = releases.map((r) => ({
+    '@type': r.type === 'Album' || r.type === 'EP' ? 'MusicAlbum' : 'MusicRecording',
+    '@id': `${artist.siteUrl}/#${r.id}`,
+    name: r.title,
+    byArtist: { '@id': `${artist.siteUrl}/#artist` },
+    datePublished: r.date ?? String(r.year),
+    genre: r.tags,
+    description: r.blurb,
+    ...(r.durationSec ? { duration: `PT${Math.floor(r.durationSec / 60)}M${r.durationSec % 60}S` } : {}),
+    ...(Object.values(r.links).length ? { sameAs: Object.values(r.links) } : {}),
+  }));
+
+  const website = {
+    '@type': 'WebSite',
+    '@id': `${artist.siteUrl}/#website`,
+    url: artist.siteUrl,
+    name: pageTitle,
+    description: artist.tagline,
+    inLanguage: 'en',
+    publisher: { '@id': `${artist.siteUrl}/#artist` },
+  };
+
+  return { '@context': 'https://schema.org', '@graph': [musicGroup, website, ...albums] };
+};
+
+/* ── <head> ──────────────────────────────────────────────────────────── */
+
+export const buildHeadTags = (): string => {
+  const desc = esc(artist.tagline);
+  const title = esc(pageTitle);
+  const ogImage = abs('/og.jpg');
+
+  return [
+    `<title>${title}</title>`,
+    `<meta name="description" content="${desc}" />`,
+    `<link rel="canonical" href="${artist.siteUrl}/" />`,
+    `<meta name="author" content="${esc(artist.legalName)}" />`,
+    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Bangladeshi producer, Dhaka electronic music, melodic techno, dubstep, drum and bass, house, ambient, DJ, composer" />`,
+
+    `<meta property="og:type" content="profile" />`,
+    `<meta property="og:site_name" content="${esc(artist.name)}" />`,
+    `<meta property="og:title" content="${title}" />`,
+    `<meta property="og:description" content="${desc}" />`,
+    `<meta property="og:url" content="${artist.siteUrl}/" />`,
+    `<meta property="og:image" content="${ogImage}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="${esc(artist.name)} — ${esc(artist.role)}" />`,
+    `<meta property="og:locale" content="en_US" />`,
+    `<meta property="profile:first_name" content="A H" />`,
+    `<meta property="profile:last_name" content="Al Masum" />`,
+
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${title}" />`,
+    `<meta name="twitter:description" content="${desc}" />`,
+    `<meta name="twitter:image" content="${ogImage}" />`,
+
+    `<script type="application/ld+json">${JSON.stringify(buildStructuredData())}</script>`,
+  ].join('\n    ');
+};
+
+/* ── no-JS fallback ──────────────────────────────────────────────────── */
+
+/**
+ * A plain, complete, readable version of the site.
+ *
+ * React removes this the moment it mounts, so a visitor never sees it — but
+ * a crawler that does not execute JavaScript, a text browser, or anyone on a
+ * failed bundle load gets the bio, every release, every set and every link.
+ */
+export const buildFallback = (): string => {
+  const releaseItems = releases
+    .map((r) => {
+      const links = Object.entries(r.links)
+        .map(([p, url]) => `<a href="${esc(url)}" rel="noopener">${esc(p)}</a>`)
+        .join(' · ');
+      return `<li><strong>${esc(r.title)}</strong> — ${r.year} · ${esc(r.type)} · ${esc(
+        r.tags.join(', '),
+      )}<br />${esc(r.blurb)}${links ? `<br />${links}` : ''}</li>`;
+    })
+    .join('\n        ');
+
+  const setItems = playlists
+    .map(
+      (p) =>
+        `<li><a href="${esc(p.url)}" rel="noopener">${esc(p.title)}</a> — ${esc(p.note)} (${
+          p.trackCount
+        } tracks, ${esc(p.runtime)})</li>`,
+    )
+    .join('\n        ');
+
+  const socialItems = socials
+    .map((s) => `<li><a href="${esc(s.url)}" rel="me noopener">${esc(s.handle)}</a></li>`)
+    .join('\n        ');
+
+  return `<div id="fallback">
+      <h1>${esc(artist.name)}</h1>
+      <p><strong>${esc(artist.legalName)}</strong> — ${esc(artist.role)}, ${esc(artist.origin)}</p>
+      ${artist.bio.map((b) => `<p>${esc(b)}</p>`).join('\n      ')}
+
+      <h2>Releases</h2>
+      <ul>
+        ${releaseItems}
+      </ul>
+
+      <h2>Playlists &amp; Sets</h2>
+      <ul>
+        ${setItems}
+      </ul>
+
+      <h2>Follow</h2>
+      <ul>
+        ${socialItems}
+      </ul>
+
+      <h2>Bookings</h2>
+      <p><a href="mailto:${esc(artist.bookingEmail)}">${esc(artist.bookingEmail)}</a></p>
+    </div>`;
+};
+
+/* ── sitemap ─────────────────────────────────────────────────────────── */
+
+export const buildSitemap = (): string =>
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${artist.siteUrl}/</loc>
+    <lastmod>${new Date().toISOString().slice(0, 10)}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+`;
+
+export const buildRobots = (): string =>
+  `User-agent: *
+Allow: /
+
+Sitemap: ${artist.siteUrl}/sitemap.xml
+`;
