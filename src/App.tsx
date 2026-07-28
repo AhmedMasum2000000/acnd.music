@@ -16,7 +16,6 @@ import { Hud } from './components/Hud';
 import { Cursor, Overlays } from './components/Overlays';
 import { Hero } from './components/acts/Hero';
 import { Artist } from './components/acts/Artist';
-import { Spectrum } from './components/acts/Spectrum';
 import { Catalog } from './components/acts/Catalog';
 import { Sets } from './components/acts/Sets';
 import { Transmission } from './components/acts/Transmission';
@@ -258,7 +257,6 @@ export const App = () => {
       <main id="top" ref={mainRef} tabIndex={-1}>
         <Hero />
         <Artist />
-        <Spectrum />
         {hasAct('catalog') && <Catalog />}
         {hasAct('sets') && <Sets />}
         <Transmission />

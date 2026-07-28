@@ -42,7 +42,6 @@ export const buildStructuredData = (): unknown => {
     description: artist.tagline,
     url: SITE,
     image: abs(artist.portrait.src),
-    genre: ['Melodic Techno', 'Dubstep', 'Drum and Bass', 'House', 'Ambient', 'Electronic'],
     foundingLocation: {
       '@type': 'Place',
       name: artist.origin,
@@ -62,7 +61,6 @@ export const buildStructuredData = (): unknown => {
     name: r.title,
     byArtist: { '@id': `${SITE}/#artist` },
     datePublished: r.date ?? String(r.year),
-    genre: r.tags,
     description: r.blurb,
     ...(r.durationSec ? { duration: `PT${Math.floor(r.durationSec / 60)}M${r.durationSec % 60}S` } : {}),
     ...(Object.values(r.links).length ? { sameAs: Object.values(r.links) } : {}),
@@ -93,7 +91,7 @@ export const buildHeadTags = (): string => {
     `<meta name="description" content="${desc}" />`,
     `<link rel="canonical" href="${SITE}/" />`,
     `<meta name="author" content="${esc(artist.legalName)}" />`,
-    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Bangladeshi producer, Dhaka electronic music, melodic techno, dubstep, drum and bass, house, ambient, DJ, composer" />`,
+    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Her ACND, ACND Her, Bangladeshi producer, Dhaka producer, DJ, composer, listen, Spotify, Apple Music, YouTube Music" />`,
 
     `<meta property="og:type" content="profile" />`,
     `<meta property="og:site_name" content="${esc(artist.name)}" />`,
@@ -133,9 +131,7 @@ export const buildFallback = (): string => {
         .map(([p, url]) => `<a href="${esc(url)}" rel="noopener">${esc(p)}</a>`)
         .join(' · ');
       const blurb = r.blurb ? `<br />${esc(r.blurb)}` : '';
-      return `<li><strong>${esc(r.title)}</strong> — ${r.year} · ${esc(r.type)} · ${esc(
-        r.tags.join(', '),
-      )}${blurb}${links ? `<br />${links}` : ''}</li>`;
+      return `<li><strong>${esc(r.title)}</strong> — ${r.year} · ${esc(r.type)}${blurb}${links ? `<br />${links}` : ''}</li>`;
     })
     .join('\n        ');
 

@@ -137,6 +137,55 @@
   color: var(--bone-faint);
 }
 
+/* ── out-now streaming row ─────────────────────────────────────────── */
+
+.listen {
+  margin-top: clamp(28px, 5vh, 48px);
+  padding-top: clamp(20px, 3vh, 28px);
+  border-top: var(--rule) solid var(--line);
+  width: 100%;
+  max-width: 640px;
+}
+
+.listen__label {
+  color: var(--bone-dim);
+  margin-bottom: 14px;
+}
+
+.listen__title {
+  color: var(--accent);
+}
+
+.listen__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.listen__btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(10px, 1.8vw, 12px);
+  letter-spacing: 0.14em;
+  color: var(--bone);
+  padding: 13px 18px;
+  border: var(--rule) solid var(--line);
+  background: rgba(14, 14, 20, 0.7);
+  white-space: nowrap;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.listen__btn:hover,
+.listen__btn:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--void);
+}
+
 .hero__cue {
   display: inline-flex;
   align-items: center;
@@ -421,83 +470,6 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   03 — THE SPECTRUM
-   ═══════════════════════════════════════════════════════════════════ */
-
-.spectrum__list {
-  border-top: var(--rule) solid var(--line);
-}
-
-.spectrum__item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-areas:
-    'idx name'
-    '.   line'
-    '.   bar';
-  gap: 4px 16px;
-  width: 100%;
-  text-align: left;
-  padding: clamp(16px, 2.6vh, 26px) 4px;
-  border-bottom: var(--rule) solid var(--line);
-  transition: background var(--dur) var(--ease-out);
-}
-
-.spectrum__idx {
-  grid-area: idx;
-  color: var(--bone-faint);
-  padding-top: 0.55em;
-}
-
-.spectrum__name {
-  grid-area: name;
-  font-size: clamp(22px, 5vw, 52px);
-  color: var(--bone-dim);
-  transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
-}
-
-.spectrum__line {
-  grid-area: line;
-  color: var(--bone-faint);
-  font-size: clamp(15px, 1vw + 12px, 19px);
-  max-width: 52ch;
-  transition: color var(--dur) var(--ease-out);
-}
-
-.spectrum__bar {
-  grid-area: bar;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  color: var(--line);
-  margin-top: 6px;
-  transition: color var(--dur) var(--ease-out);
-}
-
-.spectrum__item:hover,
-.spectrum__item:focus-visible,
-.spectrum__item.is-active {
-  background: linear-gradient(to right, var(--accent-soft), transparent 62%);
-}
-
-.spectrum__item:hover .spectrum__name,
-.spectrum__item:focus-visible .spectrum__name,
-.spectrum__item.is-active .spectrum__name {
-  color: var(--bone);
-  transform: translateX(8px);
-}
-
-.spectrum__item:hover .spectrum__line,
-.spectrum__item.is-active .spectrum__line {
-  color: var(--bone-dim);
-}
-
-.spectrum__item:hover .spectrum__bar,
-.spectrum__item.is-active .spectrum__bar {
-  color: var(--accent);
-}
-
-/* ═══════════════════════════════════════════════════════════════════
    04 — THE CATALOG
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -532,6 +504,36 @@
     grid-column: span 2;
   }
 
+  /* A lone release takes the full row rather than sitting in a two-column
+     slot with the rest of the grid empty beside it. */
+  .catalog__grid:has(> :only-child) .release {
+    grid-column: 1 / -1;
+  }
+
+  /*
+    Square artwork stacked above its metadata makes a single release fill the
+    entire viewport and pushes the streaming links below the fold — the exact
+    opposite of what this section is for. Side by side, the art and the links
+    arrive together.
+  */
+  .release.is-featured > article {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .release.is-featured .release__art {
+    border-bottom: 0;
+    border-right: var(--rule) solid var(--line);
+  }
+
+  .release.is-featured .release__meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(20px, 3vw, 40px);
+  }
+
   .release.is-featured .release__title {
     font-size: clamp(28px, 3.4vw, 46px);
   }
@@ -541,10 +543,33 @@
   position: relative;
   overflow: hidden;
   border-bottom: var(--rule) solid var(--line);
-  padding: 14px 10px;
   display: grid;
   place-items: center;
   background: #0a0a10;
+}
+
+/* Generated ASCII covers need breathing room; a real photograph fills the
+   frame edge to edge. */
+.release__art:has(.ascii-cover) {
+  padding: 14px 10px;
+}
+
+.release__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  /* Held slightly back so it belongs to the page rather than sitting on top
+     of it, then released on hover. */
+  filter: saturate(0.85) contrast(1.05) brightness(0.9);
+  transition: filter var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+
+.release:hover .release__img,
+.release:focus-within .release__img {
+  filter: saturate(1) contrast(1.08) brightness(1);
+  transform: scale(1.035);
 }
 
 .ascii-cover {
@@ -600,27 +625,49 @@
   margin-bottom: 16px;
 }
 
+/* Full-width rows rather than a line of small links — on this site the
+   streaming links are the call to action, not a footnote to one. */
 .release__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  padding-top: 12px;
+  display: grid;
+  gap: 8px;
+  padding-top: 16px;
   border-top: var(--rule) solid var(--line);
 }
 
 .release__links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--bone-dim);
-  padding: 4px 0;
+  color: var(--bone);
+  padding: 13px 14px;
+  border: var(--rule) solid var(--line);
+  background: rgba(20, 20, 29, 0.6);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.release__cta {
+  color: var(--accent);
   transition: color var(--dur-fast) var(--ease-out);
 }
 
 .release__links a:hover,
 .release__links a:focus-visible {
-  color: var(--accent);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--void);
+}
+
+.release__links a:hover .release__cta,
+.release__links a:focus-visible .release__cta {
+  color: var(--void);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -877,11 +924,6 @@
 
   .release:hover,
   .release:focus-within {
-    transform: none;
-  }
-
-  .spectrum__item:hover .spectrum__name,
-  .spectrum__item.is-active .spectrum__name {
     transform: none;
   }
 

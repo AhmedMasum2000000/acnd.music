@@ -44,16 +44,21 @@ export interface Release {
   /** ISO date (YYYY-MM-DD) if you know it — improves rich results. */
   date?: string;
   type: 'Single' | 'EP' | 'Album' | 'Remix' | 'Collab';
-  /** Genre tags shown on the card. Keep to 1–3 for layout reasons. */
-  tags: string[];
+  /**
+   * Short descriptors shown on the card. Deliberately empty — the music is
+   * meant to arrive without being labelled first.
+   */
+  tags?: string[];
   /** One line of copy. Optional — omit it rather than inventing one. */
   blurb?: string;
   /**
-   * Cover artwork. Path relative to /public, e.g. '/covers/aurora.jpg'.
-   * Leave undefined and the site generates a deterministic ASCII cover
-   * from the release id — which honestly looks great, so this is optional.
+   * Cover artwork, relative to /public. Leave both undefined and the site
+   * generates a deterministic ASCII cover from the release id instead.
    */
   cover?: string;
+  coverLow?: string;
+  /** Alt text for the artwork. Required whenever `cover` is set. */
+  coverAlt?: string;
   /** Streaming links. Omit any platform you're not on. */
   links: Partial<Record<Platform, string>>;
   /** Duration in seconds, if known. Feeds JSON-LD. */
@@ -73,20 +78,6 @@ export interface Playlist {
   platform: Platform;
 }
 
-export interface Genre {
-  name: string;
-  /** One-line description of what this sound means to ACND. */
-  line: string;
-  /**
-   * How the background field behaves while this genre is focused.
-   *  speed     — how fast the noise evolves (0.2 slow … 2.0 frantic)
-   *  scale     — spatial frequency (0.02 wide/smooth … 0.2 tight/grainy)
-   *  turbulence— how much the field tears and glitches (0 … 1)
-   *  accent    — CSS custom property name used for the glow
-   */
-  field: { speed: number; scale: number; turbulence: number; accent: string };
-}
-
 /* ───────────────────────────────────────────────────────────────────────
    IDENTITY
    ─────────────────────────────────────────────────────────────────────── */
@@ -98,7 +89,7 @@ export const artist = {
   origin: 'Dhaka, Bangladesh',
   /** Used in the <title>, OG tags and JSON-LD description. Keep under ~155 chars. */
   tagline:
-    'Bangladeshi electronic producer, DJ and composer blending melodic techno, dubstep, drum & bass, house and ambient into euphoric, emotion-driven sound.',
+    'Producer, DJ and composer from Dhaka, Bangladesh. Debut single "Her..." out now on Spotify, Apple Music and YouTube Music.',
   /** Short punch line for the hero. Two or three words per line reads best. */
   heroLines: ['EUPHORIA', 'ENGINEERED', 'FROM NOISE'],
   /**
@@ -107,8 +98,8 @@ export const artist = {
    */
   bio: [
     'ACND is the recording name of A H Al Masum, a producer, DJ and composer working out of Dhaka, Bangladesh.',
-    'The work sits where melodic techno meets the weight of dubstep and the restlessness of drum & bass — with house underneath and ambient holding the edges. Euphoric, but never weightless. Built to be felt in the chest before it is understood in the head.',
-    'Every record starts the same way: a room, a late hour, and a sound that will not leave. What comes out is emotion-driven electronic music for people who want to be moved, not just moved around.',
+    'Nothing here is going to tell you what the next record sounds like. That is the point. What holds the work together is not a category but a feeling — built to be felt in the chest before it is understood in the head.',
+    'It starts the same way every time: a room, a late hour, and a sound that will not leave. Everything released so far is linked below.',
   ],
   /**
    * Booking / business enquiries, shown in Act 06.
@@ -182,10 +173,13 @@ export const releases: Release[] = [
     year: 2026,
     date: '2026-07-24',
     type: 'Single',
-    tags: ['Electronic'],
     // Metadata taken from the release pages themselves. Add a `blurb` here
     // when you want one — better to say nothing than to say something invented.
     durationSec: 697,
+    cover: '/cover-her-900.webp',
+    coverLow: '/cover-her-420.webp',
+    coverAlt:
+      'Cover art for Her... by ACND — a screen showing a pale coastline and dune grass, photographed at an angle above an open book.',
     links: {
       spotify: 'https://open.spotify.com/track/1728ckXv0wfIEBhUsGP7TN',
       youtube: 'https://music.youtube.com/watch?v=s_b17eFeZgM',
@@ -204,39 +198,6 @@ export const releases: Release[] = [
   Add one and the act reappears, renumbered automatically.
 */
 export const playlists: Playlist[] = [];
-
-/* ───────────────────────────────────────────────────────────────────────
-   THE SPECTRUM — Act 03
-   Hovering a genre re-tunes the background field in real time.
-   ─────────────────────────────────────────────────────────────────────── */
-
-export const genres: Genre[] = [
-  {
-    name: 'MELODIC TECHNO',
-    line: 'The spine. Relentless, but it always resolves somewhere beautiful.',
-    field: { speed: 1.0, scale: 0.09, turbulence: 0.35, accent: '--cyan' },
-  },
-  {
-    name: 'DUBSTEP',
-    line: 'Weight as an emotion. The low end does the talking.',
-    field: { speed: 0.55, scale: 0.05, turbulence: 0.95, accent: '--signal' },
-  },
-  {
-    name: 'DRUM & BASS',
-    line: '174 BPM of forward motion. No time to think, only to move.',
-    field: { speed: 2.0, scale: 0.14, turbulence: 0.6, accent: '--ember' },
-  },
-  {
-    name: 'HOUSE',
-    line: 'Warmth, groove, and a room full of people who came to dance.',
-    field: { speed: 0.8, scale: 0.07, turbulence: 0.15, accent: '--acid' },
-  },
-  {
-    name: 'AMBIENT',
-    line: 'The space between the records. Where the feeling actually lives.',
-    field: { speed: 0.2, scale: 0.025, turbulence: 0.0, accent: '--haze' },
-  },
-];
 
 /* ───────────────────────────────────────────────────────────────────────
    THE JOURNEY — act metadata driving the HUD and the field modes.
@@ -264,7 +225,6 @@ export interface Act {
 const actDefs: (Omit<Act, 'index'> & { when?: () => boolean })[] = [
   { id: 'signal', label: 'SIGNAL', mode: 'RAIN', accent: '#ff2e4d' },
   { id: 'artist', label: 'THE ARTIST', mode: 'PORTRAIT', accent: '#ff5c2b' },
-  { id: 'spectrum', label: 'THE SPECTRUM', mode: 'WAVE', accent: '#22e0ff' },
   { id: 'catalog', label: 'THE CATALOG', mode: 'GRID', accent: '#7b5cff', when: () => releases.length > 0 },
   { id: 'sets', label: 'THE SETS', mode: 'TUNNEL', accent: '#37ff8b', when: () => playlists.length > 0 },
   { id: 'transmission', label: 'TRANSMISSION', mode: 'NOISE', accent: '#ff2e4d' },

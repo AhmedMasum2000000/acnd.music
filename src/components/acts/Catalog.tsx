@@ -1,7 +1,8 @@
-import { acts, platformLabel, releases, type Release } from '../../data/acnd';
+import { acts, artist, platformLabel, releases, type Release } from '../../data/acnd';
 import { AsciiCover } from '../AsciiCover';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
+import { asset } from '../../lib/asset';
 
 const ReleaseCard = ({ release, featured }: { release: Release; featured: boolean }) => {
   const { tick } = useStage();
@@ -25,12 +26,31 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
     >
       <article>
         <div className="release__art">
-          <AsciiCover
-            id={release.id}
-            cols={featured ? 44 : 30}
-            rows={featured ? 20 : 14}
-            className="release__cover"
-          />
+          {release.cover ? (
+            <img
+              className="release__img"
+              src={asset(release.cover)}
+              srcSet={
+                release.coverLow
+                  ? `${asset(release.coverLow)} 420w, ${asset(release.cover)} 900w`
+                  : undefined
+              }
+              sizes="(max-width: 899px) 90vw, 460px"
+              alt={release.coverAlt ?? `Cover art for ${release.title} by ${artist.name}`}
+              width="900"
+              height="900"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            // No artwork supplied — fall back to a cover generated from the id.
+            <AsciiCover
+              id={release.id}
+              cols={featured ? 44 : 30}
+              rows={featured ? 20 : 14}
+              className="release__cover"
+            />
+          )}
           <span className="release__type label">{release.type}</span>
         </div>
 
@@ -39,24 +59,35 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
 
           <p className="release__sub label">
             <time dateTime={release.date ?? String(release.year)}>{release.year}</time>
-            <span aria-hidden="true"> · </span>
-            {release.tags.join(' / ')}
+            {release.tags?.length ? (
+              <>
+                <span aria-hidden="true"> · </span>
+                {release.tags.join(' / ')}
+              </>
+            ) : null}
           </p>
 
           {release.blurb ? <p className="release__blurb">{release.blurb}</p> : null}
 
+          {/* The links are the point of the whole section, so they are full
+              buttons rather than a row of small text links. */}
           <ul className="release__links">
             {platforms.map(([p, url]) => (
               <li key={p}>
                 <a
+                  data-magnetic
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => tick(820, 0.16)}
+                  onPointerEnter={() => tick(2000, 0.06)}
                 >
-                  {platformLabel[p]}
-                  <span aria-hidden="true"> ↗</span>
-                  <span className="visually-hidden"> — listen to {release.title}</span>
+                  <span className="release__plat">{platformLabel[p]}</span>
+                  <span className="release__cta">
+                    PLAY
+                    <span aria-hidden="true"> ↗</span>
+                  </span>
+                  <span className="visually-hidden"> — listen to {release.title} on {platformLabel[p]}</span>
                 </a>
               </li>
             ))}

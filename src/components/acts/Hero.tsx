@@ -1,4 +1,4 @@
-import { actIndex, artist } from '../../data/acnd';
+import { actIndex, artist, platformLabel, releases } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { PixelMark } from '../PixelMark';
 import { useStage } from '../../hooks/useStage';
@@ -11,6 +11,8 @@ import { useStage } from '../../hooks/useStage';
  */
 export const Hero = () => {
   const { tick } = useStage();
+  // Newest release drives the "out now" row.
+  const latest = [...releases].sort((a, b) => b.year - a.year)[0];
 
   return (
     <section id="signal" className="act act--hero" aria-labelledby="hero-name">
@@ -49,6 +51,42 @@ export const Hero = () => {
           <li aria-hidden="true">·</li>
           <li>{artist.origin}</li>
         </ul>
+
+        {/*
+          Streaming links on the very first screen. A visitor who arrived to
+          hear the music should never have to scroll to find out where.
+        */}
+        {latest ? (
+          <div className="listen">
+            <p className="label listen__label">
+              OUT NOW — <span className="listen__title">{latest.title}</span>
+            </p>
+            <ul className="listen__row">
+              {(Object.entries(latest.links) as [keyof typeof platformLabel, string][]).map(
+                ([p, url]) => (
+                  <li key={p}>
+                    <a
+                      data-magnetic
+                      className="listen__btn"
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => tick(820, 0.18)}
+                      onPointerEnter={() => tick(2000, 0.06)}
+                    >
+                      {platformLabel[p]}
+                      <span aria-hidden="true"> ↗</span>
+                      <span className="visually-hidden">
+                        {' '}
+                        — listen to {latest.title} on {platformLabel[p]}
+                      </span>
+                    </a>
+                  </li>
+                ),
+              )}
+            </ul>
+          </div>
+        ) : null}
 
         <a data-magnetic className="hero__cue" href="#artist" onClick={() => tick(700, 0.16)}>
           <span className="hero__cue-text label">BEGIN THE JOURNEY</span>
