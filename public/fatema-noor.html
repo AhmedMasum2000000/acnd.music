@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#060505" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <title>A gift for Fatema Noor</title>
+    <meta name="description" content="A promise made in writing, now settled. One hammock, deployed." />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="A gift for Fatema Noor" />
+    <meta property="og:description" content="A promise made in writing, now settled. One hammock, deployed." />
+    <meta name="twitter:card" content="summary" />
+
+    <!--
+      Deliberately self-contained: no fonts, no scripts, no images fetched from
+      anywhere. It has to work from a link, from a phone on bad signal, and from
+      a file dropped straight into a chat window. One file, no dependencies.
+    -->
+    <style>
+      /* ── tokens ──────────────────────────────────────────────────────── */
+
+      :root {
+        /* Surfaces — near-black, warmed a touch so the maroon has somewhere to sit. */
+        --void: #060505;
+        --ink: #0d0a0b;
+
+        /* Accent */
+        --maroon: #800000;
+        --maroon-lift: #a3151a;
+        --maroon-glow: rgba(128, 0, 0, 0.28);
+
+        /* Text */
+        --bone: #e9e5e1;
+        --bone-dim: #8f8781;
+        --bone-faint: #4b4441;
+
+        --hair: rgba(233, 229, 225, 0.08);
+
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        --rise: 900ms;
+        --step: 70ms;
+
+        color-scheme: dark;
+      }
+
+      /*
+        Motion is the whole point of the piece, so reduced motion does not
+        disable it — it collapses every duration to nothing. Transitions still
+        *apply*, they just resolve instantly, which keeps the state machine
+        honest and avoids a half-faded screen.
+      */
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          --rise: 0.01ms;
+          --step: 0ms;
+        }
+      }
+
+      /* ── reset ───────────────────────────────────────────────────────── */
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        background: var(--void);
+        -webkit-text-size-adjust: 100%;
+        /* `clip`, not `hidden` — it contains the bloom without turning the root
+           into a scroll container. */
+        overflow-x: clip;
+      }
+
+      body {
+        background: var(--void);
+        color: var(--bone);
+        font-family: 'Helvetica Neue', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Arial, sans-serif;
+        font-size: clamp(15px, 1.1vw + 11px, 18px);
+        font-weight: 300;
+        line-height: 1.75;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overscroll-behavior-y: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      canvas,
+      svg {
+        display: block;
+      }
+
+      ::selection {
+        background: var(--maroon);
+        color: var(--bone);
+      }
+
+      :focus-visible {
+        outline: 1px solid var(--maroon-lift);
+        outline-offset: 4px;
+      }
+
+      /* ── atmosphere ──────────────────────────────────────────────────── */
+
+      /* The starfield. Held at zero until the hammock is deployed. */
+      #sky {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 2200ms var(--ease);
+      }
+
+      body.is-revealed #sky {
+        opacity: 1;
+      }
+
+      /*
+        A single slow-breathing maroon bloom behind the landing copy. It is the
+        only light in the room before the sky arrives.
+      */
+      .ambient {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        transition: opacity 1400ms var(--ease);
+      }
+
+      /*
+        The breathing lives on the pseudo-element, not on .ambient itself. An
+        animation on `opacity` beats a plain declaration, so a wrapper is what
+        lets the whole bloom fade out when the sky takes over.
+      */
+      .ambient::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          58vmax 42vmax at 50% 46%,
+          var(--maroon-glow) 0%,
+          rgba(128, 0, 0, 0.07) 38%,
+          transparent 72%
+        );
+        animation: breathe 13s ease-in-out infinite;
+      }
+
+      body.is-revealed .ambient {
+        opacity: 0;
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          opacity: 0.55;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.9;
+          transform: scale(1.06);
+        }
+      }
+
+      /* Vignette and grain — both there to stop the gradients from banding. */
+      .vignette,
+      .grain {
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      .vignette {
+        background: radial-gradient(120vmax 90vmax at 50% 50%, transparent 42%, rgba(0, 0, 0, 0.72) 100%);
+      }
+
+      .grain {
+        opacity: 0.035;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      /* ── layout ──────────────────────────────────────────────────────── */
+
+      /*
+        Both scenes occupy the same grid cell, so the swap is a cross-fade with
+        no reflow and no scroll jump — the page never changes height.
+      */
+      .stage {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        min-height: 100vh;
+        min-height: 100svh;
+      }
+
+      /*
+        `safe center` is doing real work here: centred until the copy is taller
+        than the viewport, then it falls back to start-aligned so the last line
+        stays scrollable instead of being cut off above the fold.
+      */
+      .scene {
+        grid-area: 1 / 1;
+        display: grid;
+        align-items: safe center;
+        justify-items: center;
+        padding: clamp(32px, 7vw, 80px) clamp(24px, 6vw, 64px);
+      }
+
+      .inner {
+        width: 100%;
+        max-width: 640px;
+      }
+
+      /* The scene that is not in play: invisible, inert, unreachable by tab. */
+      .scene[data-state='off'] {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      #gate {
+        transition: opacity 1100ms var(--ease), filter 1100ms var(--ease),
+          transform 1400ms var(--ease), visibility 0s linear 1100ms;
+      }
+
+      #gate.is-dismissed {
+        opacity: 0;
+        filter: blur(14px);
+        transform: scale(1.04);
+        pointer-events: none;
+      }
+
+      #reveal {
+        transition: opacity 1600ms var(--ease), visibility 0s;
+      }
+
+      /* ── type ────────────────────────────────────────────────────────── */
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 1.6;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: var(--bone-faint);
+      }
+
+      h1,
+      h2 {
+        font-size: clamp(38px, 7vw, 82px);
+        font-weight: 300;
+        line-height: 1.02;
+        letter-spacing: -0.03em;
+        color: var(--bone);
+      }
+
+      p {
+        max-width: 46ch;
+        color: var(--bone-dim);
+      }
+
+      p + p {
+        margin-top: 1.1em;
+      }
+
+      em {
+        font-style: normal;
+        color: var(--bone);
+      }
+
+      .rule {
+        width: 100%;
+        height: 1px;
+        border: 0;
+        background: var(--hair);
+      }
+
+      .footnote {
+        font-size: 12px;
+        line-height: 1.7;
+        letter-spacing: 0.02em;
+        color: var(--bone-faint);
+      }
+
+      .footnote sup {
+        color: var(--maroon-lift);
+      }
+
+      /*
+        The one flourish in the headline: a maroon hairline that draws itself
+        under "scary" once the copy has landed.
+      */
+      .mark {
+        position: relative;
+        white-space: nowrap;
+      }
+
+      .mark::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        /* Below the descender of the "y", not through it. */
+        bottom: -0.04em;
+        width: 100%;
+        height: 2px;
+        background: var(--maroon-lift);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 1200ms var(--ease) 900ms;
+      }
+
+      .is-live .mark::after {
+        transform: scaleX(1);
+      }
+
+      /* ── entrance ────────────────────────────────────────────────────── */
+
+      /*
+        Every child that rises in carries --i, its place in the queue. One rule,
+        one transition, staggered by index — no per-element keyframes.
+      */
+      .rise {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity var(--rise) var(--ease), transform var(--rise) var(--ease);
+        transition-delay: calc(var(--i, 0) * var(--step));
+      }
+
+      .is-live .rise {
+        opacity: 1;
+        transform: none;
+      }
+
+      .gate-stack > * + * {
+        margin-top: clamp(20px, 3.4vh, 34px);
+      }
+
+      .reveal-stack > * + * {
+        margin-top: clamp(20px, 3.4vh, 34px);
+      }
+
+      /* ── the button ──────────────────────────────────────────────────── */
+
+      .deploy {
+        position: relative;
+        display: inline-block;
+        padding: 18px 32px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--bone);
+        background: transparent;
+        border: 1px solid var(--maroon);
+        border-radius: 2px;
+        cursor: pointer;
+        transition: color 500ms var(--ease), border-color 500ms var(--ease),
+          background-color 500ms var(--ease), transform 500ms var(--ease);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* The halo. Drawn outside the border so hover costs no layout. */
+      .deploy::after {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: 2px;
+        box-shadow: 0 0 0 0 var(--maroon-glow);
+        opacity: 0;
+        transition: box-shadow 700ms var(--ease), opacity 700ms var(--ease);
+        pointer-events: none;
+      }
+
+      .deploy:hover,
+      .deploy:focus-visible {
+        border-color: var(--maroon-lift);
+        background-color: rgba(128, 0, 0, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .deploy:hover::after,
+      .deploy:focus-visible::after {
+        opacity: 1;
+        box-shadow: 0 0 34px 4px var(--maroon-glow);
+      }
+
+      .deploy:active {
+        transform: translateY(0);
+      }
+
+      .deploy[disabled] {
+        cursor: default;
+        opacity: 0.4;
+      }
+
+      /*
+        The flash of maroon that expands out of the button as the scene turns
+        over. Positioned from JS at the button's centre.
+      */
+      .bloom {
+        position: fixed;
+        z-index: 4;
+        width: 12px;
+        height: 12px;
+        margin: -6px 0 0 -6px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(163, 21, 26, 0.5) 0%, transparent 68%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .bloom.is-firing {
+        animation: bloom 1500ms var(--ease) forwards;
+      }
+
+      @keyframes bloom {
+        0% {
+          opacity: 0.9;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(190);
+        }
+      }
+
+      /* ── the hammock ─────────────────────────────────────────────────── */
+
+      .hammock {
+        width: min(100%, 360px);
+        height: auto;
+        margin-inline: auto;
+        overflow: visible;
+        color: var(--maroon-lift);
+      }
+
+      .hammock .sling {
+        animation: sway 9s ease-in-out infinite;
+        transform-origin: 50% 12%;
+      }
+
+      @keyframes sway {
+        0%,
+        100% {
+          transform: rotate(-1.5deg);
+        }
+        50% {
+          transform: rotate(1.5deg);
+        }
+      }
+
+      /* ── responsive ──────────────────────────────────────────────────── */
+
+      @media (max-width: 420px) {
+        .deploy {
+          display: block;
+          width: 100%;
+          padding: 20px 16px;
+          letter-spacing: 0.18em;
+          text-align: center;
+        }
+      }
+
+      /* Short landscape viewports: give the copy back its vertical room. */
+      @media (max-height: 560px) {
+        .hammock {
+          width: min(100%, 240px);
+        }
+        h1,
+        h2 {
+          font-size: clamp(30px, 5vw, 46px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ambient::before,
+        .hammock .sling,
+        .bloom.is-firing {
+          animation: none;
+        }
+        #gate.is-dismissed {
+          filter: none;
+          transform: none;
+        }
+        .mark::after {
+          transition-delay: 0ms;
+        }
+        #sky,
+        #gate,
+        #reveal {
+          transition-duration: 1ms;
+        }
+      }
+
+    </style>
+
+    <!--
+      Without JS the button can never fire, so the gate would be a dead end.
+      Skip it and hand over the message — that is the part that actually
+      matters. The sky is the only thing genuinely lost.
+    -->
+    <noscript>
+      <style>
+        #gate {
+          display: none;
+        }
+
+        #reveal[data-state='off'] {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+        }
+
+        .rise {
+          opacity: 1;
+          transform: none;
+        }
+
+        .ambient::before {
+          opacity: 0.7;
+        }
+      </style>
+    </noscript>
+  </head>
+
+  <body>
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <div class="ambient" aria-hidden="true"></div>
+
+    <div class="stage">
+      <!-- ── Scene one: the debt ──────────────────────────────────────── -->
+      <section id="gate" class="scene" data-state="on">
+        <div class="inner gate-stack">
+          <p class="eyebrow rise" style="--i: 0">Prepared for Fatema Noor<sup>*</sup></p>
+
+          <h1 class="rise" style="--i: 1">
+            Your intuition was <span class="mark">scary</span> accurate.
+          </h1>
+
+          <hr class="rule rise" style="--i: 2" />
+
+          <p class="rise" style="--i: 3">
+            You guessed it exactly. No hints, no hedging, no second attempt — you just
+            <em>knew</em>, and then you said it out loud like it was nothing.
+          </p>
+
+          <p class="rise" style="--i: 4">
+            I said that deserved a gift. I don't say things like that lightly, and I don't
+            leave them unpaid.
+          </p>
+
+          <div class="rise" style="--i: 5">
+            <button class="deploy" id="deploy" type="button">Deploy Digital Hammock</button>
+          </div>
+
+          <p class="footnote rise" style="--i: 6">
+            <sup>*</sup> Spelling verified twice before publishing. It is, as established,
+            non-negotiable.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Scene two: the getaway ───────────────────────────────────── -->
+      <section id="reveal" class="scene" data-state="off" aria-live="polite">
+        <div class="inner reveal-stack">
+          <!--
+            A line, not an illustration. Two anchors, two ropes, one catenary,
+            a handful of threads — anything more would break the quiet.
+          -->
+          <svg
+            class="hammock rise"
+            style="--i: 0"
+            viewBox="0 0 400 110"
+            fill="none"
+            aria-hidden="true"
+          >
+            <g class="sling" stroke="currentColor" stroke-linecap="round">
+              <!-- the two anchors it hangs from -->
+              <circle cx="34" cy="16" r="1.6" fill="currentColor" stroke="none" opacity="0.55" />
+              <circle cx="366" cy="16" r="1.6" fill="currentColor" stroke="none" opacity="0.55" />
+              <!-- ropes -->
+              <path d="M34 16 110 54M366 16 290 54" stroke-width="0.75" opacity="0.5" />
+              <!-- the bed: the sag, its inner seam, and the fringe below it -->
+              <path d="M110 54 C152 98 248 98 290 54" stroke-width="1.1" opacity="0.9" />
+              <path d="M110 54 C152 88 248 88 290 54" stroke-width="0.55" opacity="0.35" />
+              <path
+                d="M132 71v8M160 82v10M200 87v11M240 82v10M268 71v8"
+                stroke-width="0.5"
+                opacity="0.28"
+              />
+            </g>
+          </svg>
+
+          <p class="eyebrow rise" style="--i: 1">Hammock — deployed</p>
+
+          <h2 class="rise" style="--i: 2">Peace, installed.</h2>
+
+          <hr class="rule rise" style="--i: 3" />
+
+          <p class="rise" style="--i: 4">
+            You said your dream was travelling, a peaceful life, <em>etc.</em> I have read an
+            unreasonable amount into that <em>etc.</em>
+          </p>
+
+          <p class="rise" style="--i: 5">
+            So: one hammock, strung between two quiet thoughts somewhere near the back of your
+            mind. It holds. It doesn't need booking. It is open in every weather, and the view
+            is whatever you decide it is.
+          </p>
+
+          <p class="rise" style="--i: 6">
+            Go lie in it whenever the world gets loud. No packing, no visa, no queue at
+            immigration — just spell your name correctly on the way in.
+          </p>
+
+          <hr class="rule rise" style="--i: 7" />
+
+          <p class="footnote rise" style="--i: 8">
+            Fatema Noor — spelled exactly like that. A promise, settled.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <div class="bloom" id="bloom" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        var gate = document.getElementById('gate');
+        var reveal = document.getElementById('reveal');
+        var deploy = document.getElementById('deploy');
+        var bloom = document.getElementById('bloom');
+        var canvas = document.getElementById('sky');
+        var ctx = canvas.getContext('2d');
+
+        /* ── the sky ───────────────────────────────────────────────────── */
+
+        /*
+          Stars are stored in normalised 0..1 space, so a resize is just a new
+          multiplier — no re-seeding, and the sky never visibly reshuffles when
+          a phone rotates or a mobile browser's URL bar slides away.
+        */
+        var DEPTHS = [0.35, 0.65, 1];
+        var stars = [];
+
+        for (var i = 0; i < 180; i++) {
+          var depth = DEPTHS[i % DEPTHS.length];
+          stars.push({
+            x: Math.random(),
+            y: Math.random(),
+            depth: depth,
+            /* Nearer stars read slightly larger and warmer. */
+            r: 0.4 + depth * 0.85 + Math.random() * 0.35,
+            alpha: 0.18 + depth * 0.34,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.25 + Math.random() * 0.5,
+            warm: depth > 0.8 && Math.random() < 0.22
+          });
+        }
+
+        var w = 0;
+        var h = 0;
+
+        function resize() {
+          /* Capped at 2 — beyond that a phone pays for pixels nobody can see. */
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          w = window.innerWidth;
+          h = window.innerHeight;
+          canvas.width = Math.round(w * dpr);
+          canvas.height = Math.round(h * dpr);
+          canvas.style.width = w + 'px';
+          canvas.style.height = h + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        /* Pointer parallax, eased toward rather than snapped to. */
+        var aimX = 0;
+        var aimY = 0;
+        var curX = 0;
+        var curY = 0;
+
+        function draw(t) {
+          ctx.clearRect(0, 0, w, h);
+
+          /* The glow she is lying under: a wide maroon wash low in the frame,
+             swelling over about fourteen seconds. */
+          var pulse = 0.72 + Math.sin(t * 0.45) * 0.28;
+          var gy = h * 0.94;
+          var gr = Math.max(w, h) * 0.85;
+          var glow = ctx.createRadialGradient(w * 0.5, gy, 0, w * 0.5, gy, gr);
+          glow.addColorStop(0, 'rgba(128, 0, 0, ' + (0.3 * pulse).toFixed(3) + ')');
+          glow.addColorStop(0.45, 'rgba(96, 6, 12, ' + (0.11 * pulse).toFixed(3) + ')');
+          glow.addColorStop(1, 'rgba(6, 5, 5, 0)');
+          ctx.fillStyle = glow;
+          ctx.fillRect(0, 0, w, h);
+
+          for (var i = 0; i < stars.length; i++) {
+            var s = stars[i];
+
+            /* Drift is a slow diagonal, scaled by depth so the layers separate. */
+            var x = (s.x * w + t * 3.2 * s.depth + curX * 26 * s.depth) % w;
+            if (x < 0) x += w;
+            var y = (s.y * h + t * 1.1 * s.depth + curY * 18 * s.depth) % h;
+            if (y < 0) y += h;
+
+            var twinkle = reduced ? 1 : 0.55 + 0.45 * Math.sin(t * s.speed + s.phase);
+            var a = s.alpha * twinkle;
+
+            ctx.beginPath();
+            ctx.arc(x, y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = s.warm
+              ? 'rgba(214, 150, 150, ' + a.toFixed(3) + ')'
+              : 'rgba(233, 229, 225, ' + a.toFixed(3) + ')';
+            ctx.fill();
+          }
+        }
+
+        /*
+          One loop, driven by accumulated time rather than the raw clock, so a
+          backgrounded tab resumes where it left off instead of jumping forward.
+        */
+        var elapsed = 0;
+        var last = 0;
+        var frame = 0;
+
+        function tick(now) {
+          var dt = last ? (now - last) / 1000 : 0;
+          last = now;
+          /* Clamp so a stall never teleports the sky. */
+          if (dt > 0.05) dt = 0.05;
+          elapsed += dt;
+
+          curX += (aimX - curX) * 0.045;
+          curY += (aimY - curY) * 0.045;
+
+          draw(elapsed);
+          frame = requestAnimationFrame(tick);
+        }
+
+        function start() {
+          if (frame || reduced) return;
+          last = 0;
+          frame = requestAnimationFrame(tick);
+        }
+
+        function stop() {
+          if (!frame) return;
+          cancelAnimationFrame(frame);
+          frame = 0;
+        }
+
+        /* ── wiring ────────────────────────────────────────────────────── */
+
+        var resizeTimer = 0;
+
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () {
+            resize();
+            if (reduced) draw(0);
+          }, 150);
+        });
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) stop();
+          else if (document.body.classList.contains('is-revealed')) start();
+        });
+
+        if (!reduced) {
+          window.addEventListener(
+            'pointermove',
+            function (e) {
+              aimX = (e.clientX / window.innerWidth - 0.5) * 2;
+              aimY = (e.clientY / window.innerHeight - 0.5) * 2;
+            },
+            { passive: true }
+          );
+
+          /* Tilt on a phone, where there is no pointer to follow. Listened for
+             without asking permission — if the browser gates it, nothing is
+             lost but a few pixels of drift. */
+          if (window.DeviceOrientationEvent) {
+            window.addEventListener(
+              'deviceorientation',
+              function (e) {
+                if (e.gamma === null || e.beta === null) return;
+                aimX = Math.max(-1, Math.min(1, e.gamma / 35));
+                aimY = Math.max(-1, Math.min(1, (e.beta - 45) / 45));
+              },
+              { passive: true }
+            );
+          }
+        }
+
+        /* ── the flow ──────────────────────────────────────────────────── */
+
+        function live(el) {
+          el.classList.add('is-live');
+        }
+
+        resize();
+
+        /* Two frames, so the browser has painted the initial state before the
+           transition is asked to run. */
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            live(gate);
+          });
+        });
+
+        var fired = false;
+
+        deploy.addEventListener('click', function () {
+          if (fired) return;
+          fired = true;
+          deploy.disabled = true;
+
+          /* Fire the bloom from the centre of the button itself. */
+          var box = deploy.getBoundingClientRect();
+          bloom.style.left = box.left + box.width / 2 + 'px';
+          bloom.style.top = box.top + box.height / 2 + 'px';
+          bloom.classList.add('is-firing');
+
+          /* At full expansion the bloom is ~190× its own size and `forwards`
+             holds it there, which is a lot of stray box to leave lying in the
+             layout. Retire it the moment it has finished. */
+          bloom.addEventListener(
+            'animationend',
+            function () {
+              bloom.style.display = 'none';
+            },
+            { once: true }
+          );
+
+          gate.classList.add('is-dismissed');
+          document.body.classList.add('is-revealed');
+
+          if (reduced) {
+            draw(0);
+          } else {
+            start();
+          }
+
+          var wait = reduced ? 60 : 1100;
+
+          setTimeout(function () {
+            /* Only now is the gate taken out of the tab order — pulling it
+               earlier would yank focus mid-transition. */
+            gate.setAttribute('data-state', 'off');
+            reveal.setAttribute('data-state', 'on');
+
+            requestAnimationFrame(function () {
+              live(reveal);
+              /* Hand focus to the message so a screen reader lands on it. */
+              reveal.setAttribute('tabindex', '-1');
+              reveal.focus({ preventScroll: true });
+            });
+          }, wait);
+        });
+      })();
+    </script>
+  </body>
+</html>
