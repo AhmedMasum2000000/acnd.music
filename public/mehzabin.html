@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="bn-x-banglish">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#1a0512" />
+    <meta name="color-scheme" content="dark" />
+    <title>Mehzabin 🌹</title>
+
+    <!--
+      A one-off page. Deliberately standalone: no build step, no imports,
+      no React. It gets copied verbatim into dist/ by Vite and has nothing
+      to do with the rest of the site.
+    -->
+    <style>
+      :root {
+        --rose: #ff2d6f;
+        --blush: #ff8fb1;
+        --cream: #ffe9f0;
+        --ink: #1a0512;
+        --bubble-her: #2b2b31;
+        --bubble-me: #0a7cff;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--ink);
+        color: var(--cream);
+        font-family: ui-rounded, 'SF Pro Rounded', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        overflow-x: hidden;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Soft moving glow behind everything. */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: -30%;
+        z-index: -2;
+        background:
+          radial-gradient(38% 34% at 22% 28%, rgba(255, 45, 111, 0.42), transparent 70%),
+          radial-gradient(34% 30% at 78% 68%, rgba(150, 60, 255, 0.34), transparent 70%),
+          radial-gradient(30% 40% at 50% 100%, rgba(255, 143, 177, 0.22), transparent 70%);
+        animation: drift 18s ease-in-out infinite alternate;
+      }
+
+      @keyframes drift {
+        to {
+          transform: translate3d(4%, -5%, 0) scale(1.15);
+        }
+      }
+
+      #hearts {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* ── Oxytocin meter ─────────────────────────────────────────── */
+
+      .meter {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding: 10px 14px calc(10px + env(safe-area-inset-top, 0px));
+        background: linear-gradient(rgba(26, 5, 18, 0.92), rgba(26, 5, 18, 0));
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .meter b {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        opacity: 0.75;
+        margin-bottom: 6px;
+      }
+
+      .meter i {
+        display: block;
+        height: 6px;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.14);
+        overflow: hidden;
+      }
+
+      .meter i span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        border-radius: 99px;
+        background: linear-gradient(90deg, var(--blush), var(--rose));
+        box-shadow: 0 0 14px var(--rose);
+        transition: width 0.7s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+
+      /* ── Sections ───────────────────────────────────────────────── */
+
+      section {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        padding: 84px 22px 64px;
+        text-align: center;
+        position: relative;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+
+      .reveal.on {
+        opacity: 1;
+        transform: none;
+      }
+
+      h1 {
+        font-size: clamp(2.4rem, 12.5vw, 6rem);
+        line-height: 0.98;
+        white-space: nowrap;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        background: linear-gradient(180deg, #fff, var(--blush) 55%, var(--rose));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        filter: drop-shadow(0 6px 30px rgba(255, 45, 111, 0.45));
+      }
+
+      /*
+        Each letter animates, which makes it its own stacking context — so the
+        h1's clipped gradient can no longer paint over it and the name goes
+        invisible. Giving every letter its own copy of the gradient fixes it.
+      */
+      h1 span {
+        display: inline-block;
+        animation: bob 2.6s ease-in-out infinite;
+        background: linear-gradient(180deg, #fff, var(--blush) 55%, var(--rose));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      @keyframes bob {
+        50% {
+          transform: translateY(-10px) rotate(-3deg);
+        }
+      }
+
+      h2 {
+        font-size: clamp(1.4rem, 6vw, 2.2rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      p {
+        font-size: clamp(1rem, 4.2vw, 1.15rem);
+        line-height: 1.6;
+        max-width: 34ch;
+        opacity: 0.9;
+      }
+
+      .tiny {
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        opacity: 0.55;
+      }
+
+      /* ── Buttons ────────────────────────────────────────────────── */
+
+      button {
+        font: inherit;
+        font-weight: 700;
+        color: #fff;
+        border: 0;
+        cursor: pointer;
+        padding: 15px 28px;
+        border-radius: 99px;
+        background: linear-gradient(135deg, var(--rose), #b026ff);
+        box-shadow: 0 10px 34px rgba(255, 45, 111, 0.4);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+
+      button:active {
+        transform: scale(0.94);
+      }
+
+      button.ghost {
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: none;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .pulse {
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        50% {
+          box-shadow: 0 10px 44px rgba(255, 45, 111, 0.85);
+        }
+      }
+
+      /* ── Gate ───────────────────────────────────────────────────── */
+
+      #gate {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        background: var(--ink);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding: 24px;
+        text-align: center;
+        transition: opacity 0.7s ease, visibility 0.7s;
+      }
+
+      #gate.gone {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      /* ── Chat ───────────────────────────────────────────────────── */
+
+      .chat {
+        width: min(430px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px;
+        border-radius: 26px;
+        background: rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        backdrop-filter: blur(10px);
+      }
+
+      .msg {
+        max-width: 82%;
+        padding: 11px 15px;
+        border-radius: 20px;
+        font-size: 0.97rem;
+        line-height: 1.4;
+        text-align: left;
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+        animation: pop 0.45s cubic-bezier(0.2, 1.3, 0.4, 1) forwards;
+      }
+
+      @keyframes pop {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .msg.her {
+        align-self: flex-start;
+        background: var(--bubble-her);
+        border-bottom-left-radius: 6px;
+      }
+
+      .msg.me {
+        align-self: flex-end;
+        background: var(--bubble-me);
+        border-bottom-right-radius: 6px;
+      }
+
+      .msg.new {
+        background: linear-gradient(135deg, var(--rose), #b026ff);
+        align-self: flex-end;
+        border-bottom-right-radius: 6px;
+      }
+
+      .dots span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin: 0 2px;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0.55;
+        animation: blink 1.2s infinite;
+      }
+
+      .dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 1;
+          transform: translateY(-3px);
+        }
+      }
+
+      /* ── Cards ──────────────────────────────────────────────────── */
+
+      .cards {
+        display: grid;
+        gap: 12px;
+        width: min(430px, 100%);
+      }
+
+      .card {
+        position: relative;
+        height: 96px;
+        perspective: 900px;
+        cursor: pointer;
+      }
+
+      .card > div {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 20px;
+        border-radius: 20px;
+        backface-visibility: hidden;
+        transition: transform 0.65s cubic-bezier(0.3, 1.1, 0.4, 1);
+        font-size: 0.98rem;
+        line-height: 1.4;
+      }
+
+      .front {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        font-weight: 700;
+      }
+
+      .back {
+        background: linear-gradient(135deg, var(--rose), #7d2bff);
+        transform: rotateY(180deg);
+        box-shadow: 0 10px 30px rgba(255, 45, 111, 0.35);
+      }
+
+      .card.flipped .front {
+        transform: rotateY(-180deg);
+      }
+      .card.flipped .back {
+        transform: rotateY(0);
+      }
+
+      /* ── The question ───────────────────────────────────────────── */
+
+      #ask {
+        position: relative;
+        width: min(430px, 100%);
+        min-height: 160px;
+      }
+
+      #no {
+        position: relative;
+        transition: transform 0.28s cubic-bezier(0.2, 1.2, 0.4, 1);
+      }
+
+      /* ── Finale ─────────────────────────────────────────────────── */
+
+      #finale {
+        display: none;
+      }
+
+      #finale.on {
+        display: flex;
+      }
+
+      .sig {
+        font-size: 0.8rem;
+        letter-spacing: 0.3em;
+        opacity: 0.6;
+        text-transform: uppercase;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before {
+          animation: none !important;
+          transition-duration: 0.01ms !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="hearts"></canvas>
+
+    <!-- Gate -->
+    <div id="gate">
+      <p class="tiny">private page · 1 person only</p>
+      <h2>Ei page ta shudhu ek jon er jonno.</h2>
+      <p>Naam ta bolte hobe na. Just click koro.</p>
+      <div class="row">
+        <button id="yesme" class="pulse">Ami Mehzabin 👀</button>
+        <button id="notme" class="ghost">Ami Mehzabin na</button>
+      </div>
+      <p id="gatejoke" class="tiny"></p>
+    </div>
+
+    <!-- Meter -->
+    <div class="meter">
+      <b><span>Oxytocin level</span><span id="pct">0%</span></b>
+      <i><span id="bar"></span></i>
+    </div>
+
+    <!-- Act 1 -->
+    <section>
+      <p class="tiny reveal">loading her name...</p>
+      <h1 class="reveal" id="name"></h1>
+      <p class="reveal">
+        Naam ta type korte giye keyboard tao ekbar blush korlo. Ami dekhsi. Sathe chilo. 🌹
+      </p>
+      <button class="reveal ghost" onclick="scrollBy(0, innerHeight)">Scroll koro ↓</button>
+    </section>
+
+    <!-- Act 2 -->
+    <section id="act2">
+      <p class="tiny reveal">exhibit A · evidence</p>
+      <h2 class="reveal">Amader chat ta ekbar dekhi</h2>
+      <div class="chat" id="chat"></div>
+    </section>
+
+    <!-- Act 3 -->
+    <section id="act3">
+      <p class="tiny reveal">tap kore dekho</p>
+      <h2 class="reveal">3 ta jinis, sotti kotha</h2>
+      <div class="cards" id="cards"></div>
+    </section>
+
+    <!-- Act 4 -->
+    <section id="act4">
+      <p class="tiny reveal">final question</p>
+      <h2 class="reveal">Tumi bolsila role ta palon korte…</h2>
+      <p class="reveal">Ami CV, portfolio, ar ekta full website niye chole aslam. Ammu ke dekhao. 😎</p>
+      <div id="ask" class="reveal">
+        <div class="row">
+          <button id="yes" class="pulse">Hae, hobu jamai 💍</button>
+          <button id="no" class="ghost">Na 😐</button>
+        </div>
+      </div>
+      <p id="nojoke" class="tiny"></p>
+    </section>
+
+    <!-- Finale -->
+    <section id="finale">
+      <h1>Mehzabin<br />tumi jitso</h1>
+      <p>🔥🌹</p>
+      <p>
+        Ammu check dile ki problem — hobu jamai ke dekhuk, januk, bujhuk.<br />
+        Na dekhle bolben kivabe je tumi jitso?
+      </p>
+      <p class="sig">— acnd</p>
+      <div class="row">
+        <button onclick="location.reload()">Abar dekhi 🔁</button>
+      </div>
+    </section>
+
+    <script>
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ── Oxytocin meter ──────────────────────────────────────────── */
+      let level = 0;
+      const bar = document.getElementById('bar');
+      const pct = document.getElementById('pct');
+
+      const bump = (n) => {
+        level = Math.min(100, level + n);
+        bar.style.width = level + '%';
+        pct.textContent = Math.round(level) + '%';
+      };
+
+      /* ── Heart particles ─────────────────────────────────────────── */
+      const cv = document.getElementById('hearts');
+      const ctx = cv.getContext('2d');
+      let W, H, dpr;
+      const parts = [];
+
+      const size = () => {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        W = cv.width = innerWidth * dpr;
+        H = cv.height = innerHeight * dpr;
+        cv.style.width = innerWidth + 'px';
+        cv.style.height = innerHeight + 'px';
+      };
+      size();
+      addEventListener('resize', size);
+
+      const GLYPHS = ['❤️', '💖', '🌹', '💘', '✨', '💗'];
+
+      const spawn = (x, y, n = 1, burst = false) => {
+        for (let i = 0; i < n; i++) {
+          parts.push({
+            x: x * dpr,
+            y: y * dpr,
+            vx: (Math.random() - 0.5) * (burst ? 9 : 1.6) * dpr,
+            vy: (burst ? -Math.random() * 11 - 2 : -Math.random() * 1.6 - 0.6) * dpr,
+            s: (Math.random() * 14 + 14) * dpr,
+            life: 1,
+            fade: burst ? 0.008 : 0.005,
+            g: GLYPHS[(Math.random() * GLYPHS.length) | 0],
+            rot: (Math.random() - 0.5) * 0.6,
+          });
+        }
+      };
+
+      const tick = () => {
+        ctx.clearRect(0, 0, W, H);
+        for (let i = parts.length - 1; i >= 0; i--) {
+          const p = parts[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.05 * dpr;
+          p.vx *= 0.99;
+          p.life -= p.fade;
+          if (p.life <= 0 || p.y > H + 60) {
+            parts.splice(i, 1);
+            continue;
+          }
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, Math.min(1, p.life));
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot * (1 - p.life));
+          ctx.font = p.s + 'px serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(p.g, 0, 0);
+          ctx.restore();
+        }
+        requestAnimationFrame(tick);
+      };
+      if (!reduce) tick();
+
+      // Ambient hearts floating up from the bottom.
+      if (!reduce) {
+        setInterval(() => {
+          if (parts.length < 40) spawn(Math.random() * innerWidth, innerHeight + 20, 1);
+        }, 700);
+      }
+
+      // Every tap anywhere makes hearts. Free dopamine.
+      addEventListener('pointerdown', (e) => {
+        if (!reduce) spawn(e.clientX, e.clientY, 6, true);
+        bump(0.6);
+      });
+
+      /* ── Gate ────────────────────────────────────────────────────── */
+      const gate = document.getElementById('gate');
+      const joke = document.getElementById('gatejoke');
+
+      const enter = () => {
+        gate.classList.add('gone');
+        bump(10);
+        typeName();
+      };
+
+      document.getElementById('yesme').onclick = enter;
+
+      let tries = 0;
+      document.getElementById('notme').onclick = (e) => {
+        tries++;
+        const lines = [
+          'Mithha bolo na. Camera on ache. 👀',
+          'Hmm. Tahole ei button ta chapchho keno?',
+          'Amar server bolche tumi-i Mehzabin. Server mithha bole na.',
+          'Thik ache, jao… (na jeyo pls) 🥺',
+        ];
+        joke.textContent = lines[Math.min(tries - 1, lines.length - 1)];
+        e.target.textContent = tries > 2 ? 'Ok fine, ami-i 🙂' : 'Ami Mehzabin na';
+        if (tries > 3) enter();
+      };
+
+      /* ── Act 1: name typing ──────────────────────────────────────── */
+      const nameEl = document.getElementById('name');
+      const typeName = () => {
+        const text = 'MEHZABIN';
+        if (reduce) {
+          nameEl.textContent = text;
+          return;
+        }
+        let i = 0;
+        const id = setInterval(() => {
+          const s = document.createElement('span');
+          s.textContent = text[i];
+          s.style.animationDelay = i * 0.12 + 's';
+          nameEl.appendChild(s);
+          spawn(innerWidth / 2, innerHeight / 2, 3, true);
+          if (++i >= text.length) clearInterval(id);
+        }, 130);
+      };
+
+      /* ── Reveal on scroll ────────────────────────────────────────── */
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) => {
+            if (en.isIntersecting) {
+              en.target.classList.add('on');
+              io.unobserve(en.target);
+              bump(1.5);
+            }
+          });
+        },
+        { threshold: 0.25 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+      /* ── Act 2: chat replay ──────────────────────────────────────── */
+      const CHAT = [
+        ['her', 'U got instra?'],
+        ['her', 'Im not that active here'],
+        ['me', "How about WhatsApp? Let's say insta has too many distractions babygurl"],
+        ['her', 'Whatsapp ammu check dey'],
+        ['me', 'Ammu check dile ki problem, hobu jamai ke dekhuk januk bujhuk 🔥🌹'],
+        ['her', 'Hahaha'],
+        ['me', 'Tumi chaile role ta palon korte paro'],
+        ['new', 'Ar tai ekta pura website baniye felsi. Scroll koro, proof ache 😎'],
+      ];
+
+      const chat = document.getElementById('chat');
+      let chatDone = false;
+
+      const playChat = () => {
+        if (chatDone) return;
+        chatDone = true;
+        let i = 0;
+        const next = () => {
+          if (i >= CHAT.length) return;
+          const [who, text] = CHAT[i++];
+          const typing = document.createElement('div');
+          typing.className = 'msg ' + (who === 'her' ? 'her' : 'me') + ' dots';
+          typing.innerHTML = '<span></span><span></span><span></span>';
+          chat.appendChild(typing);
+          setTimeout(
+            () => {
+              typing.remove();
+              const b = document.createElement('div');
+              b.className = 'msg ' + who;
+              b.textContent = text;
+              chat.appendChild(b);
+              bump(2);
+              if (who === 'new') spawn(innerWidth / 2, innerHeight * 0.7, 14, true);
+              setTimeout(next, 480);
+            },
+            reduce ? 10 : 620
+          );
+        };
+        next();
+      };
+
+      new IntersectionObserver(
+        (e) => e[0].isIntersecting && playChat(),
+        { threshold: 0.3 }
+      ).observe(document.getElementById('act2'));
+
+      /* ── Act 3: flip cards ───────────────────────────────────────── */
+      const REASONS = [
+        ['Tomar "Hahaha" ta', 'Ami gaan banai. Kintu oi shob tar cheye better sound tomar hasi. 🎧'],
+        ['"Whatsapp ammu check dey"', 'Perfect. Ami approval er jonno ready. CV pathabo naki direct interview? 📄'],
+        ['"Insta te active na"', 'Somossa nai. Ami-i tomar notification hoye jabo. 🔔'],
+      ];
+
+      const cards = document.getElementById('cards');
+      REASONS.forEach(([front, back]) => {
+        const c = document.createElement('div');
+        c.className = 'card reveal';
+        c.innerHTML = '<div class="front"></div><div class="back"></div>';
+        c.querySelector('.front').textContent = front;
+        c.querySelector('.back').textContent = back;
+        c.onclick = () => {
+          c.classList.toggle('flipped');
+          bump(6);
+        };
+        cards.appendChild(c);
+        io.observe(c);
+      });
+
+      /* ── Act 4: the question ─────────────────────────────────────── */
+      const no = document.getElementById('no');
+      const nojoke = document.getElementById('nojoke');
+      const NO_LINES = [
+        'Eh… miss korla. Abar try koro. 😏',
+        'Button ta lojja pacche.',
+        'Button ta amar dol e. Sorry.',
+        'Ei button ta ekhon officially retired. 🪦',
+      ];
+
+      let dodges = 0;
+      const dodge = () => {
+        dodges++;
+        nojoke.textContent = NO_LINES[Math.min(dodges - 1, NO_LINES.length - 1)];
+        const r = 90;
+        no.style.transform = `translate(${(Math.random() - 0.5) * 2 * r}px, ${
+          (Math.random() - 0.5) * 2 * r
+        }px) rotate(${(Math.random() - 0.5) * 40}deg)`;
+        if (dodges >= 4) {
+          no.textContent = 'Ok fine, Hae 💍';
+          no.style.transform = 'none';
+          no.onclick = win;
+          no.onpointerenter = null;
+        }
+        bump(3);
+      };
+
+      no.onpointerenter = dodge;
+      no.onclick = dodge;
+
+      /* ── Finale ──────────────────────────────────────────────────── */
+      const finale = document.getElementById('finale');
+
+      const win = () => {
+        finale.classList.add('on');
+        finale.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+        level = 99;
+        bar.style.width = '100%';
+        pct.textContent = '∞%';
+        if (reduce) return;
+        let n = 0;
+        const id = setInterval(() => {
+          spawn(Math.random() * innerWidth, innerHeight * 0.9, 8, true);
+          if (++n > 26) clearInterval(id);
+        }, 130);
+      };
+
+      document.getElementById('yes').onclick = win;
+    </script>
+  </body>
+</html>
