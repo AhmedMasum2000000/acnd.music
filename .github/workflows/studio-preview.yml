@@ -7,7 +7,9 @@ name: Deploy studio preview
 
 on:
   push:
-    branches: [claude/ad-pro-setup-300xyq]
+    branches:
+      - claude/acnd-artist-portfolio-m55z21
+      - claude/ad-pro-setup-300xyq
     paths:
       - 'i-creativ-clone/**'
       - '.github/workflows/studio-preview.yml'
@@ -77,8 +79,23 @@ jobs:
         with:
           path: dist
 
+      # A plain downloadable copy as well. The `github-pages` environment only
+      # accepts deployments from the default branch, so on a feature branch the
+      # deploy job below is skipped — this keeps the built preview reachable
+      # from the run page regardless.
+      - name: Upload downloadable preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-preview
+          path: dist/studio
+          retention-days: 14
+
   deploy:
     needs: build
+    # Publishing to Pages replaces the live site, and the `github-pages`
+    # environment restricts that to the default branch. Attempting it from a
+    # feature branch fails before the job starts, so gate rather than fail.
+    if: github.ref == 'refs/heads/claude/acnd-artist-portfolio-m55z21'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
