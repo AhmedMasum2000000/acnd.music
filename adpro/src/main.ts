@@ -17,10 +17,11 @@ import './styles/components.css';
 
 import { initViewport } from './lib/viewport';
 import { initBarba, mountPage } from './motion/barba';
+import { initCursorFollower } from './motion/cursorFollower';
 import { playIntro } from './motion/curtain';
 import { initMenu } from './motion/menu';
 import { initScroll } from './motion/scroll';
-import { initWebGL } from './motion/wgl';
+import { initField } from './motion/wgl';
 import { initCookieNotice } from './ui/cookieNotice';
 
 function boot(): void {
@@ -30,6 +31,7 @@ function boot(): void {
   // Shell-level modules live for the session; only page modules are remounted
   // by Barba.
   initMenu();
+  initCursorFollower();
   initCookieNotice();
   initBarba();
 
@@ -37,9 +39,9 @@ function boot(): void {
 
   void playIntro();
 
-  // Decorative, and the heaviest thing on the page — kicked off without
-  // blocking the intro, and its failure is not the site's failure.
-  void initWebGL().catch(() => undefined);
+  // Decorative — kicked off without blocking the intro, and its failure is
+  // not the site's failure.
+  initField();
 }
 
 if (document.readyState === 'loading') {

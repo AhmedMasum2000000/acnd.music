@@ -1,9 +1,9 @@
 {
-  "name": "studio-clone",
+  "name": "adpro-communications",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Agency site template — WebGL canvas, GSAP motion, Barba page transitions, Lenis smooth scroll.",
+  "description": "AD PRO Communications Limited — outdoor advertising agency site, Dhaka, Bangladesh.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -13,8 +13,7 @@
   "dependencies": {
     "@barba/core": "^2.10.3",
     "gsap": "^3.13.0",
-    "lenis": "^1.1.18",
-    "pixi.js": "^8.6.6"
+    "lenis": "^1.1.18"
   },
   "devDependencies": {
     "@fontsource-variable/inter": "^5.1.1",

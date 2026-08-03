@@ -11,7 +11,7 @@ on:
       - claude/acnd-artist-portfolio-m55z21
       - claude/ad-pro-setup-300xyq
     paths:
-      - 'i-creativ-clone/**'
+      - 'adpro/**'
       - '.github/workflows/studio-preview.yml'
   workflow_dispatch:
 
@@ -54,7 +54,7 @@ jobs:
       # --- the studio template, nested one level deeper ---
       - name: Install template dependencies
         run: npm ci
-        working-directory: i-creativ-clone
+        working-directory: adpro
 
       - name: Build studio template
         env:
@@ -66,12 +66,12 @@ jobs:
           BASE_PATH=$(printf '%s/studio/' "$PAGES_BASE" | sed 's|//*|/|g')
           echo "Building template with BASE_PATH=$BASE_PATH"
           BASE_PATH="$BASE_PATH" npm run build
-        working-directory: i-creativ-clone
+        working-directory: adpro
 
       - name: Combine into one artifact
         run: |
           mkdir -p dist/studio
-          cp -R i-creativ-clone/dist/. dist/studio/
+          cp -R adpro/dist/. dist/studio/
           test -f dist/index.html
           test -f dist/studio/index.html
 

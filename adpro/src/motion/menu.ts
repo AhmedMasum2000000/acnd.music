@@ -18,8 +18,11 @@ interface MenuHandle {
 export function initMenu(): MenuHandle {
   const wrapper = qs('#menu_wrapper');
   const toggle = qs<HTMLButtonElement>('#menu_toggle');
+  const closeBtn = qs<HTMLButtonElement>('#menu_close');
   const panel = qs('.js-main-navigation');
-  const links = qsa('.menu-link');
+  // Top-level links and their submenu items both close the menu on click —
+  // a submenu link navigates just like a top-level one.
+  const links = qsa('.menu-link, .menu-sublink');
 
   const noop: MenuHandle = { close: () => {}, destroy: () => {} };
   if (!wrapper || !toggle || !panel) return noop;
@@ -57,6 +60,7 @@ export function initMenu(): MenuHandle {
   };
 
   const onToggle = (): void => setOpen(!open);
+  const onClose = (): void => setOpen(false);
 
   const onKeydown = (event: KeyboardEvent): void => {
     if (event.key === 'Escape' && open) {
@@ -65,19 +69,31 @@ export function initMenu(): MenuHandle {
     }
   };
 
+  // Clicking the backdrop — anywhere in the panel that isn't a link, the
+  // close button, or the brand mark — closes it too, same as tapping outside
+  // a modal.
+  const onBackdropClick = (event: MouseEvent): void => {
+    const target = event.target as HTMLElement;
+    if (target === panel) setOpen(false);
+  };
+
   // A link click during a Barba navigation must close the menu, otherwise the
   // panel stays over the page that just loaded.
   const onLinkClick = (): void => setOpen(false);
 
   toggle.addEventListener('click', onToggle);
+  closeBtn?.addEventListener('click', onClose);
   document.addEventListener('keydown', onKeydown);
+  panel.addEventListener('click', onBackdropClick);
   links.forEach((link) => link.addEventListener('click', onLinkClick));
 
   return {
     close: () => setOpen(false),
     destroy: () => {
       toggle.removeEventListener('click', onToggle);
+      closeBtn?.removeEventListener('click', onClose);
       document.removeEventListener('keydown', onKeydown);
+      panel.removeEventListener('click', onBackdropClick);
       links.forEach((link) => link.removeEventListener('click', onLinkClick));
       releaseFocus?.();
     },

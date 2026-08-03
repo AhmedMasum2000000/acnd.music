@@ -1,10 +1,10 @@
 /**
- * Projects category filter.
+ * Billboard inventory filter.
  *
- * Hiding rows outright makes the survivors jump to their new positions. GSAP
- * Flip records where everything was, lets the DOM change, then animates from
- * the recorded positions to the new ones — so the list reflows visibly and
- * the eye can follow a row that stayed.
+ * Hiding cards outright makes the survivors jump to their new grid position.
+ * GSAP Flip records where everything was, lets the DOM change, then animates
+ * from the recorded positions to the new ones — so the grid reflows visibly
+ * and the eye can follow a card that stayed.
  */
 
 import { gsap } from 'gsap';
@@ -20,31 +20,30 @@ export interface FilterHandle {
 
 export function initFilter(scope: ParentNode = document): FilterHandle {
   const bar = qs('.filter-bar', scope);
-  const list = qs('.project-list', scope);
-  if (!bar || !list) return { destroy: () => {} };
+  const grid = qs('.board-grid', scope);
+  if (!bar || !grid) return { destroy: () => {} };
 
   const buttons = qsa<HTMLButtonElement>('.filter-btn', bar);
-  const rows = qsa<HTMLElement>('.project-row', list);
+  const cards = qsa<HTMLElement>('.board-card', grid);
   const status = qs('#filter_status', scope);
 
-  const apply = (category: string): void => {
-    const state = Flip.getState(rows);
+  const apply = (city: string): void => {
+    const state = Flip.getState(cards);
 
     let shown = 0;
-    for (const row of rows) {
-      const categories = (row.dataset.categories ?? '').split('|');
-      const visible = category === 'all' || categories.includes(category);
-      row.hidden = !visible;
+    for (const card of cards) {
+      const visible = city === 'all' || card.dataset.city === city;
+      card.hidden = !visible;
       if (visible) shown += 1;
     }
 
     buttons.forEach((btn) => {
-      btn.setAttribute('aria-pressed', String(btn.dataset.filter === category));
+      btn.setAttribute('aria-pressed', String(btn.dataset.filter === city));
     });
 
     // Announced for screen readers, which get no benefit from the animation.
     if (status) {
-      status.textContent = `${shown} project${shown === 1 ? '' : 's'} shown.`;
+      status.textContent = `${shown} site${shown === 1 ? '' : 's'} shown.`;
     }
 
     if (prefersReducedMotion()) return;
@@ -53,8 +52,8 @@ export function initFilter(scope: ParentNode = document): FilterHandle {
       duration: 0.55,
       ease: 'power3.inOut',
       absolute: true,
-      // Rows leaving and arriving cross-fade in place rather than collapsing,
-      // which is what keeps the list from snapping.
+      // Cards leaving and arriving cross-fade in place rather than
+      // collapsing, which is what keeps the grid from snapping.
       onEnter: (elements) =>
         gsap.fromTo(
           elements,
