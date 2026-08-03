@@ -1,0 +1,70 @@
+.campaign-form {
+  background-color: var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.campaign-form h2 {
+  margin-top: 0;
+  margin-bottom: var(--space-5);
+}
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+}
+
+.form-group input {
+  width: 100%;
+}
+
+.form-group input[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.form-group input:focus[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.error-message {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: var(--space-4);
+  background-color: var(--color-link);
+  color: white;
+  border-color: var(--color-link);
+  font-weight: 500;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-link-hover);
+  border-color: var(--color-link-hover);
+}
+
+.submit-btn:active {
+  opacity: 0.8;
+}
