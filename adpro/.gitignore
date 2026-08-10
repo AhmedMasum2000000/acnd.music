@@ -18,4 +18,6 @@ pages/led-*.html
 pages/billboards-*.html
 led-*.html
 billboards-*.html
+faq-*.html
 !billboards.html
+!faq.html
