@@ -19,5 +19,7 @@ pages/billboards-*.html
 led-*.html
 billboards-*.html
 faq-*.html
+news-*.html
 !billboards.html
 !faq.html
+!news.html
