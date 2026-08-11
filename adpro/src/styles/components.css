@@ -1849,8 +1849,31 @@ details[open] .faq__marker::after { transform: rotate(0deg); }
    element can combine its drift with whatever transform it already has —
    the hero media, for instance, is also scaled. */
 
+/*
+  Registered rather than left as a bare custom property. An unregistered one is
+  a string as far as style resolution is concerned, so writing it invalidates
+  the whole subtree beneath the element. That is free on an empty div and it is
+  not free on a wall tile carrying a photograph, a caption and a spec line —
+  declaring the type keeps the invalidation to this element's own transform.
+*/
+@property --parallax {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
 [data-parallax] {
   transform: translate3d(0, var(--parallax, 0px), 0);
+}
+
+/*
+  Promotion is opt-in, not automatic. `will-change: transform` on every
+  parallaxed element reserves a compositor layer for each, and a screen wall of
+  twenty photographs would reserve twenty — enough to exhaust the layer budget
+  on a mid-range Android and start flashing tiles. The handful of elements that
+  genuinely need the hint ask for it.
+*/
+[data-parallax][data-promote] {
   will-change: transform;
 }
 
