@@ -20,6 +20,7 @@ import {
   buildListing,
   buildMarquee,
   buildProcess,
+  buildScreenWall,
   buildServices,
   buildShell,
   buildStats,
@@ -235,6 +236,7 @@ const shellPlugin = (): Plugin => ({
         .replace('<!--@HEAD-->', buildHead(page))
         .replace('<!--@SHELL-->', buildChrome(page) + buildShell())
         .replace('<!--@FOOTER-->', buildFooter())
+        .replace('<!--@WALL-->', buildScreenWall())
         .replace('<!--@STATS-->', buildStats())
         .replace('<!--@PROCESS-->', buildProcess())
         .replace('<!--@SERVICES-->', buildServices())
