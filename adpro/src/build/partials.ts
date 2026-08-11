@@ -115,6 +115,81 @@ function menuLink(link: ShellLink, index: number): string {
           </li>`;
 }
 
+/**
+ * The short label in the top-left readout — which frame you are looking at.
+ *
+ * Derived rather than listed, so a new route cannot ship without one.
+ */
+function chromeLabel(page: PageMeta): string {
+  if (page.board) return boardBySlug(page.board)?.name ?? 'SITE';
+  if (page.citySlug) return cityGroups.find((g) => g.slug === page.citySlug)?.city ?? 'CITY';
+  if (page.namespace === 'home') return 'Network';
+  // Titles are written for search, so they carry a trailing brand or a dash
+  // clause that would overrun the readout. The first clause is the subject.
+  return page.title.split(/\s+[—|]\s+/)[0];
+}
+
+/**
+ * The bottom-left readout — where this page sits in the inventory.
+ *
+ * On a single site it is that site's number in the network; on a city it is
+ * how much of the network is in that city; everywhere else it is the network
+ * itself. The point is that the number is always true, never decoration.
+ */
+function chromeIndex(page: PageMeta): string {
+  const total = String(billboards.length).padStart(2, '0');
+
+  if (page.board) {
+    const n = billboards.findIndex((b) => b.slug === page.board) + 1;
+    if (n > 0) return `Site ${String(n).padStart(2, '0')} / ${total}`;
+  }
+
+  if (page.citySlug) {
+    const group = cityGroups.find((g) => g.slug === page.citySlug);
+    if (group) return `${group.city} ${String(group.boards.length).padStart(2, '0')} / ${total}`;
+  }
+
+  return `${total} sites / ${cityGroups.length} cities`;
+}
+
+/**
+ * The viewfinder.
+ *
+ * A wall of screens is what this company sells, so the site is framed as
+ * something being watched rather than something being read: a hairline border
+ * with corner ticks, a focal reticle, and four readouts that all report
+ * something true — which site you are on, where it sits in the network,
+ * whether the screens are lit right now, and what time it is where they are.
+ *
+ * Two layers, deliberately at different depths. The frame and readouts sit
+ * above the page-transition curtain so the instrument stays put while the
+ * page behind it changes; the LED matrix and vignette sit below the menu so
+ * an open menu is read against clean ground. Both are inert to the pointer.
+ *
+ * Everything is gated behind `body.chrome-on`, set by src/motion/hud.ts. The
+ * markup ships to all 96 routes at once and there is no incremental rollout,
+ * so the escape hatch is one class name.
+ */
+export function buildChrome(page: PageMeta): string {
+  return `
+  <div class="chrome" aria-hidden="true">
+    <div class="chrome__frame">
+      <span class="chrome__tick chrome__tick--tl"></span>
+      <span class="chrome__tick chrome__tick--tr"></span>
+      <span class="chrome__tick chrome__tick--bl"></span>
+      <span class="chrome__tick chrome__tick--br"></span>
+    </div>
+    <span class="chrome__reticle"></span>
+    <p class="chrome__read chrome__read--tl">${esc(chromeLabel(page))}</p>
+    <p class="chrome__read chrome__read--tr" data-hud-state>
+      <span class="chrome__lamp"></span><span data-hud-label>On air</span>
+    </p>
+    <p class="chrome__read chrome__read--bl">${esc(chromeIndex(page))}</p>
+    <p class="chrome__read chrome__read--br"><span data-hud-clock>--:--:--</span> BST</p>
+  </div>
+  <div class="chrome-grain" aria-hidden="true"></div>`;
+}
+
 export function buildShell(): string {
   // A running index across every group drives the reveal stagger in CSS, so
   // the links cascade as one sequence rather than restarting per column.
