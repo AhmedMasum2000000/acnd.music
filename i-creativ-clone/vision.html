@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#15161b" />
+    <title>Vision — Studio Paradigm</title>
+    <meta name="description" content="What we believe about design and culture." />
+  </head>
+
+  <body class="isLoading" data-barba="wrapper">
+    <div data-curtain style="display: none"></div>
+    <nav class="main-navigation">
+      <a href="/" class="brand"><span class="brand__icon"></span>Studio Paradigm</a>
+      <ul class="main-nav-menu">
+        <li><a href="/projects">Work</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/vision">Vision</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" data-menu-toggle aria-label="Open menu"></button>
+    </nav>
+    <div data-menu-overlay>
+      <div class="menu-content">
+        <div class="menu-header">
+          <h2>Menu</h2>
+          <button class="menu-close" data-menu-close></button>
+        </div>
+        <nav class="menu-nav">
+          <a href="/projects" class="text-link" data-menu-link>Work</a>
+          <a href="/services" class="text-link" data-menu-link>Services</a>
+          <a href="/about" class="text-link" data-menu-link>About</a>
+          <a href="/vision" class="text-link" data-menu-link>Vision</a>
+          <a href="/contact" class="text-link" data-menu-link>Contact</a>
+        </nav>
+      </div>
+    </div>
+    <main style="margin-top: var(--header-height)">
+      <div class="page-content" data-barba="container" data-barba-namespace="vision">
+        <section class="section-header" data-reveal>
+          <div class="container">
+            <h1>Our Vision</h1>
+            <p class="text-large">What we believe about design and culture</p>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container text-section">
+            <h2 style="margin-bottom: 1rem">Design Shapes Perception</h2>
+            <p>Design is not decoration. It is communication. Every choice — from typeface to color, from layout to motion — sends a message. And those messages accumulate into perception.</p>
+            <p>We believe that good design can change how people think about things. A brand, a product, an idea. It does this not by adding complexity, but by bringing clarity. By making visible what was previously obscured. By distilling complexity into simplicity.</p>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container text-section">
+            <h2 style="margin-bottom: 1rem">Strategy First, Aesthetics Second</h2>
+            <p>The most beautiful design is useless if it doesn't serve a purpose. We start every project by understanding what needs to happen. What problem are we solving? Who needs to understand what? What action do we want them to take?</p>
+            <p>Only after those questions are answered do we consider how to make it beautiful. And the beauty should never compete with the message. It should serve it.</p>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container text-section">
+            <h2 style="margin-bottom: 1rem">Design Systems, Not One-Offs</h2>
+            <p>One beautiful poster is nice. A coherent system that can scale across a hundred touchpoints and still feel intentional? That's powerful.</p>
+            <p>We build frameworks, not just artifacts. We create design languages that other people can use and extend. That's how good ideas spread. That's how brands become recognizable. That's how culture forms.</p>
+          </div>
+        </section>
+
+        <section data-reveal style="background-color: rgba(215, 217, 220, 0.05); border-top: 1px solid var(--line-color); border-bottom: 1px solid var(--line-color)">
+          <div class="container text-section" style="padding: 4rem 0">
+            <h2 style="margin-bottom: 1rem">The Work Speaks</h2>
+            <p>We don't believe in philosophy divorced from practice. Everything we talk about is reflected in what we do. The brands we build are systems. The websites we design work first, look beautiful second. The identities we create tell true stories.</p>
+            <p><a href="/projects" class="text-link" data-add-hover>See our work</a></p>
+          </div>
+        </section>
+
+        <footer style="border-top: 1px solid var(--line-color); padding: 2rem; margin-top: 4rem">
+          <div class="container">
+            <p class="text-muted">&copy; 2024 Studio Paradigm. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
