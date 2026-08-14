@@ -78,6 +78,37 @@
   align-items: flex-start;
 }
 
+/*
+  On a wide screen the identity and the link hub sit side by side. Stacked,
+  the wordmark alone eats most of the viewport and pushes the links below the
+  fold — which defeats the point of putting them on the first screen at all.
+  Two columns also fills the dead space the stacked layout left on the right.
+*/
+@media (min-width: 900px) {
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 440px);
+    gap: clamp(40px, 6vw, 90px);
+    align-items: center;
+  }
+
+  .hero__id {
+    min-width: 0;
+  }
+
+  /* Capped to its column so the mark cannot force the grid wider. */
+  .hero__name {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .hero__hub {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
 .hero__eyebrow {
   color: var(--accent);
   margin-bottom: 1.6em;
@@ -123,7 +154,7 @@
 }
 
 .hero__tagline {
-  max-width: 46ch;
+  max-width: 42ch;
   margin-top: clamp(26px, 4.5vh, 44px);
   color: var(--bone-dim);
   font-size: clamp(16px, 1vw + 13px, 20px);
@@ -137,53 +168,22 @@
   color: var(--bone-faint);
 }
 
-/* ── out-now streaming row ─────────────────────────────────────────── */
+/* ── link hub on the first screen ──────────────────────────────────── */
 
-.listen {
+.hero__hub {
   margin-top: clamp(28px, 5vh, 48px);
   padding-top: clamp(20px, 3vh, 28px);
   border-top: var(--rule) solid var(--line);
   width: 100%;
-  max-width: 640px;
 }
 
-.listen__label {
+.hero__out {
   color: var(--bone-dim);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
-.listen__title {
+.hero__out-title {
   color: var(--accent);
-}
-
-.listen__row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.listen__btn {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-display);
-  font-size: clamp(10px, 1.8vw, 12px);
-  letter-spacing: 0.14em;
-  color: var(--bone);
-  padding: 13px 18px;
-  border: var(--rule) solid var(--line);
-  background: rgba(14, 14, 20, 0.7);
-  white-space: nowrap;
-  transition:
-    background var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
-}
-
-.listen__btn:hover,
-.listen__btn:focus-visible {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--void);
 }
 
 .hero__cue {
@@ -213,6 +213,29 @@
 @keyframes cue-bob {
   0%, 100% { transform: translateY(0); opacity: 0.5; }
   50% { transform: translateY(6px); opacity: 1; }
+}
+
+/*
+  Phones: hide the scroll prompt and tighten the run-up to the hub.
+
+  Stacked, the cue sits between the identity and the links and pushes a row
+  below the fold — and "scroll down" is the one hint a touch visitor least
+  needs. This block sits after the rules it overrides on purpose: a media
+  query adds no specificity, so placing it earlier would simply lose.
+*/
+@media (max-width: 899px) {
+  .hero__cue {
+    display: none;
+  }
+
+  .hero__hub {
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .hero__lines {
+    margin-top: 20px;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -809,59 +832,6 @@
   to {
     transform: translateX(-50%);
   }
-}
-
-.socials {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: var(--rule) solid var(--line);
-}
-
-.socials__link {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  padding: clamp(16px, 2.4vw, 24px);
-  background: var(--void);
-  height: 100%;
-  transition: background var(--dur-fast) var(--ease-out);
-}
-
-.socials__plat {
-  font-size: clamp(14px, 1.6vw, 18px);
-  letter-spacing: 0.1em;
-  color: var(--bone);
-}
-
-.socials__handle {
-  color: var(--bone-faint);
-  font-size: 16px;
-}
-
-.socials__go {
-  margin-left: auto;
-  color: var(--bone-faint);
-  transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
-}
-
-.socials__link:hover,
-.socials__link:focus-visible {
-  background: var(--accent);
-}
-
-.socials__link:hover .socials__plat,
-.socials__link:hover .socials__handle,
-.socials__link:hover .socials__go,
-.socials__link:focus-visible .socials__plat,
-.socials__link:focus-visible .socials__handle,
-.socials__link:focus-visible .socials__go {
-  color: var(--void);
-}
-
-.socials__link:hover .socials__go {
-  transform: translate(3px, -3px);
 }
 
 .booking {

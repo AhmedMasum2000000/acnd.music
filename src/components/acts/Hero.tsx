@@ -1,5 +1,6 @@
-import { actIndex, artist, platformLabel, releases } from '../../data/acnd';
+import { actIndex, artist, releases } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
+import { LinkHub } from '../LinkHub';
 import { PixelMark } from '../PixelMark';
 import { useStage } from '../../hooks/useStage';
 
@@ -17,83 +18,63 @@ export const Hero = () => {
   return (
     <section id="signal" className="act act--hero" aria-labelledby="hero-name">
       <div className="shell hero__grid">
-        <p className="label hero__eyebrow">{actIndex('signal')} — SIGNAL</p>
+        <div className="hero__id">
+          <p className="label hero__eyebrow">{actIndex('signal')} — SIGNAL</p>
 
-        {/*
-          The visible mark is a graphic, so the heading carries the real text
-          for crawlers and screen readers and the SVG is decorative alongside it.
-        */}
-        <h1 id="hero-name" className="hero__name">
-          <span className="visually-hidden">{artist.name}</span>
-          <PixelMark delay={0.1} />
-        </h1>
+          {/*
+            The visible mark is a graphic, so the heading carries the real text
+            for crawlers and screen readers and the SVG is decorative beside it.
+          */}
+          <h1 id="hero-name" className="hero__name">
+            <span className="visually-hidden">{artist.name}</span>
+            <PixelMark delay={0.1} />
+          </h1>
 
-        <p className="hero__legal mono">{artist.legalName}</p>
+          <p className="hero__legal mono">{artist.legalName}</p>
 
-        <div className="hero__lines" aria-hidden="true">
-          {artist.heroLines.map((line, i) => (
-            <GlitchText
-              key={line}
-              as="span"
-              className="display hero__line"
-              delay={0.25 + i * 0.13}
-              duration={0.6}
-            >
-              {line}
-            </GlitchText>
-          ))}
+          <div className="hero__lines" aria-hidden="true">
+            {artist.heroLines.map((line, i) => (
+              <GlitchText
+                key={line}
+                as="span"
+                className="display hero__line"
+                delay={0.25 + i * 0.13}
+                duration={0.6}
+              >
+                {line}
+              </GlitchText>
+            ))}
+          </div>
+
+          <p className="hero__tagline">{artist.tagline}</p>
+
+          <ul className="hero__meta label">
+            <li>{artist.role}</li>
+            <li aria-hidden="true">·</li>
+            <li>{artist.origin}</li>
+          </ul>
+
+          <a data-magnetic className="hero__cue" href="#artist" onClick={() => tick(700, 0.16)}>
+            <span className="hero__cue-text label">BEGIN THE JOURNEY</span>
+            <span className="hero__cue-arrow" aria-hidden="true">
+              ▼
+            </span>
+          </a>
         </div>
 
-        <p className="hero__tagline">{artist.tagline}</p>
-
-        <ul className="hero__meta label">
-          <li>{artist.role}</li>
-          <li aria-hidden="true">·</li>
-          <li>{artist.origin}</li>
-        </ul>
-
         {/*
-          Streaming links on the very first screen. A visitor who arrived to
-          hear the music should never have to scroll to find out where.
+          The link hub, on the very first screen. Most visitors arrive from a
+          bio link wanting exactly one thing — somewhere to press play — and
+          they should never have to scroll or hunt to find it.
         */}
-        {latest ? (
-          <div className="listen">
-            <p className="label listen__label">
-              OUT NOW — <span className="listen__title">{latest.title}</span>
+        <div className="hero__hub">
+          {latest ? (
+            <p className="label hero__out">
+              OUT NOW — <span className="hero__out-title">{latest.title}</span>
             </p>
-            <ul className="listen__row">
-              {(Object.entries(latest.links) as [keyof typeof platformLabel, string][]).map(
-                ([p, url]) => (
-                  <li key={p}>
-                    <a
-                      data-magnetic
-                      className="listen__btn"
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => tick(820, 0.18)}
-                      onPointerEnter={() => tick(2000, 0.06)}
-                    >
-                      {platformLabel[p]}
-                      <span aria-hidden="true"> ↗</span>
-                      <span className="visually-hidden">
-                        {' '}
-                        — listen to {latest.title} on {platformLabel[p]}
-                      </span>
-                    </a>
-                  </li>
-                ),
-              )}
-            </ul>
-          </div>
-        ) : null}
-
-        <a data-magnetic className="hero__cue" href="#artist" onClick={() => tick(700, 0.16)}>
-          <span className="hero__cue-text label">BEGIN THE JOURNEY</span>
-          <span className="hero__cue-arrow" aria-hidden="true">
-            ▼
-          </span>
-        </a>
+          ) : null}
+          <LinkHub />
+        </div>
       </div>
     </section>
   );

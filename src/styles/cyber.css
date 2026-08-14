@@ -61,19 +61,21 @@
 /* ── panels: corner brackets ───────────────────────────────────────── */
 
 /*
-  Applied to the boxed surfaces — release cards, the terminal, the socials
-  grid. Drawn with two gradient layers on the existing element rather than
-  four extra spans, so no component needs new markup to get them.
+  Applied to the boxed surfaces — release cards and the terminal. Drawn with
+  gradient layers on the existing element rather than four extra spans, so no
+  component needs new markup to get them.
+
+  Deliberately NOT applied to the link hub rows: those already fill with the
+  accent on hover, and brackets on top of a filled row is noise on the one
+  control the page most wants pressed.
 */
 .release,
-.sets__terminal,
-.socials {
+.sets__terminal {
   position: relative;
 }
 
 .release::after,
-.sets__terminal::after,
-.socials::after {
+.sets__terminal::after {
   content: '';
   position: absolute;
   inset: -1px;
@@ -93,8 +95,7 @@
 
 .release:hover::after,
 .release:focus-within::after,
-.sets__terminal:hover::after,
-.socials:hover::after {
+.sets__terminal:hover::after {
   opacity: 1;
 }
 

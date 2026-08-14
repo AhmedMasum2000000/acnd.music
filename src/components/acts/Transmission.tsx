@@ -1,5 +1,6 @@
 import { actIndex, artist, platformLabel, socials } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
+import { LinkHub } from '../LinkHub';
 import { useStage } from '../../hooks/useStage';
 
 /**
@@ -32,26 +33,9 @@ export const Transmission = () => {
           New records, sets and dates go out through these channels first.
         </p>
 
-        <ul className="socials">
-          {socials.map((s) => (
-            <li key={s.platform}>
-              <a
-                href={s.url}
-                target={s.platform === 'email' ? undefined : '_blank'}
-                rel={s.platform === 'email' ? undefined : 'noopener noreferrer'}
-                className="socials__link"
-                onPointerEnter={() => tick(1700, 0.07)}
-                onClick={() => tick(820, 0.16)}
-              >
-                <span className="socials__plat display">{platformLabel[s.platform]}</span>
-                <span className="socials__handle mono">{s.handle}</span>
-                <span className="socials__go" aria-hidden="true">
-                  ↗
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* The same hub as the first screen. Someone who read all the way down
+            should not have to scroll back up to find where to listen. */}
+        <LinkHub className="hub--wide" />
 
         {/* No address, no block. An email that bounces is worse than none. */}
         {artist.bookingEmail ? (

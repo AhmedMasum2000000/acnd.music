@@ -33,6 +33,16 @@ export interface SocialLink {
   handle: string;
   /** Full URL. Use a mailto: URL for `email`. */
   url: string;
+  /**
+   * One line under the platform name in the link hub, saying what the visitor
+   * actually gets: "Listen to Her...", "Follow", "Get in touch".
+   */
+  note?: string;
+  /**
+   * Which block of the hub this belongs in. Blocks render in the order below
+   * and a block with no links disappears entirely.
+   */
+  group?: 'listen' | 'follow' | 'contact';
 }
 
 export interface Release {
@@ -140,25 +150,47 @@ export const socials: SocialLink[] = [
     platform: 'spotify',
     handle: 'ACND',
     url: 'https://open.spotify.com/track/1728ckXv0wfIEBhUsGP7TN',
-  },
-  {
-    platform: 'youtube',
-    handle: 'ACND',
-    url: 'https://music.youtube.com/watch?v=s_b17eFeZgM',
+    note: 'Listen to Her...',
+    group: 'listen',
   },
   {
     platform: 'apple',
     handle: 'ACND',
     url: 'https://music.apple.com/us/song/her/6794554132',
+    note: 'Listen to Her...',
+    group: 'listen',
+  },
+  {
+    platform: 'youtube',
+    handle: 'ACND',
+    url: 'https://music.youtube.com/watch?v=s_b17eFeZgM',
+    note: 'Listen to Her...',
+    group: 'listen',
   },
 
-  // { platform: 'instagram', handle: '@youhandle', url: 'https://instagram.com/…' },
-  // { platform: 'soundcloud', handle: '@yourhandle', url: 'https://soundcloud.com/…' },
-  // { platform: 'tiktok', handle: '@yourhandle', url: 'https://tiktok.com/@…' },
-  // { platform: 'bandcamp', handle: 'acnd', url: 'https://acnd.bandcamp.com' },
-  // { platform: 'beatport', handle: 'ACND', url: 'https://beatport.com/artist/…' },
-  // { platform: 'email', handle: 'you@example.com', url: 'mailto:you@example.com' },
+  /*
+    Uncomment and fill in as each one exists. A link added here shows up in
+    the hub on the first screen, in the closing directory, in the header
+    dropdown, in the marquee and in the structured data — nothing else to edit.
+  */
+  // { platform: 'instagram', handle: '@yourhandle', url: 'https://instagram.com/…', note: 'Follow', group: 'follow' },
+  // { platform: 'soundcloud', handle: '@yourhandle', url: 'https://soundcloud.com/…', note: 'Follow', group: 'follow' },
+  // { platform: 'tiktok', handle: '@yourhandle', url: 'https://tiktok.com/@…', note: 'Follow', group: 'follow' },
+  // { platform: 'bandcamp', handle: 'acnd', url: 'https://acnd.bandcamp.com', note: 'Buy', group: 'listen' },
+  // { platform: 'beatport', handle: 'ACND', url: 'https://beatport.com/artist/…', note: 'Buy', group: 'listen' },
+  // { platform: 'email', handle: 'you@example.com', url: 'mailto:you@example.com', note: 'Bookings & enquiries', group: 'contact' },
 ];
+
+/** The link hub's blocks, in render order. Empty blocks are skipped. */
+export const linkGroups: { id: NonNullable<SocialLink['group']>; label: string }[] = [
+  { id: 'listen', label: 'LISTEN' },
+  { id: 'follow', label: 'FOLLOW' },
+  { id: 'contact', label: 'CONTACT' },
+];
+
+/** Links belonging to a block. Anything without a group falls under "listen". */
+export const linksInGroup = (id: NonNullable<SocialLink['group']>): SocialLink[] =>
+  socials.filter((s) => (s.group ?? 'listen') === id);
 
 /* ───────────────────────────────────────────────────────────────────────
    RELEASES — Act 04, THE CATALOG

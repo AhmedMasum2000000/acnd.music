@@ -1,0 +1,154 @@
+.hub {
+  width: 100%;
+  max-width: 560px;
+  display: grid;
+  gap: clamp(22px, 4vh, 34px);
+}
+
+.hub__group-label {
+  color: var(--bone-faint);
+  margin-bottom: 10px;
+}
+
+.hub__list {
+  display: grid;
+  gap: 8px;
+}
+
+/* ── the row ───────────────────────────────────────────────────────── */
+
+.hub__link {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  /*
+    60px floor. Most visits arrive from a phone bio and are one-handed, so a
+    row that has to be aimed at is a row that does not get tapped.
+  */
+  min-height: 60px;
+  padding: 12px 16px;
+  border: var(--rule) solid var(--line);
+  background: rgba(14, 14, 20, 0.78);
+  overflow: hidden;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+/*
+  The accent fills from the left on hover. A transform on a pseudo-element
+  composites on the GPU; animating background-position or width would force
+  a paint on every frame of every hover.
+*/
+.hub__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-snap);
+  z-index: 0;
+}
+
+.hub__link > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hub__link:hover,
+.hub__link:focus-visible {
+  border-color: var(--accent);
+}
+
+.hub__link:hover::before,
+.hub__link:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.hub__idx {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--bone-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hub__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.hub__plat {
+  font-size: clamp(14px, 2.6vw, 17px);
+  letter-spacing: 0.1em;
+  color: var(--bone);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hub__note {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--bone-dim);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hub__handle {
+  font-size: 14px;
+  color: var(--bone-faint);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.hub__go {
+  font-size: 15px;
+  color: var(--accent);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+/* Everything flips to the page background once the accent has filled in. */
+.hub__link:hover .hub__idx,
+.hub__link:hover .hub__plat,
+.hub__link:hover .hub__note,
+.hub__link:hover .hub__handle,
+.hub__link:hover .hub__go,
+.hub__link:focus-visible .hub__idx,
+.hub__link:focus-visible .hub__plat,
+.hub__link:focus-visible .hub__note,
+.hub__link:focus-visible .hub__handle,
+.hub__link:focus-visible .hub__go {
+  color: var(--void);
+}
+
+.hub__link:hover .hub__go,
+.hub__link:focus-visible .hub__go {
+  transform: translate(3px, -3px);
+}
+
+/* The handle is supporting detail; it goes before the row gets cramped. */
+@media (max-width: 480px) {
+  .hub__handle {
+    display: none;
+  }
+
+  .hub__link {
+    gap: 12px;
+    padding-inline: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub__link::before {
+    transition: none;
+  }
+
+  .hub__go {
+    transition: none;
+  }
+}
