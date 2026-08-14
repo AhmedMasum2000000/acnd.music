@@ -5,6 +5,14 @@
   gap: clamp(22px, 4vh, 34px);
 }
 
+/*
+  The closing directory gets more room than the hero column, which has to
+  share its screen with the identity block.
+*/
+.hub--wide {
+  max-width: 720px;
+}
+
 .hub__group-label {
   color: var(--bone-faint);
   margin-bottom: 10px;
