@@ -11,7 +11,6 @@ import { asset } from './lib/asset';
 import { clamp } from './lib/lerp';
 
 import { ActTransition } from './components/ActTransition';
-import { Boot } from './components/Boot';
 import { Hud } from './components/Hud';
 import { Cursor, Overlays } from './components/Overlays';
 import { Hero } from './components/acts/Hero';
@@ -24,19 +23,13 @@ import './components/acts/acts.css';
 // Loaded after the act styles so the surface treatment can layer on top.
 import './styles/cyber.css';
 
-const ENTERED_KEY = 'acnd:entered';
-
 export const App = () => {
   const reducedMotion = useReducedMotion();
   useMagnetic();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mainRef = useRef<HTMLElement>(null);
   const rendererRef = useRef<AsciiRenderer | null>(null);
   const audioRef = useRef<AudioEngine | null>(null);
 
-  const [booted, setBooted] = useState(
-    () => typeof sessionStorage !== 'undefined' && sessionStorage.getItem(ENTERED_KEY) === '1',
-  );
   const [soundOn, setSoundOn] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
@@ -167,15 +160,6 @@ export const App = () => {
     return () => window.clearInterval(id);
   }, [soundOn]);
 
-  /* ── scroll lock while the gate is up ───────────────────────────── */
-
-  useEffect(() => {
-    document.body.style.overflow = booted ? '' : 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [booted]);
-
   /* ── stage API ──────────────────────────────────────────────────── */
 
   const ensureAudio = useCallback((): AudioEngine => {
@@ -220,22 +204,6 @@ export const App = () => {
     [soundOn, reducedMotion, toggleSound, tick, tune, setReveal],
   );
 
-  const onEnter = useCallback(
-    (withSound: boolean) => {
-      sessionStorage.setItem(ENTERED_KEY, '1');
-      setBooted(true);
-      if (withSound) {
-        const a = ensureAudio();
-        void a.enable().then(() => setSoundOn(true));
-      }
-      // The gate behaves like a modal, so closing it has to hand focus back
-      // somewhere meaningful. Without this it falls to <body> and the next
-      // Tab lands wherever the removed button happened to sit in the DOM.
-      requestAnimationFrame(() => mainRef.current?.focus({ preventScroll: true }));
-    },
-    [ensureAudio],
-  );
-
   return (
     <StageContext.Provider value={stage}>
       <a className="skip" href="#artist">
@@ -247,14 +215,12 @@ export const App = () => {
       <Overlays />
       <Cursor />
 
-      {!booted && <Boot onEnter={onEnter} />}
-
       <ActTransition activeIndex={activeIndex} />
       <Hud activeIndex={activeIndex} />
 
       {/* Acts render only when they have something to show — see `acts` in
           src/data/acnd.ts, which is also what drives the HUD numbering. */}
-      <main id="top" ref={mainRef} tabIndex={-1}>
+      <main id="top">
         <Hero />
         <Artist />
         {hasAct('catalog') && <Catalog />}

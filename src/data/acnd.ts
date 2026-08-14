@@ -240,23 +240,6 @@ export const hasAct = (id: string): boolean => acts.some((a) => a.id === id);
 /** An act's displayed number. Never hard-code these — they shift as acts drop out. */
 export const actIndex = (id: string): string => acts.find((a) => a.id === id)?.index ?? '';
 
-/* ───────────────────────────────────────────────────────────────────────
-   BOOT SEQUENCE — Act 00, the gate.
-   Lines print one at a time. Keep them short; they are monospaced.
-   ─────────────────────────────────────────────────────────────────────── */
-
-export const bootLines: string[] = [
-  'ACND SOUND SYSTEM v1.0',
-  'DHAKA / BANGLADESH / 23.8103°N 90.4125°E',
-  '',
-  'loading oscillators .......... OK',
-  'loading low end .............. OK',
-  'loading reverb tail .......... OK',
-  'calibrating euphoria ......... OK',
-  '',
-  'SIGNAL ACQUIRED.',
-];
-
 /** Platform display names — used for link labels and screen-reader text. */
 export const platformLabel: Record<Platform, string> = {
   spotify: 'Spotify',
