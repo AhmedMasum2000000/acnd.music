@@ -1,4 +1,12 @@
-import { acts, artist, platformLabel, releases, type Release } from '../../data/acnd';
+import {
+  acts,
+  artist,
+  isUpcoming,
+  platformLabel,
+  releases,
+  releasesInOrder,
+  type Release,
+} from '../../data/acnd';
 import { AsciiCover } from '../AsciiCover';
 import { GlitchText } from '../GlitchText';
 import { useStage } from '../../hooks/useStage';
@@ -7,10 +15,11 @@ import { asset } from '../../lib/asset';
 const ReleaseCard = ({ release, featured }: { release: Release; featured: boolean }) => {
   const { tick } = useStage();
   const platforms = Object.entries(release.links) as [keyof typeof platformLabel, string][];
+  const soon = isUpcoming(release);
 
   return (
     <li
-      className={`release ${featured ? 'is-featured' : ''}`}
+      className={`release ${featured ? 'is-featured' : ''} ${soon ? 'is-soon' : ''}`}
       data-cover-host
       onPointerEnter={() => tick(1900, 0.07)}
       // Light follows the cursor across the artwork. Written straight to the
@@ -51,7 +60,9 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
               className="release__cover"
             />
           )}
-          <span className="release__type label">{release.type}</span>
+          <span className="release__type label">
+            {soon ? 'Out soon' : release.type}
+          </span>
         </div>
 
         <div className="release__meta">
@@ -59,6 +70,14 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
 
           <p className="release__sub label">
             <time dateTime={release.date ?? String(release.year)}>{release.year}</time>
+            {/* The corner badge is carrying "Out soon", so the format moves here
+                rather than being dropped. */}
+            {soon ? (
+              <>
+                <span aria-hidden="true"> · </span>
+                {release.type}
+              </>
+            ) : null}
             {release.tags?.length ? (
               <>
                 <span aria-hidden="true"> · </span>
@@ -82,12 +101,16 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
                   onClick={() => tick(820, 0.16)}
                   onPointerEnter={() => tick(2000, 0.06)}
                 >
-                  <span className="release__plat">{platformLabel[p]}</span>
+                  <span className="release__plat">{soon ? 'Pre-save' : platformLabel[p]}</span>
                   <span className="release__cta">
-                    PLAY
+                    {soon ? 'ALL PLATFORMS' : 'PLAY'}
                     <span aria-hidden="true"> ↗</span>
                   </span>
-                  <span className="visually-hidden"> — listen to {release.title} on {platformLabel[p]}</span>
+                  <span className="visually-hidden">
+                    {soon
+                      ? ` — pre-save ${release.title} on your streaming platform`
+                      : ` — listen to ${release.title} on ${platformLabel[p]}`}
+                  </span>
                 </a>
               </li>
             ))}
@@ -110,9 +133,20 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
  * visitor and a crawler, so nothing should stand between them and either.
  */
 export const Catalog = () => {
-  const sorted = [...releases].sort((a, b) => b.year - a.year);
   const act = acts.find((a) => a.id === 'catalog');
   const single = releases.length === 1;
+  const soon = releases.filter(isUpcoming);
+  const out = releases.filter((r) => !isUpcoming(r));
+
+  // Written from what is actually in the catalog, so it stays true on release
+  // day when the pre-save flips over to a normal record.
+  const lede = soon.length
+    ? `${soon[0].title} lands any day now — pre-save it below.${
+        out.length ? ` Everything already out is there too.` : ''
+      }`
+    : single
+      ? 'Where it starts. Out now on every platform below.'
+      : `${releases.length} releases, out now on every platform below.`;
 
   return (
     <section id="catalog" className="act act--catalog" aria-labelledby="catalog-h">
@@ -121,14 +155,10 @@ export const Catalog = () => {
         <GlitchText as="h2" className="display act__h" duration={0.7}>
           {single ? 'THE RECORD' : 'THE RECORDS'}
         </GlitchText>
-        <p className="act__lede">
-          {single
-            ? 'Where it starts. Out now on every platform below.'
-            : `${releases.length} releases, out now on every platform below.`}
-        </p>
+        <p className="act__lede">{lede}</p>
 
         <ul className="catalog__grid">
-          {sorted.map((r, i) => (
+          {releasesInOrder.map((r, i) => (
             <ReleaseCard key={r.id} release={r} featured={i === 0} />
           ))}
         </ul>

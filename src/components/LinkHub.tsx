@@ -78,7 +78,7 @@ export const LinkHub = ({ className }: Props) => {
   return (
     <div className={`hub ${className ?? ''}`}>
       {groups.map((g) => (
-        <div className="hub__group" key={g.id}>
+        <div className="hub__group" data-group={g.id} key={g.id}>
           <p className="label hub__group-label">{g.label}</p>
           <ul className="hub__list">
             {g.links.map((link) => {

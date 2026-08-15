@@ -1,4 +1,4 @@
-import { actIndex, artist, releases } from '../../data/acnd';
+import { actIndex, artist, isUpcoming, releasesInOrder } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { LinkHub } from '../LinkHub';
 import { PixelMark } from '../PixelMark';
@@ -12,8 +12,13 @@ import { useStage } from '../../hooks/useStage';
  */
 export const Hero = () => {
   const { tick } = useStage();
-  // Newest release drives the "out now" row.
-  const latest = [...releases].sort((a, b) => b.year - a.year)[0];
+  /*
+    Newest record that is actually out. Anything still on pre-save is
+    deliberately skipped here — the hub directly below opens with its own
+    OUT SOON block, and saying the same thing twice in the space of two lines
+    reads as a bug rather than as emphasis.
+  */
+  const latest = releasesInOrder.filter((r) => !isUpcoming(r))[0];
 
   return (
     <section id="signal" className="act act--hero" aria-labelledby="hero-name">

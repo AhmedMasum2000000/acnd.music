@@ -1,4 +1,4 @@
-import { artist, playlists, releases, socials } from '../data/acnd';
+import { artist, isUpcoming, playlists, releases, socials } from '../data/acnd';
 
 /**
  * Everything a crawler needs, generated from `src/data/acnd.ts`.
@@ -60,7 +60,9 @@ export const buildStructuredData = (): unknown => {
     '@id': `${SITE}/#${r.id}`,
     name: r.title,
     byArtist: { '@id': `${SITE}/#artist` },
-    datePublished: r.date ?? String(r.year),
+    // A record that is not out yet has no publication date. Guessing one and
+    // being wrong is worse for rich results than leaving it off.
+    ...(isUpcoming(r) ? {} : { datePublished: r.date ?? String(r.year) }),
     description: r.blurb,
     ...(r.durationSec ? { duration: `PT${Math.floor(r.durationSec / 60)}M${r.durationSec % 60}S` } : {}),
     ...(Object.values(r.links).length ? { sameAs: Object.values(r.links) } : {}),
@@ -91,7 +93,7 @@ export const buildHeadTags = (): string => {
     `<meta name="description" content="${desc}" />`,
     `<link rel="canonical" href="${SITE}/" />`,
     `<meta name="author" content="${esc(artist.legalName)}" />`,
-    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Her ACND, ACND Her, Bangladeshi producer, Dhaka producer, DJ, composer, listen, Spotify, Apple Music, YouTube Music" />`,
+    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Observateur d’étoiles, Observateur d'etoiles ACND, ACND pre-save, Her ACND, ACND Her, Bangladeshi producer, Dhaka producer, DJ, composer, listen, Spotify, Apple Music, YouTube Music" />`,
 
     `<meta property="og:type" content="profile" />`,
     `<meta property="og:site_name" content="${esc(artist.name)}" />`,
@@ -131,7 +133,8 @@ export const buildFallback = (): string => {
         .map(([p, url]) => `<a href="${esc(url)}" rel="noopener">${esc(p)}</a>`)
         .join(' · ');
       const blurb = r.blurb ? `<br />${esc(r.blurb)}` : '';
-      return `<li><strong>${esc(r.title)}</strong> — ${r.year} · ${esc(r.type)}${blurb}${links ? `<br />${links}` : ''}</li>`;
+      const when = isUpcoming(r) ? 'Out soon — pre-save' : String(r.year);
+      return `<li><strong>${esc(r.title)}</strong> — ${when} · ${esc(r.type)}${blurb}${links ? `<br />${links}` : ''}</li>`;
     })
     .join('\n        ');
 

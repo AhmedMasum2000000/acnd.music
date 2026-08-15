@@ -523,6 +523,19 @@
 }
 
 @media (min-width: 900px) {
+  /*
+    Two columns, not as many as fit. Auto-fill gave five narrow slots on a
+    wide screen, which made the lead record — spanning two of them — narrower
+    than the plain cards are on a laptop. Two columns means the lead always
+    spans the full row and the rest sit beside each other.
+  */
+  .catalog__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Covers are square, so an unbounded column turns one record into a
+       screen-and-a-half of artwork. */
+    max-width: 1120px;
+  }
+
   .release.is-featured {
     grid-column: span 2;
   }
@@ -626,6 +639,17 @@
   padding: 3px 7px;
 }
 
+/* A record still on pre-save gets the accent, so it reads as the live thing
+   in the grid rather than as one more entry in the back catalogue. */
+.release.is-soon .release__type {
+  color: var(--void);
+  background: var(--accent);
+}
+
+.release.is-soon {
+  border-color: var(--accent);
+}
+
 .release__meta {
   padding: clamp(14px, 2vw, 22px);
 }
@@ -635,6 +659,10 @@
   color: var(--bone);
   margin-bottom: 8px;
   text-wrap: balance;
+  /* Silkscreen is wide and has no hyphenation. A long single word — a title
+     like "Observateur" — will happily run out of its column and across the
+     card beside it, so the break is forced rather than left to chance. */
+  overflow-wrap: anywhere;
 }
 
 .release__sub {

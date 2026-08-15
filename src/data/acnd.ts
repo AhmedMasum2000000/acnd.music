@@ -24,7 +24,9 @@ export type Platform =
   | 'tiktok'
   | 'facebook'
   | 'x'
-  | 'email';
+  | 'email'
+  /** A pre-save / pre-add landing page (DistroKid Hyperfollow, Feature.fm, …). */
+  | 'presave';
 
 export interface SocialLink {
   /** Platform key — drives the label and the ASCII icon. */
@@ -42,7 +44,7 @@ export interface SocialLink {
    * Which block of the hub this belongs in. Blocks render in the order below
    * and a block with no links disappears entirely.
    */
-  group?: 'listen' | 'follow' | 'contact';
+  group?: 'presave' | 'listen' | 'follow' | 'contact';
 }
 
 export interface Release {
@@ -54,6 +56,13 @@ export interface Release {
   /** ISO date (YYYY-MM-DD) if you know it — improves rich results. */
   date?: string;
   type: 'Single' | 'EP' | 'Album' | 'Remix' | 'Collab';
+  /**
+   * `upcoming` moves the record to the front of the catalog, swaps the card's
+   * call to action from PLAY to PRE-SAVE and marks it OUT SOON everywhere.
+   * Flip it to `released` on release day — nothing else needs touching.
+   * Omitted means released.
+   */
+  status?: 'released' | 'upcoming';
   /**
    * Short descriptors shown on the card. Deliberately empty — the music is
    * meant to arrive without being labelled first.
@@ -99,7 +108,7 @@ export const artist = {
   origin: 'Dhaka, Bangladesh',
   /** Used in the <title>, OG tags and JSON-LD description. Keep under ~155 chars. */
   tagline:
-    'Producer, DJ and composer from Dhaka, Bangladesh. Debut single "Her..." out now on Spotify, Apple Music and YouTube Music.',
+    'Producer, DJ and composer from Dhaka, Bangladesh. New single “Observateur d’étoiles” out soon — pre-save now. Debut single “Her...” out now.',
   /** Short punch line for the hero. Two or three words per line reads best. */
   heroLines: ['EUPHORIA', 'ENGINEERED', 'FROM NOISE'],
   /**
@@ -146,6 +155,18 @@ export const artist = {
   grid, in the marquee, and in the page's structured data.
 */
 export const socials: SocialLink[] = [
+  /*
+    The pre-save sits in its own block so it leads the hub. On release day,
+    delete this entry and flip the release's `status` to 'released' — the
+    OUT SOON block disappears on its own.
+  */
+  {
+    platform: 'presave',
+    handle: 'ACND',
+    url: 'https://distrokid.com/hyperfollow/acnd/observateur-dtoiles/',
+    note: 'Observateur d’étoiles',
+    group: 'presave',
+  },
   {
     platform: 'spotify',
     handle: 'ACND',
@@ -183,6 +204,7 @@ export const socials: SocialLink[] = [
 
 /** The link hub's blocks, in render order. Empty blocks are skipped. */
 export const linkGroups: { id: NonNullable<SocialLink['group']>; label: string }[] = [
+  { id: 'presave', label: 'NEW — OUT SOON' },
   { id: 'listen', label: 'LISTEN' },
   { id: 'follow', label: 'FOLLOW' },
   { id: 'contact', label: 'CONTACT' },
@@ -199,6 +221,18 @@ export const linksInGroup = (id: NonNullable<SocialLink['group']>): SocialLink[]
    ─────────────────────────────────────────────────────────────────────── */
 
 export const releases: Release[] = [
+  {
+    id: 'observateur-detoiles',
+    title: 'Observateur d’étoiles',
+    year: 2026,
+    // No `date` on purpose. The exact release day isn't fixed yet, and a date
+    // in structured data that turns out to be wrong is worse than no date.
+    type: 'Single',
+    status: 'upcoming',
+    links: {
+      presave: 'https://distrokid.com/hyperfollow/acnd/observateur-dtoiles/',
+    },
+  },
   {
     id: 'her',
     title: 'Her...',
@@ -219,6 +253,19 @@ export const releases: Release[] = [
     },
   },
 ];
+
+/** True while a record is still on pre-save. */
+export const isUpcoming = (r: Release): boolean => r.status === 'upcoming';
+
+/**
+ * Display order: anything still on pre-save leads, then newest first.
+ *
+ * Both the first screen and the catalog read this, so the record the hero
+ * points at and the record at the top of the grid can never disagree.
+ */
+export const releasesInOrder: Release[] = [...releases].sort(
+  (a, b) => Number(isUpcoming(b)) - Number(isUpcoming(a)) || b.year - a.year,
+);
 
 /* ───────────────────────────────────────────────────────────────────────
    PLAYLISTS & SETS — Act 05, THE SETS
@@ -285,4 +332,5 @@ export const platformLabel: Record<Platform, string> = {
   facebook: 'Facebook',
   x: 'X',
   email: 'Email',
+  presave: 'Pre-Save Now',
 };
