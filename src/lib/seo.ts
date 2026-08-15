@@ -94,7 +94,7 @@ export const buildHeadTags = (): string => {
     `<meta name="description" content="${desc}" />`,
     `<link rel="canonical" href="${SITE}/" />`,
     `<meta name="author" content="${esc(artist.legalName)}" />`,
-    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Observateur d’étoiles, Observateur d'etoiles ACND, ACND pre-save, Her ACND, ACND Her, Bangladeshi producer, Dhaka producer, DJ, composer, listen, Spotify, Apple Music, YouTube Music" />`,
+    `<meta name="keywords" content="ACND, ${esc(artist.legalName)}, Observateur d’étoiles, Observateur d'etoiles ACND, ACND Observateur, Her ACND, ACND Her, Bangladeshi producer, Dhaka producer, DJ, composer, listen, Spotify, Apple Music, YouTube Music" />`,
 
     `<meta property="og:type" content="profile" />`,
     `<meta property="og:site_name" content="${esc(artist.name)}" />`,

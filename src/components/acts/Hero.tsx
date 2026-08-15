@@ -1,4 +1,4 @@
-import { actIndex, artist, isUpcoming, releasesInOrder } from '../../data/acnd';
+import { actIndex, artist, linksInGroup, releasesInOrder } from '../../data/acnd';
 import { GlitchText } from '../GlitchText';
 import { LinkHub } from '../LinkHub';
 import { PixelMark } from '../PixelMark';
@@ -13,12 +13,12 @@ import { useStage } from '../../hooks/useStage';
 export const Hero = () => {
   const { tick } = useStage();
   /*
-    Newest record that is actually out. Anything still on pre-save is
-    deliberately skipped here — the hub directly below opens with its own
-    OUT SOON block, and saying the same thing twice in the space of two lines
-    reads as a bug rather than as emphasis.
+    A static line naming the newest record, but only when the hub below is not
+    already leading with its own block for it. Two announcements of the same
+    release, two lines apart, read as a bug rather than as emphasis — and of
+    the two the hub wins, because that one can be tapped.
   */
-  const latest = releasesInOrder.filter((r) => !isUpcoming(r))[0];
+  const latest = linksInGroup('new').length ? undefined : releasesInOrder[0];
 
   return (
     <section id="signal" className="act act--hero" aria-labelledby="hero-name">

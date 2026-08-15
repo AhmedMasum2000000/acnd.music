@@ -44,7 +44,7 @@ export interface SocialLink {
    * Which block of the hub this belongs in. Blocks render in the order below
    * and a block with no links disappears entirely.
    */
-  group?: 'presave' | 'listen' | 'follow' | 'contact';
+  group?: 'new' | 'listen' | 'follow' | 'contact';
 }
 
 export interface Release {
@@ -115,7 +115,7 @@ export const artist = {
   origin: 'Dhaka, Bangladesh',
   /** Used in the <title>, OG tags and JSON-LD description. Keep under ~155 chars. */
   tagline:
-    'Producer, DJ and composer from Dhaka, Bangladesh. New single “Observateur d’étoiles” out soon — pre-save now. Debut single “Her...” out now.',
+    'Producer, DJ and composer from Dhaka, Bangladesh. New single “Observateur d’étoiles” out now, alongside debut single “Her...”.',
   /** Short punch line for the hero. Two or three words per line reads best. */
   heroLines: ['EUPHORIA', 'ENGINEERED', 'FROM NOISE'],
   /**
@@ -153,7 +153,7 @@ export const artist = {
 
 /*
   Only real, working links live here — nothing invented. These currently point
-  at the "Her..." release rather than artist profile pages, because that is
+  at individual releases rather than artist profile pages, because that is
   what exists today; swap each `url` for the profile page when you have it and
   nothing else needs to change.
 
@@ -163,16 +163,16 @@ export const artist = {
 */
 export const socials: SocialLink[] = [
   /*
-    The pre-save sits in its own block so it leads the hub. On release day,
-    delete this entry and flip the release's `status` to 'released' — the
-    OUT SOON block disappears on its own.
+    The newest record gets its own block at the top of the hub. When the next
+    one is announced, move these rows down into `listen` and put the pre-save
+    here instead — relabel the group in `linkGroups` to match.
   */
   {
-    platform: 'presave',
+    platform: 'spotify',
     handle: 'ACND',
-    url: 'https://distrokid.com/hyperfollow/acnd/observateur-dtoiles/',
+    url: 'https://open.spotify.com/track/2KKx8ekirGh7xB4cm4EQ0S',
     note: 'Observateur d’étoiles',
-    group: 'presave',
+    group: 'new',
   },
   {
     platform: 'spotify',
@@ -211,7 +211,7 @@ export const socials: SocialLink[] = [
 
 /** The link hub's blocks, in render order. Empty blocks are skipped. */
 export const linkGroups: { id: NonNullable<SocialLink['group']>; label: string }[] = [
-  { id: 'presave', label: 'NEW — OUT SOON' },
+  { id: 'new', label: 'NEW — OUT NOW' },
   { id: 'listen', label: 'LISTEN' },
   { id: 'follow', label: 'FOLLOW' },
   { id: 'contact', label: 'CONTACT' },
@@ -232,18 +232,19 @@ export const releases: Release[] = [
     id: 'observateur-detoiles',
     title: 'Observateur d’étoiles',
     year: 2026,
-    // No `date` on purpose. The exact release day isn't fixed yet, and a date
-    // in structured data that turns out to be wrong is worse than no date.
+    date: '2026-08-14',
     type: 'Single',
-    status: 'upcoming',
     cover: '/cover-observateur-900.webp',
     coverLow: '/cover-observateur-420.webp',
     coverW: 900,
     coverH: 674,
     coverAlt:
       'Cover art for Observateur d’étoiles by ACND — a screen showing a luminous white lily against a starfield, photographed above an open book of poetry with a dried rose laid across it.',
+    // Spotify only for now — the release has not reached Apple Music or
+    // YouTube Music yet. Add each one here as it appears; the card, the hub
+    // and the structured data all pick it up with no other edit.
     links: {
-      presave: 'https://distrokid.com/hyperfollow/acnd/observateur-dtoiles/',
+      spotify: 'https://open.spotify.com/track/2KKx8ekirGh7xB4cm4EQ0S',
     },
   },
   {
@@ -278,8 +279,12 @@ export const isUpcoming = (r: Release): boolean => r.status === 'upcoming';
  * Both the first screen and the catalog read this, so the record the hero
  * points at and the record at the top of the grid can never disagree.
  */
+/* A release with no exact date sorts as if it were late in its year — the
+   right guess when the question is "which of these is newest". */
+const when = (r: Release): string => r.date ?? `${r.year}-12-31`;
+
 export const releasesInOrder: Release[] = [...releases].sort(
-  (a, b) => Number(isUpcoming(b)) - Number(isUpcoming(a)) || b.year - a.year,
+  (a, b) => Number(isUpcoming(b)) - Number(isUpcoming(a)) || when(b).localeCompare(when(a)),
 );
 
 /* ───────────────────────────────────────────────────────────────────────

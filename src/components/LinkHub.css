@@ -18,33 +18,33 @@
   margin-bottom: 10px;
 }
 
-/* ── the pre-save block ────────────────────────────────────────────────
-   A record that is not out yet only gets one moment, so its row is the
-   loudest thing in the hub: accent label, accent border, and a slow breath
-   on the border alone — the row is already the brightest object on the
-   screen and a moving fill would fight the copy inside it. */
+/* ── the newest-record block ───────────────────────────────────────────
+   A new release only gets one moment, so its row is the loudest thing in
+   the hub: accent label, accent border, and a slow breath on the glow alone
+   — the row is already the brightest object on the screen and a moving fill
+   would fight the copy inside it. */
 
-.hub__group[data-group='presave'] .hub__group-label {
+.hub__group[data-group='new'] .hub__group-label {
   color: var(--accent);
 }
 
-.hub__group[data-group='presave'] .hub__link {
+.hub__group[data-group='new'] .hub__link {
   border-color: var(--accent);
   background: rgba(255, 46, 77, 0.07);
 }
 
-.hub__group[data-group='presave'] .hub__plat {
+.hub__group[data-group='new'] .hub__plat {
   color: var(--accent);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hub__group[data-group='presave'] .hub__link {
+  .hub__group[data-group='new'] .hub__link {
     animation: hub-breathe 3.4s var(--ease-out) infinite;
   }
 
   /* Hovering hands the row back to the standard fill treatment. */
-  .hub__group[data-group='presave'] .hub__link:hover,
-  .hub__group[data-group='presave'] .hub__link:focus-visible {
+  .hub__group[data-group='new'] .hub__link:hover,
+  .hub__group[data-group='new'] .hub__link:focus-visible {
     animation: none;
   }
 }
@@ -59,8 +59,8 @@
   }
 }
 
-.hub__group[data-group='presave'] .hub__link:hover .hub__plat,
-.hub__group[data-group='presave'] .hub__link:focus-visible .hub__plat {
+.hub__group[data-group='new'] .hub__link:hover .hub__plat,
+.hub__group[data-group='new'] .hub__link:focus-visible .hub__plat {
   color: var(--void);
 }
 

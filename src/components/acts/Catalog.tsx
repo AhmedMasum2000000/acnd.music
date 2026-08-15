@@ -148,8 +148,10 @@ export const Catalog = () => {
         out.length ? ` Everything already out is there too.` : ''
       }`
     : single
-      ? 'Where it starts. Out now on every platform below.'
-      : `${releases.length} releases, out now on every platform below.`;
+      ? 'Where it starts. Every link below.'
+      : // Not "on every platform" — a new record does not reach them all on the
+        // same day, and the copy should not promise more than the links deliver.
+        `${releases.length} releases so far. Everywhere they are out, linked below.`;
 
   return (
     <section id="catalog" className="act act--catalog" aria-labelledby="catalog-h">
