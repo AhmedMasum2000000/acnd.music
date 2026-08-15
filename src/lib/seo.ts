@@ -1,4 +1,4 @@
-import { artist, isUpcoming, playlists, releases, socials } from '../data/acnd';
+import { artist, isUpcoming, platformLabel, playlists, releases, socials } from '../data/acnd';
 
 /**
  * Everything a crawler needs, generated from `src/data/acnd.ts`.
@@ -171,6 +171,90 @@ export const buildFallback = (): string => {
 
       ${artist.bookingEmail ? `<h2>Bookings</h2>\n      <p><a href="mailto:${esc(artist.bookingEmail)}">${esc(artist.bookingEmail)}</a></p>` : ''}
     </div>`;
+};
+
+/* ── 404 ─────────────────────────────────────────────────────────────── */
+
+/**
+ * The page GitHub Pages serves for any unknown path under the site.
+ *
+ * Deliberately standalone: inline styles, no bundle, no fonts, one request.
+ * Someone who has landed here has already had one thing go wrong, and the
+ * only job left is to put every real destination in front of them — so the
+ * whole link list is on the page rather than a lone "go home" button.
+ *
+ * It does not redirect on a timer. A silent bounce hides the broken link from
+ * whoever shared it and breaks the back button for whoever followed it.
+ */
+export const build404 = (): string => {
+  const links = socials
+    .map(
+      (s) =>
+        `<li><a href="${esc(s.url)}" rel="noopener"><b>${esc(platformLabel[s.platform])}${
+          s.note ? `<i>${esc(s.note)}</i>` : ''
+        }</b><span>↗</span></a></li>`,
+    )
+    .join('\n      ');
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#07070a" />
+    <title>Not found — ${esc(artist.name)}</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100vh; padding: 8vh 24px;
+        background: #07070a; color: #e8e4dc;
+        font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 16px; line-height: 1.6;
+        display: flex; flex-direction: column; align-items: center;
+      }
+      main { width: 100%; max-width: 560px; }
+      .code { color: #ff2e4d; letter-spacing: 0.3em; font-size: 13px; margin: 0 0 28px; }
+      h1 { font-size: clamp(38px, 12vw, 68px); letter-spacing: 0.16em; margin: 0 0 18px; }
+      p { color: #8b8798; margin: 0 0 34px; }
+      a { color: inherit; text-decoration: none; }
+      .home {
+        display: block; text-align: center; padding: 18px;
+        border: 1px solid #ff2e4d; color: #ff2e4d; letter-spacing: 0.22em;
+        font-size: 13px; margin-bottom: 34px;
+      }
+      .home:hover, .home:focus-visible { background: #ff2e4d; color: #07070a; }
+      h2 { font-size: 11px; letter-spacing: 0.3em; color: #55525f; margin: 0 0 12px; font-weight: 400; }
+      ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+      li a {
+        display: flex; justify-content: space-between; gap: 16px; align-items: center;
+        min-height: 58px; padding: 12px 16px;
+        border: 1px solid #22222c; background: #0e0e14;
+      }
+      li a:hover, li a:focus-visible { border-color: #ff2e4d; color: #ff2e4d; }
+      b { font-weight: 400; letter-spacing: 0.08em; }
+      i { display: block; font-style: normal; font-size: 14px; color: #8b8798; }
+      li a:hover i, li a:focus-visible i { color: inherit; }
+      span { color: #ff2e4d; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="code">ERROR 404 — SIGNAL LOST</p>
+      <h1>${esc(artist.name)}</h1>
+      <p>That page does not exist. Everything that does is one tap away.</p>
+
+      <a class="home" href="${SITE}/">ENTER THE SITE ↗</a>
+
+      <h2>OR GO STRAIGHT THERE</h2>
+      <ul>
+      ${links}
+      </ul>
+    </main>
+  </body>
+</html>
+`;
 };
 
 /* ── sitemap ─────────────────────────────────────────────────────────── */

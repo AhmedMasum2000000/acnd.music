@@ -1,6 +1,6 @@
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { buildFallback, buildHeadTags, buildRobots, buildSitemap } from './src/lib/seo';
+import { build404, buildFallback, buildHeadTags, buildRobots, buildSitemap } from './src/lib/seo';
 
 /**
  * Bakes the SEO surface into the shipped HTML.
@@ -20,6 +20,8 @@ const seoPlugin = (): Plugin => ({
   generateBundle() {
     this.emitFile({ type: 'asset', fileName: 'robots.txt', source: buildRobots() });
     this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: buildSitemap() });
+    // GitHub Pages serves this for any unknown path under the site.
+    this.emitFile({ type: 'asset', fileName: '404.html', source: build404() });
   },
 });
 
