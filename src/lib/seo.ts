@@ -64,6 +64,7 @@ export const buildStructuredData = (): unknown => {
     // being wrong is worse for rich results than leaving it off.
     ...(isUpcoming(r) ? {} : { datePublished: r.date ?? String(r.year) }),
     description: r.blurb,
+    ...(r.cover ? { image: abs(r.cover) } : {}),
     ...(r.durationSec ? { duration: `PT${Math.floor(r.durationSec / 60)}M${r.durationSec % 60}S` } : {}),
     ...(Object.values(r.links).length ? { sameAs: Object.values(r.links) } : {}),
   }));

@@ -76,6 +76,13 @@ export interface Release {
    */
   cover?: string;
   coverLow?: string;
+  /**
+   * Intrinsic size of `cover`, as reported by scripts/optimize-cover.mjs.
+   * The card reserves this exact box, so the artwork is never cropped to fit
+   * and the page never shifts as the image arrives. Defaults to a square.
+   */
+  coverW?: number;
+  coverH?: number;
   /** Alt text for the artwork. Required whenever `cover` is set. */
   coverAlt?: string;
   /** Streaming links. Omit any platform you're not on. */
@@ -229,6 +236,12 @@ export const releases: Release[] = [
     // in structured data that turns out to be wrong is worse than no date.
     type: 'Single',
     status: 'upcoming',
+    cover: '/cover-observateur-900.webp',
+    coverLow: '/cover-observateur-420.webp',
+    coverW: 900,
+    coverH: 674,
+    coverAlt:
+      'Cover art for Observateur d’étoiles by ACND — a screen showing a luminous white lily against a starfield, photographed above an open book of poetry with a dried rose laid across it.',
     links: {
       presave: 'https://distrokid.com/hyperfollow/acnd/observateur-dtoiles/',
     },
@@ -244,6 +257,8 @@ export const releases: Release[] = [
     durationSec: 697,
     cover: '/cover-her-900.webp',
     coverLow: '/cover-her-420.webp',
+    coverW: 900,
+    coverH: 900,
     coverAlt:
       'Cover art for Her... by ACND — a screen showing a pale coastline and dune grass, photographed at an angle above an open book.',
     links: {

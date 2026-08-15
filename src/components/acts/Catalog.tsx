@@ -44,10 +44,13 @@ const ReleaseCard = ({ release, featured }: { release: Release; featured: boolea
                   ? `${asset(release.coverLow)} 420w, ${asset(release.cover)} 900w`
                   : undefined
               }
-              sizes="(max-width: 899px) 90vw, 460px"
+              sizes="(max-width: 899px) 90vw, 560px"
               alt={release.coverAlt ?? `Cover art for ${release.title} by ${artist.name}`}
-              width="900"
-              height="900"
+              width={release.coverW ?? 900}
+              height={release.coverH ?? 900}
+              // Covers are not all square. The card takes its shape from the
+              // artwork rather than cropping the artwork to fit the card.
+              style={{ aspectRatio: `${release.coverW ?? 900} / ${release.coverH ?? 900}` }}
               loading="lazy"
               decoding="async"
             />

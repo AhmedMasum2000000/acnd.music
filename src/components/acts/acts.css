@@ -594,6 +594,8 @@
   display: block;
   width: 100%;
   height: auto;
+  /* Overridden inline per release from the artwork's real dimensions; the
+     square is only the fallback for a cover with none recorded. */
   aspect-ratio: 1;
   object-fit: cover;
   /* Held slightly back so it belongs to the page rather than sitting on top
