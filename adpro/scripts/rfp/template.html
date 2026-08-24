@@ -82,12 +82,159 @@
 
   /* --- capability matrix -------------------------------------------------- */
 
-  .caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1.4rem 2rem; }
+  .caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1.4rem 1.6rem; }
   .caps h4 { margin: 0 0 0.5rem; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.13em;
              text-transform: uppercase; color: var(--blue); }
   .caps ul { list-style: none; margin: 0; padding: 0; }
   .caps li { font-size: 0.8125rem; line-height: 1.75; color: var(--ink); }
   .caps li::before { content: '—'; color: var(--sky); margin-right: 0.45rem; }
+
+
+  /* --- part openers -------------------------------------------------------
+     An agency arguing for a year of outdoor media should show some. Every
+     numbered part opens on a screen the company owns, with the part's number
+     reversed out of it, so the document reads in chapters rather than as one
+     continuous column of tables. */
+
+  .opener {
+    position: relative;
+    margin: 0 0 1.6rem;
+    overflow: hidden;
+    background: var(--navy);
+    aspect-ratio: 64 / 15;
+  }
+
+  .opener img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .opener__tag {
+    position: absolute;
+    left: 0; bottom: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding: 0.55rem 1.1rem 0.6rem;
+    background: var(--navy);
+  }
+
+  .opener__tag b {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .opener__tag span {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* --- figure band --------------------------------------------------------
+     The bid in five numbers, large, once. */
+
+  .figband {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    background: var(--navy);
+    padding: clamp(1.25rem, 2.5vw, 1.9rem);
+    margin: 1.5rem 0 0;
+  }
+
+  .figband b {
+    display: block;
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #fff;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .figband span {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.66);
+    line-height: 1.45;
+  }
+
+  /* --- coverage map ------------------------------------------------------- */
+
+  .map { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; align-items: center; margin-top: 1.4rem; }
+  .map svg { width: 100%; height: auto; display: block; }
+
+  /* --- process track ------------------------------------------------------
+     The permission workflow drawn as the sequence it is, with the gate Uber
+     controls marked, because that gate is the answer to the largest-weighted
+     criterion in the RFP. */
+
+  .track { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; margin: 1.5rem 0 0; }
+
+  .track div {
+    position: relative;
+    padding: 1.5rem 0.8rem 0 0;
+    border-top: 2px solid var(--line);
+  }
+
+  .track div::before {
+    content: '';
+    position: absolute;
+    top: -6px; left: 0;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--sky);
+  }
+
+  .track div.gate { border-top-color: var(--navy); }
+  .track div.gate::before { background: var(--navy); width: 14px; height: 14px; top: -8px; }
+
+  .track b {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .track span {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.6875rem;
+    color: var(--grey);
+    line-height: 1.5;
+  }
+
+  .track div.gate b { color: var(--blue); }
+
+  /* --- table treatments ---------------------------------------------------
+     Long rate tables get a tinted alternate row; the KPI matrix — the page
+     that answers Part 3 line by line — gets the emphasis it earns. */
+
+  .zebra tbody tr:nth-child(even) td { background: var(--wash); }
+
+  .kpi thead th { background: var(--navy); color: #fff; padding-left: 0.7rem; border-bottom: 0; }
+  .kpi tbody tr:nth-child(even) td { background: var(--wash); }
+  .kpi td { padding-left: 0.7rem; }
+  .kpi td:first-child::before {
+    content: '\2713';
+    color: var(--blue);
+    font-weight: 700;
+    margin-right: 0.45rem;
+  }
+
+  /* --- city plate ---------------------------------------------------------
+     Each city's rates sit under a photograph of one of its screens. */
+
+  .plate { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; align-items: end; margin: 1.6rem 0 0.5rem; }
+  .plate img { width: 100%; height: auto; display: block; border: 1px solid var(--line); }
+  .plate h3 { font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--blue); margin: 0 0 0.3rem; }
+  .plate p { font-size: 0.8125rem; color: var(--ink-soft); margin: 0; line-height: 1.5; }
 
   /* --- step list ---------------------------------------------------------- */
 
@@ -102,6 +249,16 @@
   .flow b { grid-column: 2; font-size: 1rem; font-weight: 600; color: var(--navy); }
   .flow span { grid-column: 2; font-size: 0.875rem; color: var(--ink-soft); line-height: 1.65; }
 
+  /* The deliverable is the PDF, but the HTML is what gets opened first if
+     anyone clicks the file, and a five-column band does not fit a phone. */
+  @media (max-width: 46rem) {
+    .figband { grid-template-columns: repeat(2, 1fr); }
+    .track { grid-template-columns: 1fr 1fr; }
+    .map { grid-template-columns: 1fr; }
+    .plate { grid-template-columns: 6rem 1fr; }
+    table { font-size: 0.8125rem; }
+  }
+
   @media print {
     table { font-size: 8pt; }
     th { font-size: 6.5pt; padding: 2mm 2.5mm 1.5mm 0; }
@@ -112,7 +269,8 @@
     .answer__grid { gap: 5mm 7mm; margin-top: 5mm; }
     .answer__grid b { font-size: 9.5pt; }
     .answer__grid span { font-size: 8pt; }
-    .caps { gap: 4mm 7mm; }
+    .caps { gap: 4mm 5mm; }
+    .caps li { font-size: 7.5pt; }
     .caps li { font-size: 8pt; line-height: 1.6; }
     .flow li { margin-bottom: 3.5mm; }
     .flow b { font-size: 10pt; }
@@ -124,6 +282,26 @@
     .page.flow { break-after: auto; }
     table, .caps, .flow, .answer { break-inside: auto; }
     tr, .flow li, .caps > div { break-inside: avoid; }
+    .opener { margin-bottom: 5mm; aspect-ratio: 64 / 13; }
+    .opener__tag { padding: 2mm 4mm 2.2mm; }
+    .opener__tag b { font-size: 8.5pt; }
+    .opener__tag span { font-size: 6.5pt; }
+    .figband { padding: 6mm; gap: 5mm; margin-top: 5mm; }
+    .figband b { font-size: 19pt; }
+    .figband span { font-size: 6.5pt; margin-top: 1.5mm; }
+    .map { gap: 7mm; margin-top: 4mm; }
+    .track { margin-top: 5mm; }
+    .track div { padding: 4mm 2.5mm 0 0; }
+    .track b { font-size: 8pt; }
+    .track span { font-size: 6.5pt; }
+    .plate { grid-template-columns: 26mm 1fr; gap: 4mm; margin: 5mm 0 1.5mm; }
+    .plate p { font-size: 8pt; }
+    .opener, .figband, .track, .plate, .map { break-inside: avoid; }
+    /* The annexure list, the declaration and the signature block are one
+       thing. Split, the signature lands alone on a sheet of its own and the
+       document ends on an accident rather than a signature. */
+    .signoff { break-inside: avoid; }
+    .signoff .tnote { margin-top: 3mm; }
     thead { display: table-header-group; }
   }
 </style>
@@ -218,7 +396,15 @@
           numbers below map to the RFP's own.
         </p>
       </div>
-    </section>
+    
+        <div class="figband">
+          <div><b>58</b><span>LED screens owned and operated</span></div>
+          <div><b>10</b><span>Cities, the ten Uber named</span></div>
+          <div><b>0%</b><span>Markup on every pass-through taka</span></div>
+          <div><b>24<small style="font-size:0.42em">hr</small></b><span>Proof of display after install</span></div>
+          <div><b>NET60</b><span>Payment terms accepted</span></div>
+        </div>
+      </section>
   </div>
 </div>
 
@@ -228,6 +414,7 @@
 
     <section>
       <div class="rail"><span class="rail__num">4.1</span><span class="rail__name">Company profile</span></div>
+        <!--@OPENER:profile-->
       <div class="body-col" style="max-width: none">
         <h2>An advertising company that also happens to be a manufacturer.</h2>
 
@@ -280,7 +467,12 @@
           each divisional city, which is what keeps a replacement inside the same
           working day rather than the same week.
         </p>
-        <!--@COVERAGE-->
+        <div class="map">
+          <!--@MAP-->
+          <div>
+            <!--@COVERAGE-->
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -292,6 +484,7 @@
 
     <section>
       <div class="rail"><span class="rail__num">4.4</span><span class="rail__name">Government liaison and permissions</span></div>
+        <!--@OPENER:permissions-->
       <div class="body-col" style="max-width: none">
         <h2>The part of this contract that goes wrong is the part we do in-house.</h2>
 
@@ -352,7 +545,16 @@
           sector means being audited by it. References available on request.
         </p>
       </div>
-    </section>
+    
+        <div class="track">
+          <div><b>Site survey</b><span>Location, dimensions, sightline, structure</span></div>
+          <div><b>Filing</b><span>Authority, media owner, property owner</span></div>
+          <div><b>Permission, licence or NOC</b><span>Reference number and validity on file</span></div>
+          <div class="gate"><b>Uber's written approval</b><span>The gate. Nothing is drilled before it</span></div>
+          <div><b>Production and installation</b><span>In-house print, fabrication, rigging</span></div>
+          <div><b>Proof of display</b><span>Photographs and logs inside 24 hours</span></div>
+        </div>
+      </section>
   </div>
 </div>
 
@@ -362,6 +564,7 @@
 
     <section>
       <div class="rail"><span class="rail__num">4.3</span><span class="rail__name">Owned inventory</span></div>
+        <!--@OPENER:inventory-->
       <div class="body-col" style="max-width: none">
         <h2>Fifty-eight screens, in the places the country actually stops.</h2>
         <p class="lede" style="max-width: 68ch">
@@ -382,6 +585,7 @@
 
     <section>
       <div class="rail"><span class="rail__num">4.5</span><span class="rail__name">Execution capability</span></div>
+        <!--@OPENER:execution-->
       <div class="body-col" style="max-width: none">
         <h2>Everything in the scope of work, under one supplier.</h2>
         <p class="lede" style="max-width: 68ch">
@@ -588,11 +792,12 @@
 </div>
 
 <!-- ==================== COMMERCIAL — DIGITAL ======================== -->
-<div class="page">
+<div class="page flow">
   <div class="sheet">
 
     <section>
       <div class="rail"><span class="rail__num">5.1</span><span class="rail__name">Commercial proposal</span></div>
+        <!--@OPENER:commercial-->
       <div class="body-col" style="max-width: none">
         <h2>The operator's rate, and nothing added to anyone else's.</h2>
 
@@ -776,22 +981,24 @@
           </tbody>
         </table>
 
-        <p class="tnote" style="margin-top: 1.6rem">
-          <strong style="color: var(--navy)">Declaration.</strong> The information in this
-          response is true and correct to the best of our knowledge. AD PRO Communications
-          Ltd. confirms its capability and intention to participate in this RFP, and its
-          capacity to deliver the full scope of work described in Part 2 for a one-year
-          term across all ten cities named.
-        </p>
+        <div class="signoff">
+          <p class="tnote" style="margin-top: 1.2rem">
+            <strong style="color: var(--navy)">Declaration.</strong> The information in this
+            response is true and correct to the best of our knowledge. AD PRO Communications
+            Ltd. confirms its capability and intention to participate in this RFP, and its
+            capacity to deliver the full scope of work described in Part 2 for a one-year
+            term across all ten cities named.
+          </p>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.2rem">
-          <div>
-            <div style="border-bottom: 1px solid var(--navy); height: 2.6rem"></div>
-            <p class="tnote" style="margin-top: 0.5rem">A. H. Al-Maruf Sunny<br>Managing Director<br>Ad Pro Communications Ltd.</p>
-          </div>
-          <div>
-            <div style="border-bottom: 1px solid var(--line); height: 2.6rem"></div>
-            <p class="tnote" style="margin-top: 0.5rem">Date and company seal</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.4rem">
+            <div>
+              <div style="border-bottom: 1px solid var(--navy); height: 1.9rem"></div>
+              <p class="tnote" style="margin-top: 0.4rem">A. H. Al-Maruf Sunny<br>Managing Director<br>Ad Pro Communications Ltd.</p>
+            </div>
+            <div>
+              <div style="border-bottom: 1px solid var(--line); height: 1.9rem"></div>
+              <p class="tnote" style="margin-top: 0.4rem">Date and company seal</p>
+            </div>
           </div>
         </div>
       </div>

@@ -32,6 +32,15 @@ const json = (p) => JSON.parse(read(p));
 // ---------------------------------------------------------------- inputs ---
 const profileTpl = read(resolve(PROFILE, 'template.html'));
 const rates = json(resolve(HERE, 'rates.json'));
+
+const OPENER_LABELS = {
+  profile: ['4.1', 'Company profile'],
+  permissions: ['4.4', 'Government liaison and permissions'],
+  inventory: ['4.3', 'Owned inventory'],
+  execution: ['4.5', 'Execution capability'],
+  commercial: ['5', 'Commercial proposal'],
+};
+
 const photos = json(resolve(PROFILE, 'photos.json'));
 const logos = json(resolve(PROFILE, 'logos.json'));
 
@@ -152,6 +161,27 @@ const summary = cities
   })
   .join('');
 
+
+// The rate card publishes a minute rate for most of the network but not all of
+// it. Naming the shortfall — and where it is — is cheaper than having Uber
+// notice that the map counts ten cities and the rate card prices nine.
+const UNPRICED = (() => {
+  const inventory = json(resolve(ROOT, 'src/data/boards.json'));
+  const left = [...rates.screens];
+  const short = [];
+  for (const b of inventory) {
+    const i = left.findIndex((r) => r.name === b.name);
+    if (i >= 0) left.splice(i, 1);
+    else short.push(b.city);
+  }
+  const by = {};
+  for (const c of short) by[c] = (by[c] ?? 0) + 1;
+  const where = Object.entries(by)
+    .map(([c, n]) => `${n} in ${c}`)
+    .join(', ');
+  return { count: short.length, where };
+})();
+
 out = out.replace(
   '<!--@NETWORK-TABLE-->',
   `<table style="margin-top:1.3rem"><thead><tr><th>City</th><th class="num" style="width:14%">Screens</th>` +
@@ -159,9 +189,10 @@ out = out.replace(
     `</tr></thead><tbody>${summary}` +
     `<tr class="tot"><td>Total owned and operated</td><td class="num">${rates.screens.length}</td>` +
     `<td colspan="3">All 1920×1080, MP4, minimum 60 minutes per day</td></tr></tbody></table>` +
-    `<p class="tnote">Six further screens are held in the network without a published minute ` +
-    `rate and are surveyed and quoted on request, giving fifty-eight owned sites in total. ` +
-    `The full priced list, site by site, is at 5.2.</p>`,
+    `<p class="tnote">${UNPRICED.count} further screens are held in the network without a ` +
+    `published minute rate — ${UNPRICED.where} — and are surveyed and quoted on request within ` +
+    `24 hours of brief, giving fifty-eight owned sites in total. The full priced list, site by ` +
+    `site, is at 5.2.</p>`,
 );
 
 const metro = rates.metro;
@@ -192,6 +223,30 @@ out = out.replace('<!--@CARAVAN-->', simple('LED-covered van', rates.caravan,
 out = out.replace('<!--@HUMANLED-->', simple('Human LED display', rates.human_led));
 
 // ------------------------------------------------------------------ write ---
+
+// The chapter openers and the coverage map. Photography is the argument in a
+// document about outdoor media, so it is generated rather than optional.
+const rfpPhotos = existsSync(resolve(HERE, 'photos.json'))
+  ? json(resolve(HERE, 'photos.json'))
+  : { openers: {}, cities: {} };
+
+out = out.replace(/<!--@OPENER:([a-z]+)-->/g, (whole, key) => {
+  const shot = rfpPhotos.openers?.[key];
+  if (!shot) return '';
+  const label = OPENER_LABELS[key] ?? '';
+  return (
+    `<figure class="opener"><img src="${shot.uri}" alt="${esc(shot.alt)}" ` +
+    `width="1200" height="281" />` +
+    `<figcaption class="opener__tag"><b>${label[0]}</b><span>${esc(label[1])}</span></figcaption>` +
+    `</figure>`
+  );
+});
+
+out = out.replace(
+  '<!--@MAP-->',
+  existsSync(resolve(HERE, 'map.svg')) ? readFileSync(resolve(HERE, 'map.svg'), 'utf8') : '',
+);
+
 const dest = resolve(ROOT, 'uber-rfp-response.html');
 writeFileSync(dest, out);
 

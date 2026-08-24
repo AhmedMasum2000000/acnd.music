@@ -16,8 +16,8 @@
    "city": "Dhaka",
    "rate": 160,
    "dimension": "W-20' x H-10'",
-   "hours": "12 hours",
-   "schedule": "9am-11pm",
+   "hours": "9 hours",
+   "schedule": "9am-8pm",
    "minimum": "60 min/day",
    "model": "P5",
    "matched": true
@@ -67,12 +67,12 @@
    "matched": true
   },
   {
-   "name": "Gulshan Circle-2 (East Side) Rob Super Market",
+   "name": "Gulshan Circle-2 (East Side) (Amanullah Trade Center)",
    "city": "Dhaka",
    "rate": 200,
-   "dimension": "W-40' x H-20'",
-   "hours": "13 hours",
-   "schedule": "9am-11pm",
+   "dimension": "W-32' x H-14'",
+   "hours": "12 hours",
+   "schedule": "10am-11pm",
    "minimum": "60 min/day",
    "model": "P6",
    "matched": true
@@ -144,12 +144,12 @@
    "matched": true
   },
   {
-   "name": "Police Plaza Entry Gate (South side)",
+   "name": "Police Plaza Entry Gate (North side)",
    "city": "Dhaka",
    "rate": 50,
-   "dimension": "W-6.5'' x H-9.5'",
+   "dimension": "W-6.5' x H-9.5'",
    "hours": "6 hours",
-   "schedule": "12:00pm-4:00pm",
+   "schedule": "9am-7pm",
    "minimum": "60 min/day",
    "model": "P3",
    "matched": true

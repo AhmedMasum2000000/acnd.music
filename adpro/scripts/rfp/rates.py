@@ -54,14 +54,54 @@ BY_PAGE = {
 }
 
 
+def norm(dim: str) -> str:
+    """Compare dimensions across two sources that quote them differently."""
+    return re.sub(r"[\s'\u2019\u201d\"]+", "", (dim or "").lower())
+
+
+def assign(name: str, dim: str, pool: list[dict]) -> dict | None:
+    """Claim the inventory entry a priced screen refers to, and consume it.
+
+    Two things make this harder than a name lookup. The sales deck abbreviates —
+    "Manik Mia Avenue" for "Manik Mia Avenue Aarong Signal" — so prefixes have
+    to be tried before similarity, or the threshold ends up loose enough to pair
+    the wrong two sites. And some junctions carry two screens under one name:
+    Gulshan Circle-2 East Side is both the Rob Super Market screen and the
+    Amanullah Trade Center screen. Name alone pairs both deck entries with the
+    first inventory row and leaves the second looking unpriced, so where a name
+    is ambiguous the dimension decides, and every entry is consumed once.
+    """
+    def take(candidates: list[int]) -> dict | None:
+        if not candidates:
+            return None
+        if len(candidates) > 1:
+            exact = [i for i in candidates if norm(pool[i]["dimension"]) == norm(dim)]
+            if exact:
+                candidates = exact
+        return pool.pop(candidates[0])
+
+    for test in (
+        lambda b: b["name"] == name,
+        lambda b: b["name"].startswith(name),
+        lambda b: name.startswith(b["name"]),
+    ):
+        hit = take([i for i, b in enumerate(pool) if test(b)])
+        if hit:
+            return hit
+
+    close = difflib.get_close_matches(name, [b["name"] for b in pool], n=1, cutoff=0.72)
+    if close:
+        return take([i for i, b in enumerate(pool) if b["name"] == close[0]])
+    return None
+
+
 def screens() -> list[dict]:
     """The digital network, priced, matched back to the site inventory."""
     path = SRC / LED_PROPOSAL
     if not path.exists():
         sys.exit(f"missing {path} — set ADPRO_RFP_SRC")
 
-    boards = json.loads((ROOT / "src" / "data" / "boards.json").read_text())
-    by_name = {b["name"]: b for b in boards}
+    pool = json.loads((ROOT / "src" / "data" / "boards.json").read_text())
 
     out, city = [], None
     for page_no, page in enumerate(PdfReader(str(path)).pages, start=1):
@@ -84,20 +124,20 @@ def screens() -> list[dict]:
             ]
             name = body[0] if body else ""
 
-        match = difflib.get_close_matches(name, list(by_name), n=1, cutoff=0.72)
-        board = by_name[match[0]] if match else {}
         dim = re.search(r"Dimension:\s*([^\n]+)", text)
+        deck_dim = dim.group(1).strip() if dim else ""
+        board = assign(name, deck_dim, pool) or {}
 
         out.append({
             "name": board.get("name", name),
             "city": board.get("city", city),
             "rate": int(cost.group(1).replace(",", "")),
-            "dimension": (board.get("dimension") or (dim.group(1).strip() if dim else "")).replace("’", "'"),
+            "dimension": (board.get("dimension") or deck_dim).replace("\u2019", "'"),
             "hours": board.get("hours", ""),
             "schedule": board.get("schedule", ""),
             "minimum": board.get("minimum", ""),
             "model": board.get("ledModel", ""),
-            "matched": bool(match),
+            "matched": bool(board),
         })
     return out
 
