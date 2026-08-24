@@ -269,7 +269,7 @@
     .answer__grid { gap: 5mm 7mm; margin-top: 5mm; }
     .answer__grid b { font-size: 9.5pt; }
     .answer__grid span { font-size: 8pt; }
-    .caps { gap: 4mm 5mm; }
+    .caps { gap: 4mm 5mm; grid-template-columns: repeat(5, 1fr); }
     .caps li { font-size: 7.5pt; }
     .caps li { font-size: 8pt; line-height: 1.6; }
     .flow li { margin-bottom: 3.5mm; }
@@ -461,16 +461,20 @@
       <div class="rail"><span class="rail__num">4.2</span><span class="rail__name">Offices and coverage</span></div>
       <div class="body-col" style="max-width: none">
         <h2>Ten cities, and a screen in every one of them.</h2>
-        <p class="lede" style="max-width: 68ch">
-          Head office and studio in Gulshan, Dhaka; registered office in Purana Paltan.
-          Field operations run from Dhaka with resident crews and contracted riggers in
-          each divisional city, which is what keeps a replacement inside the same
-          working day rather than the same week.
-        </p>
         <div class="map">
           <!--@MAP-->
           <div>
-            <!--@COVERAGE-->
+            <p class="lede" style="max-width: none">
+              Head office and studio in Gulshan, Dhaka; registered office in Purana
+              Paltan. Field operations run from Dhaka with resident crews and
+              contracted riggers in each divisional city, which is what keeps a
+              replacement inside the same working day rather than the same week.
+            </p>
+            <p class="tnote" style="margin-top: 1.2rem">
+              Dot area is proportional to the number of AD PRO screens in that city,
+              read from the same inventory that prices them at 5.2. Boundary: Natural
+              Earth 1:10m, public domain.
+            </p>
           </div>
         </div>
       </div>
@@ -574,6 +578,7 @@
           is owned and operated by AD PRO; the rate is the operator's rate.
         </p>
         <!--@NETWORK-TABLE-->
+        <!--@COVERAGE-->
       </div>
     </section>
   </div>

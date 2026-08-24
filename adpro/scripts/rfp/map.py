@@ -8,6 +8,9 @@ country. Drawn as SVG rather than a raster: it costs a few kilobytes, prints at
 whatever resolution the printer has, and the dots are sized from the inventory
 rather than by eye, so the map cannot drift out of step with the rate card.
 
+The boundary is Natural Earth data, fetched once by geometry.py and committed
+as bangladesh.json. This script never touches the network.
+
     python3 scripts/rfp/map.py
 
 Writes map.svg beside this script.
@@ -15,36 +18,26 @@ Writes map.svg beside this script.
 
 from pathlib import Path
 import json
+import math
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 
-# Approximate longitude/latitude of each city AD PRO operates in.
+# Town centre coordinates for each city AD PRO operates in. Checked against
+# the boundary at build time rather than trusted: two of these were a few
+# kilometres out when they were first typed in.
 PLACES = {
-    "Dhaka": (90.41, 23.81),
-    "Chattogram": (91.83, 22.36),
-    "Sylhet": (91.87, 24.90),
-    "Rajshahi": (88.60, 24.37),
-    "Cox's Bazar": (92.01, 21.44),
-    "Cumilla": (91.18, 23.46),
-    "Rangpur": (89.25, 25.75),
-    "Bogura": (89.37, 24.85),
-    "Narayanganj": (90.50, 23.62),
-    "Feni": (91.40, 23.02),
+    "Dhaka": (90.4125, 23.8103),
+    "Chattogram": (91.7832, 22.3569),
+    "Sylhet": (91.8687, 24.8949),
+    "Rajshahi": (88.6042, 24.3745),
+    "Cox's Bazar": (91.9700, 21.4272),
+    "Cumilla": (91.1809, 23.4607),
+    "Rangpur": (89.2752, 25.7439),
+    "Bogura": (89.3773, 24.8465),
+    "Narayanganj": (90.4990, 23.6238),
+    "Feni": (91.3976, 23.0159),
 }
-
-# A simplified outline of Bangladesh in the same lon/lat space. Deliberately
-# coarse: this is a locator, not a survey, and a coarse outline prints cleanly
-# at the size it is used.
-OUTLINE = [
-    (88.05, 25.30), (88.45, 26.05), (88.95, 26.25), (89.55, 26.05), (89.85, 26.05),
-    (90.15, 25.95), (90.60, 26.15), (91.10, 25.20), (91.65, 25.20), (92.15, 25.15),
-    (92.45, 24.90), (92.35, 24.35), (91.75, 24.15), (91.40, 23.65), (91.30, 23.05),
-    (91.65, 22.75), (92.20, 22.35), (92.55, 21.95), (92.65, 21.35), (92.30, 20.80),
-    (91.90, 21.55), (91.55, 22.20), (90.95, 22.15), (90.55, 21.85), (90.20, 21.90),
-    (89.85, 22.05), (89.35, 21.75), (89.05, 22.15), (88.75, 22.35), (88.55, 22.95),
-    (88.15, 23.35), (88.65, 23.85), (88.30, 24.35), (88.05, 24.65),
-]
 
 W, H, PAD = 560.0, 620.0, 26.0
 
@@ -58,21 +51,47 @@ LABEL = {
 }
 
 
-def project() -> tuple:
-    lons = [p[0] for p in OUTLINE]
-    lats = [p[1] for p in OUTLINE]
+def outline() -> list[list[list[float]]]:
+    """The country's rings, largest first. Written by geometry.py."""
+    path = HERE / "bangladesh.json"
+    if not path.exists():
+        raise SystemExit(f"missing {path.name} — run: python3 scripts/rfp/geometry.py")
+    return json.loads(path.read_text())["rings"]
+
+
+def project(rings: list) -> tuple:
+    """Fit the country to the viewBox, with longitude corrected for latitude.
+
+    A degree of longitude is shorter than a degree of latitude everywhere but
+    the equator. Scaling both by the same factor, which is what this did
+    before, drew Bangladesh about nine per cent too wide.
+    """
+    lons = [x for r in rings for x, _ in r]
+    lats = [y for r in rings for _, y in r]
     lo, hi = min(lons), max(lons)
     la, lb = min(lats), max(lats)
-    sx = (W - 2 * PAD) / (hi - lo)
-    sy = (H - 2 * PAD) / (lb - la)
-    s = min(sx, sy)
-    ox = PAD + ((W - 2 * PAD) - (hi - lo) * s) / 2
-    oy = PAD + ((H - 2 * PAD) - (lb - la) * s) / 2
+    squeeze = math.cos(math.radians((la + lb) / 2))
+
+    span_x = (hi - lo) * squeeze
+    span_y = lb - la
+    s = min((W - 2 * PAD) / span_x, (H - 2 * PAD) / span_y)
+    ox = PAD + ((W - 2 * PAD) - span_x * s) / 2
+    oy = PAD + ((H - 2 * PAD) - span_y * s) / 2
 
     def to_xy(lon: float, lat: float) -> tuple[float, float]:
-        return (ox + (lon - lo) * s, oy + (lb - lat) * s)
+        return (ox + (lon - lo) * squeeze * s, oy + (lb - lat) * s)
 
     return to_xy
+
+
+def inside(lon: float, lat: float, ring: list) -> bool:
+    """Ray casting, to prove each city sits on the land it is plotted on."""
+    hit = False
+    for (x1, y1), (x2, y2) in zip(ring, ring[1:] + ring[:1]):
+        if (y1 > lat) != (y2 > lat):
+            if lon < x1 + (lat - y1) / (y2 - y1) * (x2 - x1):
+                hit = not hit
+    return hit
 
 
 def main() -> None:
@@ -81,11 +100,26 @@ def main() -> None:
     for b in boards:
         counts[b["city"]] = counts.get(b["city"], 0) + 1
 
-    to_xy = project()
+    rings = outline()
+    to_xy = project(rings)
+
+    # Every ring is a subpath of one path, so the islands come with the coast.
     path = " ".join(
-        ("M" if i == 0 else "L") + f"{x:.1f},{y:.1f}"
-        for i, (x, y) in enumerate(to_xy(lon, lat) for lon, lat in OUTLINE)
-    ) + " Z"
+        " ".join(
+            ("M" if i == 0 else "L") + f"{x:.1f},{y:.1f}"
+            for i, (x, y) in enumerate(to_xy(lon, lat) for lon, lat in ring)
+        ) + " Z"
+        for ring in rings
+    )
+
+    # A city plotted into the Bay of Bengal is worse than no map at all, and
+    # against the outline this replaced it was a real possibility.
+    astray = [
+        c for c, (lon, lat) in PLACES.items()
+        if not any(inside(lon, lat, ring) for ring in rings)
+    ]
+    if astray:
+        raise SystemExit("plotted outside the country: " + ", ".join(astray))
 
     biggest = max(counts.get(c, 1) for c in PLACES)
     dots, labels = [], []
@@ -118,8 +152,9 @@ def main() -> None:
         "</svg>"
     )
     (HERE / "map.svg").write_text(svg)
-    print(f"map.svg — {len(PLACES)} cities, {sum(counts.get(c, 0) for c in PLACES)} "
-          f"screens, {len(svg) / 1024:.1f} KB")
+    print(f"map.svg — {len(PLACES)} cities all inside the boundary, "
+          f"{sum(counts.get(c, 0) for c in PLACES)} screens, "
+          f"{len(rings)} rings, {len(svg) / 1024:.1f} KB")
 
 
 if __name__ == "__main__":
