@@ -1,0 +1,636 @@
+{
+ "screens": [
+  {
+   "name": "Gulshan Circle-1, Upper",
+   "city": "Dhaka",
+   "rate": 150,
+   "dimension": "W-30' x H-20'",
+   "hours": "14 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Gulshan Circle-1 Mid Island",
+   "city": "Dhaka",
+   "rate": 160,
+   "dimension": "W-20' x H-10'",
+   "hours": "12 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Gulshan Circle-1 Mid Island",
+   "city": "Dhaka",
+   "rate": 140,
+   "dimension": "W-20' x H-10'",
+   "hours": "12 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Gulshan Circle-2 (West Side) Barun Bhaban",
+   "city": "Dhaka",
+   "rate": 170,
+   "dimension": "W-30' x H-15'",
+   "hours": "13 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Gulshan Circle-2 (East Side) Rob Super Market",
+   "city": "Dhaka",
+   "rate": 180,
+   "dimension": "W-40' x H-20'",
+   "hours": "13 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Gulshan Circle-2 (North side) Lower Screen",
+   "city": "Dhaka",
+   "rate": 150,
+   "dimension": "W-28' x H-15'",
+   "hours": "14 hours",
+   "schedule": "8am-11pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Gulshan Circle-2 (East Side) Rob Super Market",
+   "city": "Dhaka",
+   "rate": 200,
+   "dimension": "W-40' x H-20'",
+   "hours": "13 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Banani Chairmanbari U-Loop",
+   "city": "Dhaka",
+   "rate": 150,
+   "dimension": "W-17' x H-12'",
+   "hours": "10 hours",
+   "schedule": "8am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza (South Side)",
+   "city": "Dhaka",
+   "rate": 170,
+   "dimension": "W-20' x H-30'",
+   "hours": "10 hours",
+   "schedule": "8am-7pm",
+   "minimum": "60 min/day",
+   "model": "P10",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza (Gulshan-1 Facing)",
+   "city": "Dhaka",
+   "rate": 200,
+   "dimension": "W-20' x H-30'",
+   "hours": "15 hours",
+   "schedule": "8am-12pm",
+   "minimum": "60 min/day",
+   "model": "P10",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza, Front Side",
+   "city": "Dhaka",
+   "rate": 100,
+   "dimension": "W-10' x H-13'",
+   "hours": "9 hours",
+   "schedule": "9am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza, Front Side",
+   "city": "Dhaka",
+   "rate": 100,
+   "dimension": "W-10' x H-13'",
+   "hours": "9 hours",
+   "schedule": "9am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza Entry Gate (South side)",
+   "city": "Dhaka",
+   "rate": 50,
+   "dimension": "W-6.5'' x H-9.5'",
+   "hours": "6 hours",
+   "schedule": "12:00pm-4:00pm",
+   "minimum": "60 min/day",
+   "model": "P3",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza Entry Gate (South side)",
+   "city": "Dhaka",
+   "rate": 50,
+   "dimension": "W-6.5'' x H-9.5'",
+   "hours": "6 hours",
+   "schedule": "12:00pm-4:00pm",
+   "minimum": "60 min/day",
+   "model": "P3",
+   "matched": true
+  },
+  {
+   "name": "Akij House, GMG Circle, Gulshan-Tejgaon Road, Dhaka",
+   "city": "Dhaka",
+   "rate": 130,
+   "dimension": "W-11' x H-07'",
+   "hours": "10 hours",
+   "schedule": "8am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Airport Entrance (Banani Facing)",
+   "city": "Dhaka",
+   "rate": 160,
+   "dimension": "W-25' x H-12.5'",
+   "hours": "11 hours",
+   "schedule": "9am-9pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Bijoy Saroni Mor",
+   "city": "Dhaka",
+   "rate": 160,
+   "dimension": "W-22' x H-11.5'",
+   "hours": "12 hours",
+   "schedule": "9am-10pm",
+   "minimum": "60 min/day",
+   "model": "",
+   "matched": true
+  },
+  {
+   "name": "Manik Mia Avenue Aarong Signal",
+   "city": "Dhaka",
+   "rate": 175,
+   "dimension": "W-40' x H-20'",
+   "hours": "12 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Khamar Bari Moor",
+   "city": "Dhaka",
+   "rate": 130,
+   "dimension": "W-13' x H-8'",
+   "hours": "12 hours",
+   "schedule": "9am-10pm",
+   "minimum": "60 min/day",
+   "model": "",
+   "matched": true
+  },
+  {
+   "name": "Dhanmondi – 27, Opposite of Rapa Plaza",
+   "city": "Dhaka",
+   "rate": 140,
+   "dimension": "W-23' x H-12.5'",
+   "hours": "14 hours",
+   "schedule": "8am-11pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Dhanmondi – 27, Mid Island Opposite of Rapa Plaza",
+   "city": "Dhaka",
+   "rate": 130,
+   "dimension": "W-10' x H-13'",
+   "hours": "14 hours",
+   "schedule": "8am-11pm",
+   "minimum": "30 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Dhanmondi-2",
+   "city": "Dhaka",
+   "rate": 170,
+   "dimension": "W-18' x H-11'",
+   "hours": "12 hours",
+   "schedule": "9am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Dahnmondi 02 No. Road (Zigatola)",
+   "city": "Dhaka",
+   "rate": 140,
+   "dimension": "W-20' x H-10'",
+   "hours": "10 hours",
+   "schedule": "8am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Green Road Crossing, U-turn",
+   "city": "Dhaka",
+   "rate": 130,
+   "dimension": "W-22'x H-12.5'",
+   "hours": "13 hours",
+   "schedule": "9am-11pm",
+   "minimum": "60 min/day",
+   "model": "P4",
+   "matched": true
+  },
+  {
+   "name": "Bashundhara City Indoor",
+   "city": "Dhaka",
+   "rate": 180,
+   "dimension": "W-19' x H-16'",
+   "hours": "12 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Karwan Bazar",
+   "city": "Dhaka",
+   "rate": 140,
+   "dimension": "W-22' x H-12.5'",
+   "hours": "13 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Mohakhali Rail Crossing",
+   "city": "Dhaka",
+   "rate": 120,
+   "dimension": "W-13' x H-8'",
+   "hours": "12 hours",
+   "schedule": "09am-10pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "SKS Tower, Exit Gate, Mohakhali",
+   "city": "Dhaka",
+   "rate": 80,
+   "dimension": "W-14' x H-20'",
+   "hours": "8 hours",
+   "schedule": "10am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "SKS Tower, Entrance, Mohakhali",
+   "city": "Dhaka",
+   "rate": 80,
+   "dimension": "W-11' x H-17'",
+   "hours": "8 hours",
+   "schedule": "10am-07pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Hotel Radisson Blu",
+   "city": "Dhaka",
+   "rate": 100,
+   "dimension": "W-22' x H-12'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Kamlapur Railway Station (Entry Gate)",
+   "city": "Dhaka",
+   "rate": 120,
+   "dimension": "W-18' x H-12'",
+   "hours": "11 hours",
+   "schedule": "7am-7pm",
+   "minimum": "60 min/day",
+   "model": "P4",
+   "matched": true
+  },
+  {
+   "name": "Airport Railway Station (Entry Gate)",
+   "city": "Dhaka",
+   "rate": 100,
+   "dimension": "W-15' x H-8'",
+   "hours": "11 hours",
+   "schedule": "7am-7pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Shohortoli Railway Station, Chittagong (Entry Gate)",
+   "city": "Dhaka",
+   "rate": 120,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "7am-7pm",
+   "minimum": "30 min/day",
+   "model": "",
+   "matched": true
+  },
+  {
+   "name": "Golpahar Moor",
+   "city": "Chattogram",
+   "rate": 100,
+   "dimension": "W-25' x H-15'",
+   "hours": "",
+   "schedule": "2:00pm-3:00pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Agrabad Circle, Chittagong",
+   "city": "Chattogram",
+   "rate": 120,
+   "dimension": "W-12' x H-8'",
+   "hours": "14 hours",
+   "schedule": "8am-11pm",
+   "minimum": "30 min/day",
+   "model": "",
+   "matched": true
+  },
+  {
+   "name": "Sughondha Circle, Cox’s Bazar",
+   "city": "Cox's Bazar",
+   "rate": 130,
+   "dimension": "W-17' x H-11'",
+   "hours": "8 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sughondha Point, Cox’s Bazar",
+   "city": "Cox's Bazar",
+   "rate": 130,
+   "dimension": "W-17' x H-11'",
+   "hours": "8 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Dolphin Moor, Cox’s Bazar",
+   "city": "Cox's Bazar",
+   "rate": 130,
+   "dimension": "W-20' x H-13'",
+   "hours": "12 hours",
+   "schedule": "6am-10pm",
+   "minimum": "60 min/day",
+   "model": "P5",
+   "matched": true
+  },
+  {
+   "name": "Kandirpar, Cumilla",
+   "city": "Cumilla",
+   "rate": 80,
+   "dimension": "W-8' x H-14'",
+   "hours": "4 hours",
+   "schedule": "5pm-9pm",
+   "minimum": "70 min/day",
+   "model": "P4",
+   "matched": true
+  },
+  {
+   "name": "Rajshahi, Shaheb Bazar 2 Screens (Both Side)",
+   "city": "Rajshahi",
+   "rate": 120,
+   "dimension": "W-16' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "",
+   "matched": true
+  },
+  {
+   "name": "Rajshahi, New Market",
+   "city": "Rajshahi",
+   "rate": 70,
+   "dimension": "W-8' x H-6'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet, Bondor Bazar",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet, Uposohor",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet, Nairpul Point",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet, Chowkideki Point",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet Rikabi Bazar",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet Jitu Miah Point",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet, Surma Point",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": "W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Sylhet, Tilaghar Point",
+   "city": "Sylhet",
+   "rate": 90,
+   "dimension": ":W-15' x H-10'",
+   "hours": "11 hours",
+   "schedule": "10am-10pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Shapla Mor, Rangpur",
+   "city": "Rangpur",
+   "rate": 100,
+   "dimension": "W-17' x H-11'",
+   "hours": "10 hours",
+   "schedule": "10.00am-10.00pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Police Plaza, Bogura",
+   "city": "Bogura",
+   "rate": 100,
+   "dimension": "W-16' x H-9'",
+   "hours": "12 hours",
+   "schedule": "9.00am-10.00pm",
+   "minimum": "60 min/day",
+   "model": "P6",
+   "matched": true
+  },
+  {
+   "name": "Narayanganj",
+   "city": "Narayanganj",
+   "rate": 100,
+   "dimension": "W-16' x H-10'",
+   "hours": "",
+   "schedule": "10am-10pm",
+   "minimum": "30 min/day",
+   "model": "",
+   "matched": true
+  }
+ ],
+ "metro": {
+  "note": "Sticker branding inside Metro Rail coaches. ~180 sq ft of printable area per coach; all artwork subject to DMTCL approval.",
+  "columns": [
+   "3 months",
+   "6 months",
+   "12 months"
+  ],
+  "rows": [
+   [
+    "3 coaches in 3 different trains",
+    3700000,
+    7080000,
+    12420000
+   ],
+   [
+    "6 coaches in 6 different trains",
+    7280000,
+    12864000,
+    22536000
+   ],
+   [
+    "12 coaches in 12 different trains",
+    11568000,
+    21062400,
+    36777600
+   ],
+   [
+    "24 coaches in 24 different trains",
+    19088800,
+    34659840,
+    59084160
+   ]
+  ]
+ },
+ "caravan": {
+  "note": "One-ton pickup, P5 outdoor LED module H-6ft x W-8ft with sound box, 8 hours on air per day, 60km coverage per day.",
+  "rows": [
+   [
+    "LED-covered van, per day (outside Dhaka)",
+    100000
+   ],
+   [
+    "Four-side pickup branding, LED basement — one-off",
+    100000
+   ],
+   [
+    "Pickup rent for fixing and unfixing branding — two days",
+    50000
+   ]
+  ]
+ },
+ "human_led": {
+  "note": "Outdoor human LED display inside Dhaka, W-11in x H-18in, 5 units, transport included.",
+  "rows": [
+   [
+    "Human LED display, per day, 5 units",
+    35000
+   ]
+  ]
+ }
+}
