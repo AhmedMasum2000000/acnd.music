@@ -91,11 +91,11 @@ function heading(slide, eyebrow, title, opts = {}) {
 /** Footer: who is speaking and where in the deck we are. */
 function footer(slide, n) {
   slide.addText('AD PRO COMMUNICATIONS LTD.', {
-    x: M, y: H - 0.52, w: 5, h: 0.24,
+    x: M, y: H - 0.74, w: 5, h: 0.24,
     fontFace: FONT, fontSize: 9, charSpacing: 1.4, color: GREY, margin: 0,
   });
   slide.addText(`${n} / 8`, {
-    x: W - M - 1.2, y: H - 0.52, w: 1.2, h: 0.24,
+    x: W - M - 1.2, y: H - 0.74, w: 1.2, h: 0.24,
     fontFace: FONT, fontSize: 9, charSpacing: 1.4, color: GREY,
     align: 'right', margin: 0,
   });
@@ -180,7 +180,7 @@ function footer(slide, n) {
       fontFace: FONT, fontSize: 14, bold: true, color: NAVY, margin: 0, valign: 'top',
     });
     s.addText(b, {
-      x, y: 5.48, w: cw, h: 1.35,
+      x, y: 5.48, w: cw, h: 1.2,
       fontFace: FONT, fontSize: 11, color: SOFT, margin: 0, lineSpacing: 17, valign: 'top',
     });
   });
@@ -219,7 +219,7 @@ function footer(slide, n) {
 
   s.addText(
     'Head office and studio in Gulshan, Dhaka; registered office in Purana Paltan. Field operations run from Dhaka with resident crews and contracted riggers in each divisional city, which is what keeps a replacement inside the same working day rather than the same week.',
-    { x: 5.9, y: 6.05, w: colW * 2 + 0.5, h: 0.85, fontFace: FONT, fontSize: 10, color: SOFT, margin: 0, lineSpacing: 14 },
+    { x: 5.9, y: 6.05, w: colW * 2 + 0.5, h: 0.62, fontFace: FONT, fontSize: 10, color: SOFT, margin: 0, lineSpacing: 14, valign: 'top' },
   );
   footer(s, 3);
   s.addNotes('Dot area is proportional to screens in the city. Boundary drawn from Natural Earth 1:10m, public domain.');
@@ -312,7 +312,7 @@ function footer(slide, n) {
   s.addText(
     'Priced per minute per day, as the RFP asks. Every rate in the full response is the rate AD PRO charges as the operator of the screen, because AD PRO owns it. There is no media owner in the chain and therefore nothing to pass through.',
     // Held to a readable measure rather than run the full 12in width.
-    { x: M, y: 6.28, w: 8.7, h: 0.62, fontFace: FONT, fontSize: 11, color: SOFT, margin: 0, lineSpacing: 15, valign: 'top' },
+    { x: M, y: 6.10, w: 8.7, h: 0.58, fontFace: FONT, fontSize: 11, color: SOFT, margin: 0, lineSpacing: 15, valign: 'top' },
   );
   footer(s, 5);
   s.addNotes(`${rateList.length} screens carry a published rate; the balance of the fifty-eight are surveyed and quoted within 24 hours.`);
@@ -354,7 +354,7 @@ function footer(slide, n) {
   });
 
   s.addText('Metro rail coach branding, LED covered vans and human LED display are priced in the same response, at 5.3.', {
-    x: M, y: 6.55, w: W - M * 2, h: 0.3, fontFace: FONT, fontSize: 10.5, color: GREY, margin: 0,
+    x: M, y: 6.42, w: W - M * 2, h: 0.34, fontFace: FONT, fontSize: 10.5, color: GREY, margin: 0,
   });
   footer(s, 6);
   s.addNotes('Four categories that would otherwise be four separate vendors, each with its own markup.');
@@ -376,7 +376,7 @@ function footer(slide, n) {
   });
   s.addText(
     'Should any circumstance ever warrant one, AD PRO states the reason in writing, shows the cost break-up, and obtains Uber’s prior written agreement before the cost is incurred, as Part 3 of the RFP requires.',
-    { x: M, y: 4.5, w: 6.0, h: 1.1, fontFace: FONT, fontSize: 11, color: SKY, margin: 0, lineSpacing: 16, valign: 'top' },
+    { x: M, y: 4.5, w: 6.0, h: 1.1, fontFace: FONT, fontSize: 11, color: 'B9CCE4', margin: 0, lineSpacing: 16, valign: 'top' },
   );
 
   const rows = [
@@ -421,13 +421,13 @@ function footer(slide, n) {
   const cw = (W - M * 2 - 0.5 * 2) / 3;
   terms.forEach(([t, b], i) => {
     const x = M + (i % 3) * (cw + 0.5);
-    const y = 5.05 + Math.floor(i / 3) * 0.95;
+    const y = 4.9 + Math.floor(i / 3) * 0.95;
     s.addText(t, { x, y, w: cw, h: 0.28, fontFace: FONT, fontSize: 13, bold: true, color: BLUE, margin: 0 });
-    s.addText(b, { x, y: y + 0.28, w: cw, h: 0.56, fontFace: FONT, fontSize: 10.5, color: SOFT, margin: 0, lineSpacing: 14, valign: 'top' });
+    s.addText(b, { x, y: y + 0.28, w: cw, h: 0.5, fontFace: FONT, fontSize: 10.5, color: SOFT, margin: 0, lineSpacing: 14, valign: 'top' });
   });
 
   s.addText('adpro.com.bd  ·  +880 1958 503755  ·  mkt.adpro@gmail.com', {
-    x: M, y: H - 0.58, w: W - M * 2, h: 0.3,
+    x: M, y: H - 0.8, w: W - M * 2, h: 0.3,
     fontFace: FONT, fontSize: 10.5, color: NAVY, margin: 0,
   });
   s.addNotes('Close on the terms, because none of them need negotiating. The full response and every annexure are already with the panel.');
