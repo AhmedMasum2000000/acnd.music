@@ -28,3 +28,8 @@ news-*.html
 !billboards.html
 !faq.html
 !news.html
+
+# Written by scripts/rfp/deck-art.py: the deck's photographs unpacked out of
+# scripts/rfp/photos.json and scripts/profile/photos.json, which are tracked.
+# The same pixels a second time, and pptxgenjs needs them as files on disk.
+scripts/rfp/deck-art/
