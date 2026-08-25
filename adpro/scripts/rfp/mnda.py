@@ -37,7 +37,10 @@ FIELDS = {
         "37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000, Bangladesh"
     ),
     "[COUNTERPARTY_NAME]": "AD PRO COMMUNICATIONS LTD.",
-    # [Effective_Date] is deliberately left for Uber to set on execution.
+    # Dated the day the response is submitted, and phrased to fit the
+    # sentence around it: "made as of the [Effective_Date],". Uber can change
+    # it on execution with a single edit, which beats filling a blank.
+    "[Effective_Date]": "25th day of August 2026",
 }
 
 
@@ -56,8 +59,12 @@ def fill(xml: str, token: str, value: str) -> tuple[str, int]:
     name = token.strip("[]")
     esc = re.escape(name)
     gap = r"(?:(?!<w:t)[\s\S])*?"
+    # The closing run is not always just "]": on [Effective_Date] Word carried
+    # the following comma into the same run, so whatever trails the bracket is
+    # captured and put back rather than required to be empty.
     split = re.compile(
-        rf"(<w:t[^>]*>)\[(</w:t>{gap}<w:t[^>]*>){esc}(</w:t>{gap}<w:t[^>]*>)\](</w:t>)"
+        rf"(<w:t[^>]*>)\[(</w:t>{gap}<w:t[^>]*>){esc}(</w:t>{gap}<w:t[^>]*>)\]"
+        rf"((?:(?!</w:t>)[\s\S])*</w:t>)"
     )
     xml, n = split.subn(rf"\g<1>\g<2>{value}\g<3>\g<4>", xml)
 
@@ -100,7 +107,7 @@ def main() -> None:
         print(f"   {count} x {token}")
     if missed:
         print("   not found in template:", ", ".join(missed))
-    print("   [Effective_Date] left blank for Uber; signatory block left unsigned")
+    print("   signatory block left unsigned for DocuSign")
 
 
 if __name__ == "__main__":
