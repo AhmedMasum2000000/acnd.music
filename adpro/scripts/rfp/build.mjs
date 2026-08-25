@@ -350,8 +350,13 @@ out = out.replace(/<!--@OPENER:([a-z]+)-->/g, (whole, key) => {
 // it lands above that person's rule at print resolution. Nothing there means a
 // ruled line to sign by hand, which is what the document ships as until the
 // files arrive.
-const SIGNATORIES = { habib: 'ABM Zakaria Habib', masum: 'A. H. Al-Masum' };
+const SIGNATORIES = {
+  habib: 'ABM Zakaria Habib',
+  masum: 'A. H. Al-Masum',
+  seal: "AD PRO Communications Ltd. company seal",
+};
 const signed = [];
+const marks = {};
 for (const [slug, name] of Object.entries(SIGNATORIES)) {
   const dir = resolve(HERE, 'signatures');
   const file = ['png', 'jpg', 'jpeg']
@@ -362,9 +367,10 @@ for (const [slug, name] of Object.entries(SIGNATORIES)) {
     const mime = file.endsWith('.png') ? 'png' : 'jpeg';
     mark =
       `<img src="data:image/${mime};base64,${readFileSync(file).toString('base64')}" ` +
-      `alt="Signature of ${esc(name)}" />`;
+      `alt="${slug === 'seal' ? esc(name) : 'Signature of ' + esc(name)}" />`;
     signed.push(slug);
   }
+  marks[slug] = mark;
   out = out.replaceAll(`<!--@SIG:${slug}-->`, mark);
 }
 
@@ -372,6 +378,17 @@ out = out.replace(
   '<!--@MAP-->',
   existsSync(resolve(HERE, 'map.svg')) ? readFileSync(resolve(HERE, 'map.svg'), 'utf8') : '',
 );
+
+// ---------------------------------------------------------- cover letter ---
+// One sheet, the same typeface and palette and lockup, so the covering note and
+// the document it covers read as one submission rather than two.
+let letter = read(resolve(HERE, 'letter.html'));
+letter = letter.replace('/*@SHARED-CSS*/', shared);
+letter = letter.replaceAll('<!--@LOGO-->', logo);
+for (const [slug, mark] of Object.entries(marks)) {
+  letter = letter.replaceAll(`<!--@SIG:${slug}-->`, mark);
+}
+writeFileSync(resolve(ROOT, 'uber-cover-letter.html'), '<meta charset="utf-8">\n' + letter, 'utf8');
 
 const dest = resolve(ROOT, 'uber-rfp-response.html');
 // Chromium sniffs the encoding when the file declares none, and a shift in

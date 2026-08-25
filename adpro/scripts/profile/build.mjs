@@ -138,5 +138,16 @@ const dest = resolve(ROOT, 'company-profile.html');
 // Chromium sniffs the encoding when the file declares none, and a shift in
 // the byte pattern can flip that guess to a Chinese codepage: en dashes and
 // cedillas then print as CJK. Declare it rather than let it be guessed.
+// The company seal on the back panel, from the same prepared PNG the RFP
+// response and the covering letter use.
+const sealFile = resolve(HERE, '..', 'rfp', 'signatures', 'seal.png');
+out = out.replace(
+  '<!--@SEAL-->',
+  existsSync(sealFile)
+    ? `<img class="closing__seal" alt="AD PRO Communications Ltd. company seal" ` +
+      `src="data:image/png;base64,${readFileSync(sealFile).toString('base64')}" />`
+    : '',
+);
+
 writeFileSync(dest, '<meta charset="utf-8">\n' + out, 'utf8');
 console.log(`company-profile.html: ${logos.length} marks, ${(out.length / 1024 / 1024).toFixed(2)} MB`);

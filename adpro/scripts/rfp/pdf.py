@@ -33,8 +33,13 @@ from pypdf._page import PageObject
 from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-SRC = ROOT / "uber-rfp-response.html"
-OUT = ROOT / "uber-rfp-response.pdf"
+
+# Which document to print. The cover letter goes through the same pipeline as
+# the response: same A4 rule, same letterhead stamp, same photograph pass. A
+# second script would be a second place for those to drift apart.
+STEM = sys.argv[1] if len(sys.argv) > 1 else "uber-rfp-response"
+SRC = ROOT / f"{STEM}.html"
+OUT = ROOT / f"{STEM}.pdf"
 
 # The running line along the foot of every inside page. The cover and the
 # back cover are photographs to their edges and take neither.
@@ -185,6 +190,13 @@ def shrink() -> tuple[int, int]:
             pil = img.image
             if pil is None:
                 continue
+            # A mark with an alpha channel is never a photograph. JPEG has no
+            # alpha, so recompressing one turns everything the signature was
+            # not drawn on into solid black, which is exactly how the cover
+            # letter first came out: a 900px signature is wide enough and
+            # landscape enough to pass both tests below.
+            if pil.mode in ("RGBA", "LA", "P") or "transparency" in pil.info:
+                continue
             if pil.width < PHOTO_WIDTH or pil.width / pil.height < PHOTO_RATIO:
                 continue
             img.replace(pil.convert("RGB"), quality=QUALITY, optimize=True)
@@ -200,13 +212,13 @@ def shrink() -> tuple[int, int]:
 
 def main() -> None:
     if not SRC.exists():
-        sys.exit("no uber-rfp-response.html, run: node scripts/rfp/build.mjs")
+        sys.exit(f"no {SRC.name}, run: node scripts/rfp/build.mjs")
     render()
     before = OUT.stat().st_size
     photos, pages = shrink()
     after = OUT.stat().st_size
     print(
-        f"uber-rfp-response.pdf: {pages} pages, {photos} photographs recompressed, "
+        f"{OUT.name}: {pages} pages, {photos} photographs recompressed, "
         f"{before / 1024 / 1024:.2f} MB -> {after / 1024 / 1024:.2f} MB"
     )
 

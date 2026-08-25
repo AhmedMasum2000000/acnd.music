@@ -192,6 +192,17 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
 
   .cover .lede { max-width: 46ch; }
 
+  /* The company seal on the back panel, which is navy, so the impression is
+     reversed out of it rather than printed on it. */
+  .closing__seal {
+    width: 26mm;
+    height: auto;
+    flex: none;
+    align-self: center;
+    filter: brightness(0) invert(1);
+    opacity: 0.5;
+  }
+
   .cover__strip { background: var(--navy); padding-block: 0.9rem; }
 
   .cover__strip .sheet {
@@ -250,6 +261,9 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
   .closing__mark .cover__sub { color: rgba(255, 255, 255, 0.62); }
 
   .closing__where {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
     margin-top: 1.9rem;
     font-size: 0.875rem;
     line-height: 1.7;
@@ -642,6 +656,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
     .closing__mark { margin-bottom: 7mm; }
     .closing__where { margin-top: 14mm; font-size: 10pt; }
     .closing__url { font-size: 20pt; margin-top: auto; }
+    .closing__seal { width: 24mm; }
 
     .colophon { break-before: avoid; padding-block: 5mm 0; }
     /* Three columns. Five was one row instead of two and saved the page
@@ -1141,11 +1156,15 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
       <p class="closing__line">Outdoor Advertising Agency in Bangladesh</p>
 
       <div class="closing__where">
-        <p>House&nbsp;#99 (1st floor), Road&nbsp;#10/2, Block&nbsp;D</p>
-        <p>Niketon, Gulshan&nbsp;1, Dhaka&nbsp;1212</p>
-        <p><a href="tel:+8801763924619">+880 1763 924619</a> &nbsp;·&nbsp;
-           <a href="mailto:info@adpro.com.bd">info@adpro.com.bd</a></p>
+        <div>
+          <p>House&nbsp;#99 (1st floor), Road&nbsp;#10/2, Block&nbsp;D</p>
+          <p>Niketon, Gulshan&nbsp;1, Dhaka&nbsp;1212</p>
+          <p><a href="tel:+8801763924619">+880 1763 924619</a> &nbsp;·&nbsp;
+             <a href="mailto:info@adpro.com.bd">info@adpro.com.bd</a></p>
+        </div>
+        <!--@SEAL-->
       </div>
+
 
       <p class="closing__url">adpro.com.bd</p>
     </div>

@@ -46,25 +46,48 @@
   .tnote { font-size: 0.75rem; color: var(--ink-soft); margin-top: 0.7rem; line-height: 1.6; }
 
   /* --- signatures ---------------------------------------------------------
-     Three columns: the two people who bind the company, and the space the
-     seal goes in. The rule sits under a box tall enough to sign inside,
-     whether that is ink on paper or a scanned signature dropped in at build
-     time by build.mjs. */
+     Three columns: the two people who bind the company, and the seal. The rule
+     sits under a box deep enough to hold a real signature, filled by build.mjs
+     from scripts/rfp/signatures/ when the scans are there.
 
-  .sigs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1.2rem; }
+     Both marks are constrained by width as well as height. One signature is
+     3.9 times wider than tall and the other 2.2; capped on height alone, the
+     wide one would run twice the length of its column and read as the louder
+     of the two, which is not a thing a document should decide on the strength
+     of how someone was holding the paper. */
+
+  .sigs { display: grid; grid-template-columns: 1fr 1fr 0.8fr; gap: 1.4rem; margin-top: 2rem; }
 
   .sig {
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    height: 2.15rem;
+    height: 2.4rem;
     border-bottom: 1px solid var(--navy);
     overflow: hidden;
   }
 
   .sig--blank { border-bottom-color: var(--line); }
-  .sig img { max-height: 1.95rem; width: auto; display: block; }
+  .sig img { max-height: 2.2rem; max-width: 100%; width: auto; object-fit: contain; display: block; }
   .sigs .tnote { margin-top: 0.4rem; }
+
+  /* The seal is round and prints at about 24mm, so it needs its own depth
+     rather than the strip a signature sits in. It hangs above the date rule
+     the way a stamp lands on paper, over the line rather than beside it. */
+  .seal {
+    position: relative;
+    height: 2.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .seal img {
+    position: absolute;
+    right: 0;
+    bottom: -0.35rem;
+    width: 24mm;
+    height: auto;
+    opacity: 0.92;
+  }
 
   /* --- answer panel -------------------------------------------------------
      The whole bid before any of the detail, because a buyer reading eleven
@@ -473,7 +496,7 @@
             <tr><td>Incorporated</td><td>31 October 2019, Registrar of Joint Stock Companies &amp; Firms, Dhaka</td></tr>
             <tr><td>Registration no.</td><td>C-156601/2019</td></tr>
             <tr><td>Trade licence</td><td>TRAD/DSCC/312741/2019, Dhaka South City Corporation (FY 2025–26)</td></tr>
-            <tr><td>Chief Executive Officer</td><td>ABM Zakaria Habib</td></tr>
+            <tr><td>Chairman and Chief Executive Officer</td><td>ABM Zakaria Habib</td></tr>
             <tr><td>Nature of business</td><td>Advertising agency, marketing, event management, import and export</td></tr>
             <tr><td>Registered office</td><td>37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
             <tr><td>Operating office</td><td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
@@ -705,7 +728,7 @@
         <p class="tnote">
           Named individuals and CVs for the assigned team will be provided on award.
           Uber's Operations Manager, Bangladesh has a direct line to the Account Director
-          and to the Chief Executive Officer for escalation.
+          and to the Chairman and Chief Executive Officer for escalation.
         </p>
       </div>
     </section>
@@ -1121,21 +1144,6 @@
           signed rate proposals, from which Part 5 is taken unchanged.
         </p>
 
-        <h3 style="margin-top: 1.5rem">Point of contact for this submission</h3>
-        <table style="margin-top: 0.6rem">
-          <tbody>
-            <tr><td style="width: 18%">Commercial and bid</td>
-                <td>Sales &amp; Marketing desk, +880 1958 503755, mkt.adpro@gmail.com</td></tr>
-            <tr><td>General and escalation</td>
-                <td>+880 1763 924619, info@adpro.com.bd</td></tr>
-            <tr><td>Accounts and invoicing</td>
-                <td>+880 1958 503760</td></tr>
-            <tr><td>Correspondence address</td>
-                <td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
-            <tr><td>Contracting entity</td>
-                <td>AD PRO Communications Ltd., registered at 37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
-          </tbody>
-        </table>
 
 
         <div class="signoff">
@@ -1145,7 +1153,8 @@
             Ltd. confirms its capability and intention to participate in this RFP, and its
             capacity to deliver the full scope of work described in Part 2 for a one-year
             term across the ten cities named in Part 4. The signatories below are
-            authorised to bind AD PRO Communications Ltd., and the Chief Executive Officer
+            authorised to bind AD PRO Communications Ltd., and the Chairman and Chief
+            Executive Officer
             is the person named for DocuSign on the mutual non-disclosure agreement
             returned with this submission.
           </p>
@@ -1153,14 +1162,14 @@
           <div class="sigs">
             <div>
               <div class="sig"><!--@SIG:habib--></div>
-              <p class="tnote">ABM Zakaria Habib<br>Chief Executive Officer<br>Ad Pro Communications Ltd.</p>
+              <p class="tnote">ABM Zakaria Habib<br>Chairman and Chief Executive Officer<br>Ad Pro Communications Ltd.</p>
             </div>
             <div>
               <div class="sig"><!--@SIG:masum--></div>
               <p class="tnote">A. H. Al-Masum<br>Director<br>Ad Pro Communications Ltd.</p>
             </div>
             <div>
-              <div class="sig sig--blank"></div>
+              <div class="seal"><!--@SIG:seal--></div>
               <p class="tnote">Date and company seal</p>
             </div>
           </div>
