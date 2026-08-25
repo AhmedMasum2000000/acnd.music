@@ -276,6 +276,11 @@
        as an afterthought. It gets the sheet it needs and starts at the top of
        it, whatever the sections above it happen to leave. */
     .sheet--own { break-before: page; }
+
+    /* A table short enough to fit one sheet should not leave a header and a
+       single row stranded at the foot of the previous one. Chromium ignores
+       `orphans` on table rows, so the short tables say so themselves. */
+    table.keep { break-inside: avoid; }
     .opener { margin-bottom: 5mm; aspect-ratio: 64 / 13; }
     .opener__tag { padding: 2mm 4mm 2.2mm; }
     .opener__tag b { font-size: 8.5pt; }
@@ -896,17 +901,22 @@
   <div class="sheet">
 
     <section>
-      <div class="rail"><span class="rail__num">5.7</span><span class="rail__name">Bought-in media and services</span></div>
+      <div class="rail"><span class="rail__num">5.7</span><span class="rail__name">Production, permissions and site services</span></div>
       <div class="body-col" style="max-width: none">
-        <h2>Everything bought in, at cost.</h2>
-        <p class="lede" style="max-width: 72ch">
-          The rate cards above are AD PRO's own media, priced as the operator. Anything
-          else this contract needs is bought in, and every category of it is billed to
-          Uber at the price AD PRO paid, with the document that proves the price attached
-          to the bill. There is no rate to quote here because AD PRO adds nothing to it.
+        <h2>Everything else in the contract, priced two ways.</h2>
+        <p class="lede" style="max-width: 74ch">
+          Beyond the media AD PRO owns, this contract needs two different kinds of thing,
+          and they are not priced the same way. What AD PRO <strong>buys in</strong> is
+          billed at the price AD PRO paid, with the document that proves it attached to
+          the bill. What AD PRO <strong>makes and installs itself</strong> carries AD PRO's
+          own rate, quoted against the named site and date, because Part 5 of this RFP
+          records that Bangladeshi rates move with location, timeframe and the authority
+          involved, and states that tentative rate cards are sufficient. Every rate below
+          is confirmed in writing within 24 hours of the brief and then holds for the
+          campaign.
         </p>
 
-        <table style="margin-top: 1.1rem">
+        <table class="keep" style="margin-top: 1.1rem">
           <thead><tr><th style="width: 44%">Bought in for Uber</th><th style="width: 22%">Unit</th><th>Billed against</th></tr></thead>
           <tbody>
             <tr><td>Static billboard rental</td><td>per sq ft per month</td><td>Media owner's invoice</td></tr>
@@ -923,7 +933,35 @@
         </table>
         <p class="tnote">
           Every line above is quoted to Uber at face value before the cost is committed,
-          and reconciled against the document named beside it when it is billed.
+          and reconciled against the document named beside it when it is billed. Nothing
+          in this table carries a markup, a handling fee or a commission.
+        </p>
+
+        <h3 style="margin-top: 1.7rem">Made and installed by AD PRO</h3>
+        <p class="tnote" style="margin-top: 0.4rem; margin-bottom: 0.9rem">
+          These are not bought in. The printing presses, the fabrication shop and the
+          rigging crews are AD PRO's own, which is why there is no third-party invoice
+          behind them and no pass-through to declare. Each is quoted at AD PRO's own rate
+          against the site survey, in writing, within 24 hours of the brief.
+        </p>
+        <table class="zebra">
+          <thead><tr><th style="width: 44%">Produced in-house</th><th style="width: 22%">Unit</th><th>AD PRO's rate</th></tr></thead>
+          <tbody>
+            <tr><td>Printing, vinyl / flex / backlit</td><td>per sq ft</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Fabrication, frame, structure, lightbox</td><td>per sq ft</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Installation and rigging</td><td>per sq ft / per site</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Sticker and vinyl branding</td><td>per sq ft</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Wall painting and murals</td><td>per sq ft</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Signage and banners</td><td>per sq ft</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Kiosk, supply and install</td><td>per unit</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Booth / canopy / gazebo</td><td>per unit per day</td><td>Own rate, on survey within 24 hrs</td></tr>
+            <tr><td>Maintenance and replacement</td><td>per visit</td><td><strong>NIL</strong> where the fault is AD PRO's, per the KPI at Part 3</td></tr>
+            <tr><td>Removal and site restoration</td><td>per site</td><td><strong>NIL</strong> where removal follows AD PRO's non-compliance; own rate otherwise</td></tr>
+          </tbody>
+        </table>
+        <p class="tnote">
+          LED screen supply and installation on Uber's own premises is not quoted here: it
+          carries a published rate at 5.6.
         </p>
       </div>
     </section>
@@ -1014,6 +1052,21 @@
             <tr><td>Details of production, installation, maintenance and reporting capabilities</td><td>4.5 and 4.8, end to end from brief to closure report</td></tr>
           </tbody>
         </table>
+        <h3 style="margin-top: 1.7rem">Point of contact for this submission</h3>
+        <table style="margin-top: 0.6rem">
+          <tbody>
+            <tr><td style="width: 18%">Commercial and bid</td>
+                <td>Sales &amp; Marketing desk, +880 1958 503755, mkt.adpro@gmail.com</td></tr>
+            <tr><td>General and escalation</td>
+                <td>+880 1763 924619, info@adpro.com.bd</td></tr>
+            <tr><td>Accounts and invoicing</td>
+                <td>+880 1958 503760</td></tr>
+            <tr><td>Correspondence address</td>
+                <td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
+            <tr><td>Contracting entity</td>
+                <td>AD PRO Communications Ltd., registered at 37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -1043,24 +1096,16 @@
             <tr><td>Annexure I</td><td>Proposal for LED sign, Domestic Arrival, Dhaka airport</td></tr>
             <tr><td>Annexure J</td><td>Quotation for supply and installation of a P5 outdoor LED display</td></tr>
             <tr><td>Annexure K</td><td>Metro rail coach branding, LED covered van and human LED display quotations</td></tr>
+            <tr><td>Annexure L</td><td>Presentation deck, eight slides, prepared for the presentation round</td></tr>
           </tbody>
         </table>
+        <p class="tnote">
+          Annexures A to E are AD PRO's corporate and contractual documents. F to K are
+          AD PRO's own signed rate proposals, and every figure printed in Part 5 is taken
+          from them unchanged, so any number in this response can be checked against the
+          quotation it came from without a further request.
+        </p>
 
-        <h3 style="margin-top: 1.6rem">Point of contact for this submission</h3>
-        <table style="margin-top: 0.6rem">
-          <tbody>
-            <tr><td style="width: 18%">Commercial and bid</td>
-                <td>Sales &amp; Marketing desk, +880 1958 503755, mkt.adpro@gmail.com</td></tr>
-            <tr><td>General and escalation</td>
-                <td>+880 1763 924619, info@adpro.com.bd</td></tr>
-            <tr><td>Accounts and invoicing</td>
-                <td>+880 1958 503760</td></tr>
-            <tr><td>Correspondence address</td>
-                <td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
-            <tr><td>Contracting entity</td>
-                <td>AD PRO Communications Ltd., registered at 37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
-          </tbody>
-        </table>
 
         <div class="signoff">
           <p class="tnote" style="margin-top: 1.2rem">
@@ -1068,7 +1113,9 @@
             response is true and correct to the best of our knowledge. AD PRO Communications
             Ltd. confirms its capability and intention to participate in this RFP, and its
             capacity to deliver the full scope of work described in Part 2 for a one-year
-            term across the ten cities named in Part 4.
+            term across the ten cities named in Part 4. The signatory below is authorised
+            to bind AD PRO Communications Ltd. and is the person named for DocuSign on the
+            mutual non-disclosure agreement returned with this submission.
           </p>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.4rem">
