@@ -7,8 +7,8 @@ year of outdoor media and shows three photographs of it is arguing against
 itself, so every numbered part opens on a screen AD PRO owns, and every city in
 the rate card is shown before it is priced.
 
-Sites are chosen by the crop scorer already in the repository — how much of the
-frame the lit screen holds — and each is used once. The cover and the closing
+Sites are chosen by the crop scorer already in the repository, how much of the
+frame the lit screen holds, and each is used once. The cover and the closing
 photograph are excluded because they are already spoken for.
 
     python3 scripts/rfp/photos.py
@@ -73,7 +73,7 @@ def cover(img: Image.Image, ratio: float) -> Image.Image:
 
 
 def encode(img: Image.Image, width: int, quality: int = 82) -> str:
-    """Never upscale — these files run 700 to 1150px and asking for more than
+    """Never upscale: these files run 700 to 1150px and asking for more than
     they hold does not add detail, it only makes the document bigger."""
     if img.width > width:
         img = img.resize((width, round(img.height * width / img.width)), Image.LANCZOS)
@@ -110,7 +110,7 @@ def main() -> None:
     total = sum(len(v["uri"]) for v in out["openers"].values())
     total += sum(len(v) for v in out["cities"].values())
     print(f"openers: {len(out['openers'])}, cities: {len(out['cities'])} "
-          f"— {total / 1024 / 1024:.2f} MB")
+          f"totalling {total / 1024 / 1024:.2f} MB")
 
 
 if __name__ == "__main__":

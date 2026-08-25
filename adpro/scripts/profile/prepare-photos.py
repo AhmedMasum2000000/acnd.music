@@ -4,12 +4,12 @@ Assembles the photography for the company profile.
 
 Two sources, for two different jobs.
 
-The billboard photographs come from public/boards — 58 real sites, full
+The billboard photographs come from public/boards: 58 real sites, full
 resolution, already cleaned of the annotation marks the sales deck carried.
 They are the best material this company has and they carry the network
 sections.
 
-Everything else — buses, vans, vehicle wraps, events, shopfronts, packaging —
+Everything else, meaning buses, vans, vehicle wraps, events, shopfronts and packaging,
 exists only inside the old deck, where each slide was flattened into a single
 1280x720 image. Those are cut back out by coordinate, which is why the crops
 are modest in size: there is no higher-resolution original to go back to.
@@ -37,7 +37,7 @@ SLIDES = Path(os.environ.get("ADPRO_SLIDE_DIR", HERE / "slides"))
 # the copy claims, which is the claim the grid is there to evidence. Picked by
 # the crop scorer, which measures how much of the frame the lit screen holds.
 # The cover, the LED service card and the closing photograph take their sites
-# from elsewhere — the same photograph twice in one document reads as a
+# from elsewhere: the same photograph twice in one document reads as a
 # mistake.
 NETWORK = [
     ("dhaka-sks-tower-entrance-mohakhali", "SKS Tower", "Dhaka"),
@@ -65,7 +65,7 @@ COVER = "dhaka-gulshan-circle-1-upper"
 # The photograph the document closes on. Two things decide it: the screen has
 # to sit in the middle of the frame, and the file has to be big enough to
 # print. The board photographs run from 700px to 1150px on the long edge, so
-# the closing image is used at its native aspect and near its native width —
+# the closing image is used at its native aspect and near its native width,
 # a portrait crop of an 850px frame throws away half the pixels it has and
 # then has to invent the rest.
 CLOSE = "dhaka-kamlapur-railway-station-entry-gate"
@@ -167,7 +167,7 @@ def main() -> None:
     )
     print(f"cover: {'yes' if out['cover'] else 'no'}, "
           f"lead: {'yes' if out['lead'] else 'no'}, network: {len(out['network'])}, "
-          f"services: {len(out['services'])} — {total / 1024 / 1024:.2f} MB")
+          f"services: {len(out['services'])}, {total / 1024 / 1024:.2f} MB")
 
 
 if __name__ == "__main__":

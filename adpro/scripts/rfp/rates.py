@@ -7,13 +7,18 @@ already quoted to somebody, not one invented to fill a table. So the rates are
 read back out of the source quotations rather than retyped:
 
     LED_PROPOSAL   58-site digital network, cost per minute per screen
+    FOOTBRIDGE     18 foot over bridges in Dhaka, yearly
+    LIGHTBOX       134 metro rail pillar light boxes, yearly
     METRO          Metro rail coach branding, 3/6/12/24 coaches
     CARAVAN        LED-covered van
     HUMAN_LED      Outdoor human LED display
+    AIRPORT        LED sign, Domestic Arrival, Dhaka airport
+    INSTALL        Supply and installation of a P5 outdoor screen
 
 Anything the company has not quoted is left out of this file entirely and
-appears in the document as a blank for someone to fill in. A commercial bid is
-signed; a guessed number in one is a liability, not a placeholder.
+appears in the document as surveyed on request rather than as a number. A
+commercial bid is signed; a guessed figure in one is a liability, not a
+placeholder.
 
     ADPRO_RFP_SRC=/path/to/uploads python3 scripts/rfp/rates.py
 
@@ -33,7 +38,13 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 SRC = Path(os.environ.get("ADPRO_RFP_SRC", HERE / "source"))
 
-LED_PROPOSAL = "95380b66-LED_Billboard_Proposal_With_Updated_Picture__Price_All_Over_Bangladesh.PDF"
+# The later of the two LED decks. It carries a screen the earlier one did not,
+# and it replaces Hotel Radisson Blu with Police Plaza Shooting Club at the same
+# dimensions and a higher rate, so building from the earlier file quotes a site
+# the company no longer offers.
+LED_PROPOSAL = "cb63bd9d-LED_Billboard_Proposal_With_Updated_Picture__Price_All_Over_Bangladesh_1.pdf"
+FOOTBRIDGE = "73642871-Proposal_for_Foot_Over_Bridge_Branding.pdf"
+LIGHTBOX = "6ec73e9b-Light_Box_Branding_Project_.pdf"
 
 # Spec-block lines that are never the site's name.
 FURNITURE = (
@@ -43,15 +54,18 @@ FURNITURE = (
     "Hours", "min/", "day", "Partners", "OOH", "THANK",
 )
 
-# Five screens whose name sits in a text box that does not come back in reading
-# order, or comes back abbreviated. Keyed by page number in the source deck.
-BY_PAGE = {
-    5: "Gulshan Circle-1 Mid Island",
-    6: "Gulshan Circle-1 Mid Island",
-    21: "Manik Mia Avenue Aarong Signal",
-    24: "Dhanmondi – 27, Mid Island Opposite of Rapa Plaza",
-    52: "Rajshahi, Shaheb Bazar 2 Screens (Both Side)",
-}
+# Two screens whose name sits in a text box that never comes back in reading
+# order, leaving a spec fragment as the first line instead. Named here in the
+# order they appear rather than by page number, because page numbers move every
+# time the deck is re-issued and silently mis-assign the ones after them.
+NAMELESS = [
+    "Gulshan Circle-1 Mid Island",
+    "Gulshan Circle-1 Mid Island",
+]
+
+# A measurement is never a site name. "60min/" survives the FURNITURE filter
+# because it starts with a digit.
+MEASUREMENT = re.compile(r"^[\d\s./]*(min|hr|hour|sec|sft|ft)\b", re.I)
 
 
 def norm(dim: str) -> str:
@@ -62,8 +76,8 @@ def norm(dim: str) -> str:
 def assign(name: str, dim: str, pool: list[dict]) -> dict | None:
     """Claim the inventory entry a priced screen refers to, and consume it.
 
-    Two things make this harder than a name lookup. The sales deck abbreviates —
-    "Manik Mia Avenue" for "Manik Mia Avenue Aarong Signal" — so prefixes have
+    Two things make this harder than a name lookup. The sales deck abbreviates,
+    "Manik Mia Avenue" for "Manik Mia Avenue Aarong Signal", so prefixes have
     to be tried before similarity, or the threshold ends up loose enough to pair
     the wrong two sites. And some junctions carry two screens under one name:
     Gulshan Circle-2 East Side is both the Rob Super Market screen and the
@@ -71,27 +85,43 @@ def assign(name: str, dim: str, pool: list[dict]) -> dict | None:
     first inventory row and leaves the second looking unpriced, so where a name
     is ambiguous the dimension decides, and every entry is consumed once.
     """
-    def take(candidates: list[int]) -> dict | None:
+    def take(candidates: list[int], strict: bool = False) -> dict | None:
         if not candidates:
             return None
+        if strict:
+            # A similarity score is not evidence. Where the name only nearly
+            # matches, the dimension has to agree before anything is claimed.
+            candidates = [
+                i for i in candidates if norm(pool[i]["dimension"]) == norm(dim)
+            ]
+            if not candidates:
+                return None
         if len(candidates) > 1:
+            # A short name like "Gulshan" is a prefix of half the Dhaka
+            # inventory. Where the name cannot separate them the dimension has
+            # to, and where neither can, nothing is claimed: a wrong pairing
+            # here prices one site at another site's rate.
             exact = [i for i in candidates if norm(pool[i]["dimension"]) == norm(dim)]
-            if exact:
-                candidates = exact
+            if not exact:
+                return None
+            candidates = exact
         return pool.pop(candidates[0])
 
-    for test in (
-        lambda b: b["name"] == name,
-        lambda b: b["name"].startswith(name),
-        lambda b: name.startswith(b["name"]),
+    # An exact name is evidence on its own. A prefix is not: "Gulshan" is the
+    # start of half the Dhaka inventory, and left unguarded it claims whichever
+    # Gulshan site happens to be left in the pool.
+    for test, strict in (
+        (lambda b: b["name"] == name, False),
+        (lambda b: b["name"].startswith(name), True),
+        (lambda b: name.startswith(b["name"]), True),
     ):
-        hit = take([i for i, b in enumerate(pool) if test(b)])
+        hit = take([i for i, b in enumerate(pool) if test(b)], strict=strict)
         if hit:
             return hit
 
     close = difflib.get_close_matches(name, [b["name"] for b in pool], n=1, cutoff=0.72)
     if close:
-        return take([i for i, b in enumerate(pool) if b["name"] == close[0]])
+        return take([i for i, b in enumerate(pool) if b["name"] == close[0]], strict=True)
     return None
 
 
@@ -99,11 +129,12 @@ def screens() -> list[dict]:
     """The digital network, priced, matched back to the site inventory."""
     path = SRC / LED_PROPOSAL
     if not path.exists():
-        sys.exit(f"missing {path} — set ADPRO_RFP_SRC")
+        sys.exit(f"missing {path}, set ADPRO_RFP_SRC")
 
     pool = json.loads((ROOT / "src" / "data" / "boards.json").read_text())
 
     out, city = [], None
+    unnamed = list(NAMELESS)
     for page_no, page in enumerate(PdfReader(str(path)).pages, start=1):
         text = page.extract_text() or ""
         lines = [l.strip() for l in text.split("\n") if l.strip()]
@@ -115,14 +146,18 @@ def screens() -> list[dict]:
                 city = lines[0].replace("’", "'").removesuffix(" City")
             continue
 
-        name = BY_PAGE.get(page_no)
-        if not name:
-            body = [
-                l for l in lines
-                if not any(l.startswith(f) for f in FURNITURE)
-                and not re.fullmatch(r"[\d\s\-–:apm]+", l)
-            ]
-            name = body[0] if body else ""
+        body = [
+            l for l in lines
+            if not any(l.startswith(f) for f in FURNITURE)
+            and not re.fullmatch(r"[\d\s\-–:apm]+", l)
+            and not MEASUREMENT.match(l)
+        ]
+        name = body[0] if body else (unnamed.pop(0) if unnamed else "")
+        # Several sites carry the landmark on a second line: "Gulshan Circle-2
+        # (East Side)" then "Rob Super Market". Without it two screens at the
+        # same junction share one name.
+        if len(body) > 1 and re.match(r"^[(A-Z]", body[1]) and len(body[1]) < 34:
+            name = f"{name} {body[1]}"
 
         dim = re.search(r"Dimension:\s*([^\n]+)", text)
         deck_dim = dim.group(1).strip() if dim else ""
@@ -140,6 +175,73 @@ def screens() -> list[dict]:
             "matched": bool(board),
         })
     return out
+
+
+def footbridges() -> list[dict]:
+    """The foot over bridges, one to a page.
+
+    Each page is five lines and nothing else, which is why this is read rather
+    than retyped: eighteen sites and eighteen prices copied by hand is eighteen
+    chances to transpose a digit into a signed commercial proposal.
+    """
+    path = SRC / FOOTBRIDGE
+    if not path.exists():
+        print(f"  missing {FOOTBRIDGE}")
+        return []
+
+    out = []
+    for page in PdfReader(str(path)).pages:
+        text = page.extract_text() or ""
+        price = re.search(r"Price:\s*([\d,]+)", text)
+        size = re.search(r"Size\s*([^\n]+)", text)
+        sft = re.search(r"Sft\s*([\d,]+)", text)
+        if not (price and size and sft):
+            continue
+        name = [l.strip() for l in text.split("\n") if l.strip()][0]
+        # A second line in brackets belongs to the name, not the specification.
+        second = [l.strip() for l in text.split("\n") if l.strip()][1:2]
+        if second and second[0].startswith("("):
+            name = f"{name} {second[0]}"
+        out.append({
+            "name": name.replace("’", "'"),
+            "size": size.group(1).strip().replace("’", "'"),
+            "sft": int(sft.group(1).replace(",", "")),
+            "price": int(price.group(1).replace(",", "")),
+        })
+    return out
+
+
+def lightboxes() -> dict:
+    """The metro rail pillar light boxes: one route, one rate, one total."""
+    path = SRC / LIGHTBOX
+    if not path.exists():
+        print(f"  missing {LIGHTBOX}")
+        return {}
+
+    detail = budget = ""
+    for page in PdfReader(str(path)).pages:
+        text = re.sub(r"\s+", " ", page.extract_text() or "")
+        if "Light Box Details" in text:
+            detail = text
+        if "Yearly Budget" in text:
+            budget = text
+
+    money = [int(m.replace(",", "")) for m in re.findall(r"[\d,]{7,}", budget)]
+    route = re.search(r"Location:\s*(.+?)\s*Metro Rail Pillar", detail)
+    pillars = re.search(r"Metro Rail Pillar:\s*(\d+)\s*Unit\s*\(([\d\-]+)\)", detail)
+    qty = re.search(r"Light Box Quantity:.*?=\s*(\d+)", detail)
+
+    return {
+        "route": route.group(1).strip() if route else "",
+        "pillars": int(pillars.group(1)) if pillars else 0,
+        "span": pillars.group(2) if pillars else "",
+        "units": int(qty.group(1)) if qty else 0,
+        "size": "5' x 12'",
+        "each": money[0] if money else 0,
+        "subtotal": money[1] if len(money) > 1 else 0,
+        "vat": money[2] if len(money) > 2 else 0,
+        "total": money[3] if len(money) > 3 else 0,
+    }
 
 
 def main() -> None:
@@ -166,8 +268,8 @@ def main() -> None:
                     "box, 8 hours on air per day, 60km coverage per day.",
             "rows": [
                 ["LED-covered van, per day (outside Dhaka)", 100000],
-                ["Four-side pickup branding, LED basement — one-off", 100000],
-                ["Pickup rent for fixing and unfixing branding — two days", 50000],
+                ["Four-side pickup branding, LED basement, one-off", 100000],
+                ["Pickup rent for fixing and unfixing branding, two days", 50000],
             ],
         },
         "human_led": {
@@ -175,14 +277,46 @@ def main() -> None:
                     "5 units, transport included.",
             "rows": [["Human LED display, per day, 5 units", 35000]],
         },
+        "footbridges": footbridges(),
+        "lightbox": lightboxes(),
+        "airport": {
+            "site": "Hazrat Shahjalal International Airport, Domestic Arrival",
+            "position": "Luggage belt area, on the wall inside the arrival hall",
+            "size": "W-7' x H-5'",
+            "hours": "7am to 11pm",
+            "yearly": 2200000,
+        },
+        "install": {
+            "note": "Supply and installation of a P5 outdoor screen on the "
+                    "client's own premises. King Light LED, assembled in "
+                    "Bangladesh, 1920x1080, brightness 6000cd/m2 or better, "
+                    "IP65, rated life 100,000 hours, one year warranty. "
+                    "Completion 30 days from work order. Excludes electrical "
+                    "cabling and any permission cost.",
+            "example": "8ft x 12ft, 96 sq ft",
+            "rows": [
+                ["P5 outdoor LED screen, fitting and fixing with transport", "per sq ft", 10500],
+                ["Installation charge", "per screen", 100000],
+                ["Pillar and foundation", "per screen", 100000],
+            ],
+            "worked": 1208000,
+        },
     }
 
     (HERE / "rates.json").write_text(json.dumps(data, ensure_ascii=False, indent=1))
 
     rates = [r["rate"] for r in rows]
     cities = sorted({r["city"] for r in rows if r["city"]})
-    print(f"{len(rows)} priced screens, BDT {min(rates)}–{max(rates)}/min, "
+    fob = data["footbridges"]
+    lb = data["lightbox"]
+    print(f"{len(rows)} priced screens, BDT {min(rates)}-{max(rates)}/min, "
           f"{len(cities)} cities: {', '.join(cities)}")
+    if fob:
+        print(f"{len(fob)} foot over bridges, BDT {min(f['price'] for f in fob):,}"
+              f"-{max(f['price'] for f in fob):,} per year")
+    if lb:
+        print(f"{lb['units']} light boxes on {lb['pillars']} metro pillars "
+              f"({lb['span']}), BDT {lb['each']:,} each, {lb['total']:,} with VAT")
     if unmatched:
         print("  not matched to boards.json:", ", ".join(unmatched))
 

@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>AD PRO Company Profile</title>
 
 <style>
@@ -7,7 +8,7 @@
   The brief was professional, minimal, and nothing outside the AD PRO palette,
   so the document is built from the company's own three blues and a neutral
   pulled toward them. Where the previous version used five hues to separate
-  sections, this one uses space, rule weight and a single accent — which is
+  sections, this one uses space, rule weight and a single accent, which is
   what a corporate profile is supposed to look like when it arrives in an
   inbox next to four others.
 
@@ -404,7 +405,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
      A billboard company's profile should show billboards. The lead runs full
      width directly under the cover, the network grid carries eight real sites
      with their names, and each service takes one photograph of that service
-     being done. Nothing is decorative — every frame is work. */
+     being done. Nothing is decorative; every frame is work. */
 
   .lead {
     /* A <figure> carries a 40px side margin from the UA stylesheet, which a
@@ -508,7 +509,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
 
   @media print {
     /* Room at the foot for the running line, which is stamped on after the
-       fact rather than set here — a fixed footer repeats on the cover too,
+       fact rather than set here. A fixed footer repeats on the cover too,
        and the cover has no margins to put it in. */
     @page { size: A4; margin: 15mm 15mm 19mm; }
     @page cover { margin: 0; }
@@ -541,7 +542,10 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
     .cover h1 { font-size: 27pt; margin-bottom: 5mm; }
     .cover .lede { font-size: 11pt; line-height: 1.55; }
     .cover__strip { padding-block: 5mm; }
-    .cover__strip .sheet { gap: 2mm 12mm; }
+    /* Four labels on one line or the strip reads as an accident. Sized to
+       the longest set either document puts here, measured, not guessed. */
+    .cover__strip .sheet { gap: 2mm 7mm; flex-wrap: nowrap; }
+    .cover__strip span { font-size: 8pt; letter-spacing: 0.11em; white-space: nowrap; }
 
     /* A grid section fragments unpredictably across a page boundary; on
        paper a section is its label, then its heading, then its body. */
@@ -573,7 +577,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
     .figures, .cover__mark { break-inside: avoid; }
 
     /* Grid is the one layout that fragments unpredictably across a page
-       boundary — tiles overlap the break or leave a band of white above it.
+       boundary; tiles overlap the break or leave a band of white above it.
        Inline layout has reflowed across pages since the first browser, so
        the tile grids become inline-block runs for print. font-size is zeroed
        on the container to close the gaps between inline-blocks and restored
@@ -593,7 +597,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
        floor on the caption leaves a row with one cell hanging below the
        others and a stepped edge along the bottom of the grid. */
     .net-grid figcaption { min-height: 13mm; }
-    /* Ten cities, five across and two down — a whole row of the country
+    /* Ten cities, five across and two down, a whole row of the country
        rather than a grid that runs out halfway through its last line. The
        crops are square because the board sits at the centre of every frame,
        and square buys each one a third more height on the page. */
@@ -604,7 +608,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
     /* Five rows of cards have to come out three and two, so the card is
        sized to the sheet rather than the sheet let out to the card.
        The photograph runs to the card's edges by negative margin, and that
-       margin has to be restated in the print padding — left at the screen
+       margin has to be restated in the print padding, left at the screen
        value it hangs 9px past the card on each side and laps over the card
        beside it. */
     .svc__img {
@@ -665,7 +669,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
 
       <p class="lede">
         Fifty-eight digital screens across ten cities, plus everything that surrounds
-        them — static sites, transit, print, events and campaign production. One
+        them: static sites, transit, print, events and campaign production. One
         company, one accountable team, from the site survey to the played-spot log.
       </p>
     </div>
@@ -692,7 +696,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
         <h2>The brands that have trusted us with a junction.</h2>
         <p class="lede" style="max-width: 62ch">
           Telecom, banking, FMCG, automotive, pharmaceutical, airlines, government
-          and development — a selection of the 400+ brands who have run
+          and development, a selection of the 400+ brands who have run
           out-of-home with AD PRO.
         </p>
       </div>
@@ -899,7 +903,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
         <p>
           AD PRO Communications Ltd. was incorporated in Dhaka in 2019 by a group of outdoor
           professionals who had spent their careers planning and buying media for
-          Bangladesh’s largest advertisers — and who were tired of the gap between
+          Bangladesh’s largest advertisers, and who were tired of the gap between
           what was promised and what actually went up.
         </p>
         <p>
@@ -953,7 +957,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
             <span class="svc__tag">Classic OOH</span>
             <h3>Billboard &amp; static branding</h3>
             <p>
-              Billboards, gantries, glass and building branding nationwide —
+              Billboards, gantries, glass and building branding nationwide,
               including airport branding at Shahjalal International, Domestic,
               Chattogram and Cox’s Bazar.
             </p>
@@ -979,7 +983,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
             <span class="svc__tag">Mobile</span>
             <h3>LED covered van</h3>
             <p>
-              A moving screen that goes where your audience is — markets, events,
+              A moving screen that goes where your audience is: markets, events,
               campaign routes. Cheaper per impression than most fixed media, and
               it brings full motion with it.
             </p>
@@ -996,7 +1000,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
             <span class="svc__tag">Retail</span>
             <h3>Trade &amp; retail branding</h3>
             <p>
-              Point-of-sale, shelf, packaging and trade material — the things a
+              Point-of-sale, shelf, packaging and trade material, the things a
               customer picks up and holds while deciding.
             </p>
           </div>
@@ -1012,7 +1016,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
             <span class="svc__tag">Brand</span>
             <h3>Outdoor &amp; indoor branding</h3>
             <p>
-              Storefronts, interiors, signage and wayfinding — the branding that
+              Storefronts, interiors, signage and wayfinding, the branding that
               works where digital and in-home advertising cannot reach.
             </p>
           </div>
@@ -1087,7 +1091,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
           Our network is planned around traffic, not around what happens to be
           vacant. The sites sit at the junctions where Dhaka, Chattogram, Sylhet,
           Cox’s Bazar, Rajshahi, Rangpur, Bogura, Cumilla, Feni and Narayanganj
-          slow down — because a screen that is read for forty seconds in stopped
+          slow down, because a screen that is read for forty seconds in stopped
           traffic is worth more than one glimpsed at speed.
         </p>
         <p>
@@ -1134,7 +1138,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
           <b>Tell us the city, the dates and roughly the budget</b>
           <span
             >Four pieces of information are enough to start. You do not need a media
-            plan to talk to us — that is what we are for.</span
+            plan to talk to us. That is what we are for.</span
           >
         </li>
         <li>
@@ -1173,8 +1177,8 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
     <div class="body-col" style="max-width: none">
       <h2>Tell us the city and the dates.</h2>
       <p class="lede" style="max-width: 40ch; margin-bottom: 2.25rem">
-        Most enquiries get a written plan — sites, sizes, minutes and an all-in
-        cost — inside one working day.
+        Most enquiries get a written plan, with sites, sizes, minutes and an all-in
+        cost, inside one working day.
       </p>
 
       <div class="contacts">
@@ -1215,7 +1219,7 @@ src:url(data:font/woff2;base64,d09GMgABAAAAALyAABUAAAAB4CAAALwFAAEAAAAAAAAAAAAAA
           <p><a href="https://www.adpro.com.bd">www.adpro.com.bd</a></p>
           <p><a href="https://www.apcl360.com">www.apcl360.com</a></p>
           <p><a href="https://www.linkedin.com/in/apcl360">linkedin.com/in/apcl360</a></p>
-          <p>Facebook &amp; Instagram — Ad Pro Communications Ltd</p>
+          <p>Facebook &amp; Instagram: Ad Pro Communications Ltd</p>
         </div>
       </div>
     </div>

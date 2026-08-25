@@ -38,7 +38,7 @@ OUT = ROOT / "company-profile.pdf"
 
 # The running line along the foot of every inside page. The cover and the
 # back cover are photographs to their edges and take neither.
-RUNNER = "AD PRO COMMUNICATIONS LTD.   \u2014   OUTDOOR ADVERTISING AGENCY IN BANGLADESH"
+RUNNER = "AD PRO COMMUNICATIONS LTD.   \u00b7   OUTDOOR ADVERTISING AGENCY IN BANGLADESH"
 MM = 72 / 25.4
 
 # What separates a photograph from a client mark here: the marks are all
@@ -170,13 +170,13 @@ def shrink() -> tuple[int, int]:
 
 def main() -> None:
     if not SRC.exists():
-        sys.exit("no company-profile.html — run: node scripts/profile/build.mjs")
+        sys.exit("no company-profile.html, run: node scripts/profile/build.mjs")
     render()
     before = OUT.stat().st_size
     photos, pages = shrink()
     after = OUT.stat().st_size
     print(
-        f"company-profile.pdf — {pages} pages, {photos} photographs recompressed, "
+        f"company-profile.pdf: {pages} pages, {photos} photographs recompressed, "
         f"{before / 1024 / 1024:.2f} MB -> {after / 1024 / 1024:.2f} MB"
     )
 

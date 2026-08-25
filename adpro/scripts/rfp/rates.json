@@ -67,6 +67,17 @@
    "matched": true
   },
   {
+   "name": "Gulshan",
+   "city": "Dhaka",
+   "rate": 140,
+   "dimension": "W-22' x H-11'",
+   "hours": "",
+   "schedule": "",
+   "minimum": "",
+   "model": "",
+   "matched": false
+  },
+  {
    "name": "Gulshan Circle-2 (East Side) (Amanullah Trade Center)",
    "city": "Dhaka",
    "rate": 200,
@@ -153,6 +164,17 @@
    "minimum": "60 min/day",
    "model": "P3",
    "matched": true
+  },
+  {
+   "name": "Police Plaza Shooting club Fazle Rabbi Park",
+   "city": "Dhaka",
+   "rate": 120,
+   "dimension": "W-22' x H-12'",
+   "hours": "",
+   "schedule": "",
+   "minimum": "",
+   "model": "",
+   "matched": false
   },
   {
    "name": "Akij House, GMG Circle, Gulshan-Tejgaon Road, Dhaka",
@@ -317,17 +339,6 @@
    "schedule": "10am-07pm",
    "minimum": "60 min/day",
    "model": "P5",
-   "matched": true
-  },
-  {
-   "name": "Hotel Radisson Blu",
-   "city": "Dhaka",
-   "rate": 100,
-   "dimension": "W-22' x H-12'",
-   "hours": "11 hours",
-   "schedule": "10am-10pm",
-   "minimum": "60 min/day",
-   "model": "P6",
    "matched": true
   },
   {
@@ -615,11 +626,11 @@
     100000
    ],
    [
-    "Four-side pickup branding, LED basement — one-off",
+    "Four-side pickup branding, LED basement, one-off",
     100000
    ],
    [
-    "Pickup rent for fixing and unfixing branding — two days",
+    "Pickup rent for fixing and unfixing branding, two days",
     50000
    ]
   ]
@@ -632,5 +643,155 @@
     35000
    ]
   ]
+ },
+ "footbridges": [
+  {
+   "name": "Azampur,Uttara (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1800000
+  },
+  {
+   "name": "Bangla College, Mirpur-1 (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1500000
+  },
+  {
+   "name": "In Front of Dhaka International",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1800000
+  },
+  {
+   "name": "Japan Garden City,",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1400000
+  },
+  {
+   "name": "Kazipara, Mirpur (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1400000
+  },
+  {
+   "name": "Kuril Bishwaroad (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1800000
+  },
+  {
+   "name": "Merul Badda, Aftabnagar (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 2000000
+  },
+  {
+   "name": "Mirpur-10 Circle (6 Side)",
+   "size": "30' x 5' x 6",
+   "sft": 900,
+   "price": 1500000
+  },
+  {
+   "name": "Mirpur-1 Circle (4 Side)",
+   "size": "30' x 5' x 4",
+   "sft": 600,
+   "price": 1500000
+  },
+  {
+   "name": "Mohammadpur Link Road (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1400000
+  },
+  {
+   "name": "Nam Garden, Mirpur 13 (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1400000
+  },
+  {
+   "name": "Notun Bazar (Coca-Cola) (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1800000
+  },
+  {
+   "name": "Police Smrity College, Mirpur-14 (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1300000
+  },
+  {
+   "name": "Uttara, Rajlokkhi (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1800000
+  },
+  {
+   "name": "Rajnigandha Market, Kochukhet (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1200000
+  },
+  {
+   "name": "Shyamoli Shishu Mela (Facing: Agargaon)",
+   "size": "20' x 5' x 1",
+   "sft": 100,
+   "price": 700000
+  },
+  {
+   "name": "Sony Cinema Hall Mirpur-1 (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1400000
+  },
+  {
+   "name": "Tejturi Bazar, Karwan Bazar (Both Side)",
+   "size": "30' x 5' x 2",
+   "sft": 300,
+   "price": 1400000
+  }
+ ],
+ "lightbox": {
+  "route": "Shahbagh Moor to Purana Paltan Moor",
+  "pillars": 67,
+  "span": "523-593",
+  "units": 134,
+  "size": "5' x 12'",
+  "each": 150000,
+  "subtotal": 20100000,
+  "vat": 3015000,
+  "total": 23115000
+ },
+ "airport": {
+  "site": "Hazrat Shahjalal International Airport, Domestic Arrival",
+  "position": "Luggage belt area, on the wall inside the arrival hall",
+  "size": "W-7' x H-5'",
+  "hours": "7am to 11pm",
+  "yearly": 2200000
+ },
+ "install": {
+  "note": "Supply and installation of a P5 outdoor screen on the client's own premises. King Light LED, assembled in Bangladesh, 1920x1080, brightness 6000cd/m2 or better, IP65, rated life 100,000 hours, one year warranty. Completion 30 days from work order. Excludes electrical cabling and any permission cost.",
+  "example": "8ft x 12ft, 96 sq ft",
+  "rows": [
+   [
+    "P5 outdoor LED screen, fitting and fixing with transport",
+    "per sq ft",
+    10500
+   ],
+   [
+    "Installation charge",
+    "per screen",
+    100000
+   ],
+   [
+    "Pillar and foundation",
+    "per screen",
+    100000
+   ]
+  ],
+  "worked": 1208000
  }
 }

@@ -38,9 +38,9 @@ OUT = ROOT / "uber-rfp-response.pdf"
 
 # The running line along the foot of every inside page. The cover and the
 # back cover are photographs to their edges and take neither.
-RUNNER = "AD PRO COMMUNICATIONS LTD.   \u2014   OUTDOOR ADVERTISING AGENCY IN BANGLADESH"
+RUNNER = "AD PRO COMMUNICATIONS LTD.   \u00b7   OUTDOOR ADVERTISING AGENCY IN BANGLADESH"
 HEAD_L = "AD PRO COMMUNICATIONS LTD."
-HEAD_R = "UBER BANGLADESH RFP   \u00b7   RESPONSE"
+HEAD_R = "UBER BANGLADESH   \u00b7   STRATEGIC PLAN AND PROPOSAL"
 MM = 72 / 25.4
 
 # What separates a photograph from a client mark here: the marks are all
@@ -88,6 +88,24 @@ def esc(text: str) -> str:
     return text.replace("\\", r"\\\\").replace("(", r"\(").replace(")", r"\)")
 
 
+# Helvetica advance widths, thousandths of an em, for the characters the
+# running line and the header actually use. Enough to set the header flush
+# right instead of guessing an offset that stops being true when the wording
+# changes.
+_ADV = {c: 556 for c in "0123456789"}
+_ADV.update(dict(zip(
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    (667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833,
+     722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611),
+)))
+_ADV.update({" ": 278, ".": 278, ",": 278, "/": 278, "·": 278, "'": 191})
+
+
+def width_of(text: str, size: float, tracking: float) -> float:
+    """Set width in points, tracking included the way the operator applies it."""
+    return sum(_ADV.get(c, 556) for c in text) / 1000 * size + tracking * len(text)
+
+
 def stamp(writer: PdfWriter) -> None:
     """Draw the running line and the folio on every inside page.
 
@@ -122,7 +140,8 @@ def stamp(writer: PdfWriter) -> None:
             "q BT /ProfileRunner 7 Tf 0.12 0.23 0.39 rg 0.7 Tc "
             f"1 0 0 1 {left} {top} Tm ({esc(HEAD_L)}) Tj ET Q\n"
             "q BT /ProfileRunner 6.5 Tf 0.48 0.53 0.60 rg 0.6 Tc "
-            f"1 0 0 1 {right - 46 * MM} {top} Tm ({esc(HEAD_R)}) Tj ET Q\n"
+            f"1 0 0 1 {right - width_of(HEAD_R, 6.5, 0.6)} {top} Tm "
+            f"({esc(HEAD_R)}) Tj ET Q\n"
             # the hairline the line sits under
             f"q 0.78 0.80 0.84 RG 0.4 w {left} {base + 4 * MM} m "
             f"{right} {base + 4 * MM} l S Q\n"
@@ -181,13 +200,13 @@ def shrink() -> tuple[int, int]:
 
 def main() -> None:
     if not SRC.exists():
-        sys.exit("no uber-rfp-response.html — run: node scripts/rfp/build.mjs")
+        sys.exit("no uber-rfp-response.html, run: node scripts/rfp/build.mjs")
     render()
     before = OUT.stat().st_size
     photos, pages = shrink()
     after = OUT.stat().st_size
     print(
-        f"uber-rfp-response.pdf — {pages} pages, {photos} photographs recompressed, "
+        f"uber-rfp-response.pdf: {pages} pages, {photos} photographs recompressed, "
         f"{before / 1024 / 1024:.2f} MB -> {after / 1024 / 1024:.2f} MB"
     )
 

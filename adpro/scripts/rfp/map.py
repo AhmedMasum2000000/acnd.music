@@ -3,7 +3,7 @@
 The ten-city coverage map.
 
 Part 6 scores geographic coverage, and a table of city names is a poor way to
-answer it — the point of covering ten cities is the shape it makes on the
+answer it: the point of covering ten cities is the shape it makes on the
 country. Drawn as SVG rather than a raster: it costs a few kilobytes, prints at
 whatever resolution the printer has, and the dots are sized from the inventory
 rather than by eye, so the map cannot drift out of step with the rate card.
@@ -55,7 +55,7 @@ def outline() -> list[list[list[float]]]:
     """The country's rings, largest first. Written by geometry.py."""
     path = HERE / "bangladesh.json"
     if not path.exists():
-        raise SystemExit(f"missing {path.name} — run: python3 scripts/rfp/geometry.py")
+        raise SystemExit(f"missing {path.name}, run: python3 scripts/rfp/geometry.py")
     return json.loads(path.read_text())["rings"]
 
 
@@ -152,7 +152,7 @@ def main() -> None:
         "</svg>"
     )
     (HERE / "map.svg").write_text(svg)
-    print(f"map.svg — {len(PLACES)} cities all inside the boundary, "
+    print(f"map.svg: {len(PLACES)} cities all inside the boundary, "
           f"{sum(counts.get(c, 0) for c in PLACES)} screens, "
           f"{len(rings)} rings, {len(svg) / 1024:.1f} KB")
 

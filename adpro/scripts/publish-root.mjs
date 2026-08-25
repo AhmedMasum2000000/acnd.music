@@ -7,12 +7,12 @@
  * this promotes dist/ over the top of them.
  *
  * Files the build no longer produces are pruned. Without that a renamed or
- * deleted asset lingers at the root and keeps being served — which is exactly
+ * deleted asset lingers at the root and keeps being served, which is exactly
  * what happened when the drawn logo-mark.svg was replaced by the real PNG:
  * the old file stayed published and the verification suite kept finding it.
  *
  * Sources are never overwritten. The one hazard is dist/pages/, which
- * mirrors the source directory name — those files are the *built* pages and
+ * mirrors the source directory name; those files are the *built* pages and
  * are flattened to the root here rather than copied as a directory, which
  * would otherwise land straight on top of the templates they were built
  * from. That case is explicit below and covered by a guard.

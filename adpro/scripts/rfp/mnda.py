@@ -4,7 +4,7 @@ Completes Uber's standard MNDA with AD PRO's details and nothing else.
 
 Uber has said the template is non-negotiable and cannot accept redlines, so
 this touches only the bracketed fields it asks to be filled and leaves every
-other byte of the document alone — including the DocuSign anchor tags, which
+other byte of the document alone, including the DocuSign anchor tags, which
 are what Uber's signature process keys on. It is returned unsigned, as .docx,
 which is what the invitation asked for.
 
@@ -45,7 +45,7 @@ def fill(xml: str, token: str, value: str) -> tuple[str, int]:
     """Replace one bracketed field, however Word has split it into runs.
 
     Word breaks a run wherever formatting or a spell-check marker changes, and
-    it puts one around every bracket in this template — so `[Counterparty_Name]`
+    it puts one around every bracket in this template, so `[Counterparty_Name]`
     is three separate text runs with proofing tags between them, and a plain
     string replace finds nothing. The bracket runs are emptied rather than
     deleted so the run structure, and therefore the DocuSign anchors, survive.
@@ -72,7 +72,7 @@ def fill(xml: str, token: str, value: str) -> tuple[str, int]:
 def main() -> None:
     src = SRC / TEMPLATE
     if not src.exists():
-        sys.exit(f"missing {src} — set ADPRO_RFP_SRC")
+        sys.exit(f"missing {src}, set ADPRO_RFP_SRC")
 
     shutil.copy(src, DEST)
 
@@ -95,7 +95,7 @@ def main() -> None:
             zout.writestr(name, parts[name])
 
     missed = [k for k, v in hits.items() if v == 0]
-    print(f"uber-mnda-adpro.docx — {sum(hits.values())} fields filled")
+    print(f"uber-mnda-adpro.docx: {sum(hits.values())} fields filled")
     for token, count in hits.items():
         print(f"   {count} x {token}")
     if missed:

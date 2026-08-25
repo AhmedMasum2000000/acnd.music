@@ -1,7 +1,7 @@
 /**
  * Assembles the company profile into one self-contained file.
  *
- * The profile is what goes to a prospective client — read once, closely,
+ * The profile is what goes to a prospective client, read once, closely,
  * usually printed to PDF and attached to an email. So it carries everything
  * it needs: the three typefaces as data URIs, and every client mark embedded.
  * It renders identically on a machine with no internet and no fonts
@@ -34,7 +34,7 @@ const escapeHtml = (s) =>
 /**
  * The typefaces, inlined.
  *
- * They were first linked from a font CDN, which the artifact host does allow —
+ * They were first linked from a font CDN, which the artifact host does allow,
  * but a profile that is saved, forwarded and opened on a laptop in a meeting
  * room cannot depend on a network request it might not get. A silent fallback
  * to Georgia would undo the one thing this document is trying to be.
@@ -53,7 +53,7 @@ const FACES = [
 function fontCss() {
   return FACES.map(([family, rel, desc]) => {
     const file = resolve(ROOT, rel);
-    if (!existsSync(file)) throw new Error(`missing font: ${rel} — run npm install`);
+    if (!existsSync(file)) throw new Error(`missing font: ${rel}, run npm install`);
     const b64 = readFileSync(file).toString('base64');
     return (
       `@font-face{font-family:'${family}';${desc};font-display:swap;` +
@@ -66,11 +66,11 @@ const template = readFileSync(resolve(HERE, 'template.html'), 'utf8');
 
 const photosPath = resolve(HERE, 'photos.json');
 const photos = existsSync(photosPath) ? JSON.parse(readFileSync(photosPath, 'utf8')) : null;
-if (!photos) console.warn('No photos.json — run: python3 scripts/profile/prepare-photos.py');
+if (!photos) console.warn('No photos.json, run: python3 scripts/profile/prepare-photos.py');
 
 const logosPath = resolve(HERE, 'logos.json');
 if (!existsSync(logosPath)) {
-  console.error('No logos.json — run: python3 scripts/profile/prepare-logos.py');
+  console.error('No logos.json, run: python3 scripts/profile/prepare-logos.py');
   process.exit(1);
 }
 const logos = JSON.parse(readFileSync(logosPath, 'utf8'));
@@ -135,5 +135,8 @@ if (!out.includes('@font-face')) {
 }
 
 const dest = resolve(ROOT, 'company-profile.html');
-writeFileSync(dest, out);
-console.log(`company-profile.html — ${logos.length} marks, ${(out.length / 1024 / 1024).toFixed(2)} MB`);
+// Chromium sniffs the encoding when the file declares none, and a shift in
+// the byte pattern can flip that guess to a Chinese codepage: en dashes and
+// cedillas then print as CJK. Declare it rather than let it be guessed.
+writeFileSync(dest, '<meta charset="utf-8">\n' + out, 'utf8');
+console.log(`company-profile.html: ${logos.length} marks, ${(out.length / 1024 / 1024).toFixed(2)} MB`);

@@ -3,8 +3,8 @@
  *
  * The design system is not duplicated: the stylesheet is lifted at build time
  * out of the company profile's template, so the two documents that go to the
- * same prospect cannot drift apart. Only what is specific to a proposal —
- * tables, the KPI matrix, the letterhead rule — is declared in this template.
+ * same prospect cannot drift apart. Only what is specific to a proposal,
+ * tables, the KPI matrix, the letterhead rule, is declared in this template.
  *
  *     python3 scripts/rfp/rates.py        # once, when the quotations change
  *     node scripts/rfp/build.mjs
@@ -46,7 +46,7 @@ const logos = json(resolve(PROFILE, 'logos.json'));
 
 let out = read(resolve(HERE, 'template.html'));
 
-// The profile's stylesheet, verbatim — including the fonts already inlined
+// The profile's stylesheet, verbatim, including the fonts already inlined
 // into it by the profile build.
 const shared = profileTpl.slice(profileTpl.indexOf('<style>') + 7, profileTpl.indexOf('</style>'));
 out = out.replace('/*@SHARED-CSS*/', shared);
@@ -111,7 +111,7 @@ out = out.replace(
 );
 
 // ------------------------------------------------------------- rate cards ---
-// Grouped by city, cheapest city last, so Dhaka — where Uber will spend — leads.
+// Grouped by city, cheapest city last, so Dhaka, where Uber will spend, leads.
 const byCity = new Map();
 for (const s of rates.screens) {
   if (!byCity.has(s.city)) byCity.set(s.city, []);
@@ -163,7 +163,7 @@ const summary = cities
 
 
 // The rate card publishes a minute rate for most of the network but not all of
-// it. Naming the shortfall — and where it is — is cheaper than having Uber
+// it. Naming the shortfall, and where it is, is cheaper than having Uber
 // notice that the map counts ten cities and the rate card prices nine.
 const UNPRICED = (() => {
   const inventory = json(resolve(ROOT, 'src/data/boards.json'));
@@ -179,7 +179,15 @@ const UNPRICED = (() => {
   const where = Object.entries(by)
     .map(([c, n]) => `${n} in ${c}`)
     .join(', ');
-  return { count: short.length, where };
+  // Whatever is still in `left` is a screen the current deck prices but the
+  // published inventory has not caught up with. Counting those as part of the
+  // fifty-eight would make the arithmetic wrong by exactly their number.
+  return {
+    count: short.length,
+    where,
+    added: left.length,
+    priced: rates.screens.length - left.length,
+  };
 })();
 
 out = out.replace(
@@ -189,10 +197,11 @@ out = out.replace(
     `</tr></thead><tbody>${summary}` +
     `<tr class="tot"><td>Total owned and operated</td><td class="num">${rates.screens.length}</td>` +
     `<td colspan="3">All 1920×1080, MP4, minimum 60 minutes per day</td></tr></tbody></table>` +
-    `<p class="tnote">${UNPRICED.count} further screens are held in the network without a ` +
-    `published minute rate — ${UNPRICED.where} — and are surveyed and quoted on request within ` +
-    `24 hours of brief, giving fifty-eight owned sites in total. The full priced list, site by ` +
-    `site, is at 5.2.</p>`,
+    `<p class="tnote">Of the fifty-eight owned sites, ${UNPRICED.priced} carry a published ` +
+    `minute rate. The other ${UNPRICED.count} (${UNPRICED.where}) are surveyed and quoted on ` +
+    `request within 24 hours of brief. A further ${UNPRICED.added} screens commissioned since ` +
+    `this inventory was published are priced in the current rate card and are included in the ` +
+    `${rates.screens.length} listed at 5.2.</p>`,
 );
 
 const metro = rates.metro;
@@ -222,6 +231,91 @@ out = out.replace('<!--@CARAVAN-->', simple('LED-covered van', rates.caravan,
   ' Inside-Dhaka routing quoted on the same basis against a named route.'));
 out = out.replace('<!--@HUMANLED-->', simple('Human LED display', rates.human_led));
 
+// ---------------------------------------------------- static and furniture ---
+
+const money = (n) => n.toLocaleString('en-US');
+
+out = out.replace(
+  '<!--@FOOTBRIDGE-->',
+  rates.footbridges?.length
+    ? `<h3 style="font-size:1.0625rem;font-weight:500;margin-top:1.4rem">Foot over bridge branding, Dhaka</h3>` +
+      `<table class="zebra" style="margin-top:0.6rem"><thead><tr><th>Bridge</th>` +
+      `<th style="width:17%">Size</th><th class="num" style="width:10%">Sq ft</th>` +
+      `<th class="num" style="width:20%">BDT / year</th></tr></thead><tbody>` +
+      rates.footbridges
+        .map(
+          (f) =>
+            `<tr><td>${esc(f.name)}</td><td>${esc(f.size)}</td>` +
+            `<td class="num">${money(f.sft)}</td><td class="num">${money(f.price)}</td></tr>`,
+        )
+        .join('') +
+      `</tbody></table>` +
+      `<p class="tnote">${rates.footbridges.length} bridges, each held for twelve months. ` +
+      `Rates exclude VAT and taxes. Artwork approved 48 hours before display; payment 50 per ` +
+      `cent on work order, the balance in stages through the campaign.</p>`
+    : '',
+);
+
+const lb = rates.lightbox;
+out = out.replace(
+  '<!--@LIGHTBOX-->',
+  lb?.units
+    ? `<h3 style="font-size:1.0625rem;font-weight:500;margin-top:1.6rem">Metro rail pillar light boxes</h3>` +
+      `<p class="tnote" style="margin-bottom:0.6rem">${esc(lb.route)}. ` +
+      `${lb.pillars} metro pillars (${esc(lb.span)}), two digital light boxes to a pillar, ` +
+      `each ${esc(lb.size)}. The route runs past Dhaka University, Doyel Chattar, the High ` +
+      `Court, the Press Club and the Secretariat.</p>` +
+      `<table><thead><tr><th>Item</th><th class="num" style="width:14%">Units</th>` +
+      `<th class="num" style="width:20%">BDT / year each</th>` +
+      `<th class="num" style="width:22%">BDT / year</th></tr></thead><tbody>` +
+      `<tr><td>Digital light boxes, ${esc(lb.size)}</td><td class="num">${lb.units}</td>` +
+      `<td class="num">${money(lb.each)}</td><td class="num">${money(lb.subtotal)}</td></tr>` +
+      `<tr><td>VAT at 15 per cent</td><td class="num"></td><td class="num"></td>` +
+      `<td class="num">${money(lb.vat)}</td></tr>` +
+      `<tr class="tot"><td>Total, twelve months</td><td class="num"></td><td class="num"></td>` +
+      `<td class="num">${money(lb.total)}</td></tr>` +
+      `</tbody></table>` +
+      `<p class="tnote">The only rate in this response quoted inclusive of VAT, because the ` +
+      `source quotation is. Payment 60 per cent on work order, the balance in stages.</p>`
+    : '',
+);
+
+const air = rates.airport;
+out = out.replace(
+  '<!--@AIRPORT-->',
+  air?.yearly
+    ? `<table style="margin-top:1rem"><thead><tr><th>Site</th><th style="width:16%">Size</th>` +
+      `<th style="width:18%">On air</th><th class="num" style="width:20%">BDT / year</th>` +
+      `</tr></thead><tbody><tr><td>${esc(air.site)}<br>` +
+      `<span style="color:var(--grey)">${esc(air.position)}</span></td>` +
+      `<td>${esc(air.size)}</td><td>${esc(air.hours)}</td>` +
+      `<td class="num">${money(air.yearly)}</td></tr></tbody></table>` +
+      `<p class="tnote">Airport branding sits under the Civil Aviation Authority and the ` +
+      `terminal operator, so the permission lead time in 4.4 applies before installation. ` +
+      `Rate excludes VAT and taxes.</p>`
+    : '',
+);
+
+const ins = rates.install;
+out = out.replace(
+  '<!--@INSTALL-->',
+  ins?.rows
+    ? `<table style="margin-top:1rem"><thead><tr><th>Item</th><th style="width:20%">Unit</th>` +
+      `<th class="num" style="width:20%">Rate (BDT)</th></tr></thead><tbody>` +
+      ins.rows
+        .map(
+          ([item, unit, rate]) =>
+            `<tr><td>${esc(item)}</td><td>${esc(unit)}</td>` +
+            `<td class="num">${money(rate)}</td></tr>`,
+        )
+        .join('') +
+      `<tr class="tot"><td>Worked example, ${esc(ins.example)}</td><td></td>` +
+      `<td class="num">${money(ins.worked)}</td></tr></tbody></table>` +
+      `<p class="tnote">${esc(ins.note)} Payment 80 per cent on order, the balance on ` +
+      `delivery. Rates exclude VAT, tax and AIT.</p>`
+    : '',
+);
+
 // ------------------------------------------------------------------ write ---
 
 // The chapter openers and the coverage map. Photography is the argument in a
@@ -248,10 +342,13 @@ out = out.replace(
 );
 
 const dest = resolve(ROOT, 'uber-rfp-response.html');
-writeFileSync(dest, out);
+// Chromium sniffs the encoding when the file declares none, and a shift in
+// the byte pattern can flip that guess to a Chinese codepage: en dashes and
+// cedillas then print as CJK. Declare it rather than let it be guessed.
+writeFileSync(dest, '<meta charset="utf-8">\n' + out, 'utf8');
 
 const unfilled = (out.match(/class="fill"/g) || []).length;
 console.log(
-  `uber-rfp-response.html — ${rates.screens.length} screens priced across ${cities.length} cities, ` +
+  `uber-rfp-response.html: ${rates.screens.length} screens priced across ${cities.length} cities, ` +
     `${wall.length} client marks, ${unfilled} rates left to fill, ${(out.length / 1024 / 1024).toFixed(2)} MB`,
 );

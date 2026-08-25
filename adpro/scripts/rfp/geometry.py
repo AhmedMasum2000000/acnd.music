@@ -70,7 +70,7 @@ def main() -> None:
     }))
 
     pts = sum(len(r) for r in outlines)
-    print(f"bangladesh.json — {len(outlines)} rings, {pts} points, "
+    print(f"bangladesh.json: {len(outlines)} rings, {pts} points, "
           f"{OUT.stat().st_size / 1024:.1f} KB")
 
 

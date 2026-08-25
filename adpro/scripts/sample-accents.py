@@ -100,7 +100,7 @@ def dominant_hue(image: Image.Image, focus: list[float]) -> tuple[float, float, 
         return None
 
     # Hues are angles, so they are averaged on the circle. A straight mean of
-    # 359° and 1° is 180° — the opposite colour.
+    # 359° and 1° is 180°, the opposite colour.
     import math
 
     x = sum(math.cos(hue * 2 * math.pi) * weight for hue, weight, _ in pool)
@@ -121,7 +121,7 @@ def _relative_luminance(r: float, g: float, b: float) -> float:
 # The page background, and the contrast the accent has to reach against it.
 # The accent carries hairlines, figures and hover states, so it has to be
 # readable, not merely present. A deep blue sampled straight off a screen
-# lands around 2.4:1 on this background — visible on a calibrated monitor in a
+# lands around 2.4:1 on this background, visible on a calibrated monitor in a
 # dark room and invisible on a phone in daylight.
 BACKGROUND = (0x0E / 255, 0x14 / 255, 0x20 / 255)
 MIN_CONTRAST = 3.5

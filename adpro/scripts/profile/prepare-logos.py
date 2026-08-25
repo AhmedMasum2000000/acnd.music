@@ -8,8 +8,8 @@ and every one at a different size, padding and background. Dropped straight
 into a grid they read as a scrapbook.
 
 So each mark is trimmed to its own ink, scaled to a consistent optical weight
-rather than a consistent pixel box — a wide wordmark and a square emblem need
-different heights to look the same size — and flattened onto the page colour so
+rather than a consistent pixel box, because a wide wordmark and a square emblem need
+different heights to look the same size, and flattened onto the page colour so
 the ones that arrived with a white block do not sit in a visible tile.
 
 Files whose names cannot yield a brand are set aside rather than guessed at.
@@ -26,7 +26,7 @@ from PIL import Image
 
 import os
 
-# The raw archive is not in the repository — it is ~5 MB of unoptimised
+# The raw archive is not in the repository; it is ~5 MB of unoptimised
 # duplicates, and logos.json beside this script is the useful form of it.
 # Set ADPRO_LOGO_DIR to wherever the supplied archive is unpacked when marks
 # need adding or replacing.
@@ -35,12 +35,12 @@ OUT = Path(__file__).resolve().parent
 OUT.mkdir(exist_ok=True)
 
 PAGE = (255, 255, 255)          # the profile's paper colour
-INK = (30, 58, 99)              # brand navy — the chip a white-on-dark mark gets
+INK = (30, 58, 99)              # brand navy, the chip a white-on-dark mark gets
 BOX_W, BOX_H = 260, 118         # the cell each mark is fitted into
 
 # 118 rather than 96 because 96 was clipping the scale of sixty-nine of the
-# hundred and five marks: everything square or round — an emblem, a seal, a
-# roundel — wants to be about 110px tall at this optical weight, and was being
+# hundred and five marks: everything square or round, an emblem, a seal, a
+# roundel, wants to be about 110px tall at this optical weight, and was being
 # shrunk to fit a cell built for logotypes. The U.S. Embassy seal was the one
 # that made it obvious.
 TARGET_AREA = 260 * 46          # optical weight: area, not height
@@ -48,7 +48,7 @@ EVEN_MIN, EVEN_MAX = 0.86, 1.45  # how far a mark may be moved to even the wall
 
 # Every supplied file is a client mark. Several arrived with hashes or
 # placeholder filenames, so they are identified by eye and named below rather
-# than dropped — an earlier filename filter discarded thirteen real brands.
+# than dropped: an earlier filename filter discarded thirteen real brands.
 
 # Where the filename is not the brand's actual name.
 RENAME = {
@@ -221,7 +221,7 @@ def is_white_mark(path: Path) -> bool:
             return False
 
         # Brightness alone is not enough. A pale-but-legible mark on a mostly
-        # opaque canvas reads as bright too — Carl Care averages 236 and is
+        # opaque canvas reads as bright too; Carl Care averages 236 and is
         # perfectly readable on paper. What separates a true white-on-dark
         # wordmark is that it is bright *and* sparse: only the letterforms are
         # opaque, so coverage is a small fraction of the box.
