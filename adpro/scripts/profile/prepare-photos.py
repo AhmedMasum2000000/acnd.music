@@ -59,8 +59,12 @@ LEAD = "dhaka-gulshan-circle-2-east-side-rob-super-market"
 # does not add detail, it only makes the document bigger.
 # Not the Gulshan 2 frame the lead band uses: that file is 747px wide, which
 # across an A4 sheet is 84 pixels to the inch and looks it, and its screen was
-# caught mid-refresh. This one is half as big again and the screen is lit.
-COVER = "dhaka-gulshan-circle-1-upper"
+# caught mid-refresh.
+# Was Gulshan 1, where the screen sits small in the upper third and the frame
+# is mostly building. At the 7:5 the cover crops to, this one is almost all
+# screen, lit, and in colour: the first thing the document says is what the
+# company sells.
+COVER = "dhaka-shohortoli-railway-station-chittagong-entry-gate"
 
 # The photograph the document closes on. Two things decide it: the screen has
 # to sit in the middle of the frame, and the file has to be big enough to

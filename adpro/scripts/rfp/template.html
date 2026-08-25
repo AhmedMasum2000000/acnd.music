@@ -45,6 +45,27 @@
 
   .tnote { font-size: 0.75rem; color: var(--ink-soft); margin-top: 0.7rem; line-height: 1.6; }
 
+  /* --- signatures ---------------------------------------------------------
+     Three columns: the two people who bind the company, and the space the
+     seal goes in. The rule sits under a box tall enough to sign inside,
+     whether that is ink on paper or a scanned signature dropped in at build
+     time by build.mjs. */
+
+  .sigs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1.2rem; }
+
+  .sig {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    height: 2.15rem;
+    border-bottom: 1px solid var(--navy);
+    overflow: hidden;
+  }
+
+  .sig--blank { border-bottom-color: var(--line); }
+  .sig img { max-height: 1.95rem; width: auto; display: block; }
+  .sigs .tnote { margin-top: 0.4rem; }
+
   /* --- answer panel -------------------------------------------------------
      The whole bid before any of the detail, because a buyer reading eleven
      responses decides on page two. */
@@ -1096,10 +1117,8 @@
           </tbody>
         </table>
         <p class="tnote">
-          Annexures A to E are AD PRO's corporate and contractual documents. F to K are
-          AD PRO's own signed rate proposals, and every figure printed in Part 5 is taken
-          from them unchanged, so any number in this response can be checked against the
-          quotation it came from without a further request.
+          A to E are AD PRO's corporate and contractual documents. F to K are its own
+          signed rate proposals, from which Part 5 is taken unchanged.
         </p>
 
         <h3 style="margin-top: 1.5rem">Point of contact for this submission</h3>
@@ -1125,19 +1144,24 @@
             response is true and correct to the best of our knowledge. AD PRO Communications
             Ltd. confirms its capability and intention to participate in this RFP, and its
             capacity to deliver the full scope of work described in Part 2 for a one-year
-            term across the ten cities named in Part 4. The signatory below is authorised
-            to bind AD PRO Communications Ltd. and is the person named for DocuSign on the
-            mutual non-disclosure agreement returned with this submission.
+            term across the ten cities named in Part 4. The signatories below are
+            authorised to bind AD PRO Communications Ltd., and the Chief Executive Officer
+            is the person named for DocuSign on the mutual non-disclosure agreement
+            returned with this submission.
           </p>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.4rem">
+          <div class="sigs">
             <div>
-              <div style="border-bottom: 1px solid var(--navy); height: 1.9rem"></div>
-              <p class="tnote" style="margin-top: 0.4rem">ABM Zakaria Habib<br>Chief Executive Officer<br>Ad Pro Communications Ltd.</p>
+              <div class="sig"><!--@SIG:habib--></div>
+              <p class="tnote">ABM Zakaria Habib<br>Chief Executive Officer<br>Ad Pro Communications Ltd.</p>
             </div>
             <div>
-              <div style="border-bottom: 1px solid var(--line); height: 1.9rem"></div>
-              <p class="tnote" style="margin-top: 0.4rem">Date and company seal</p>
+              <div class="sig"><!--@SIG:masum--></div>
+              <p class="tnote">A. H. Al-Masum<br>Director<br>Ad Pro Communications Ltd.</p>
+            </div>
+            <div>
+              <div class="sig sig--blank"></div>
+              <p class="tnote">Date and company seal</p>
             </div>
           </div>
         </div>

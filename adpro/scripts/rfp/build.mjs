@@ -345,6 +345,29 @@ out = out.replace(/<!--@OPENER:([a-z]+)-->/g, (whole, key) => {
   );
 });
 
+// ------------------------------------------------------------ signatures ---
+// Drop a PNG or JPG named after the signatory into scripts/rfp/signatures/ and
+// it lands above that person's rule at print resolution. Nothing there means a
+// ruled line to sign by hand, which is what the document ships as until the
+// files arrive.
+const SIGNATORIES = { habib: 'ABM Zakaria Habib', masum: 'A. H. Al-Masum' };
+const signed = [];
+for (const [slug, name] of Object.entries(SIGNATORIES)) {
+  const dir = resolve(HERE, 'signatures');
+  const file = ['png', 'jpg', 'jpeg']
+    .map((ext) => resolve(dir, `${slug}.${ext}`))
+    .find((f) => existsSync(f));
+  let mark = '';
+  if (file) {
+    const mime = file.endsWith('.png') ? 'png' : 'jpeg';
+    mark =
+      `<img src="data:image/${mime};base64,${readFileSync(file).toString('base64')}" ` +
+      `alt="Signature of ${esc(name)}" />`;
+    signed.push(slug);
+  }
+  out = out.replaceAll(`<!--@SIG:${slug}-->`, mark);
+}
+
 out = out.replace(
   '<!--@MAP-->',
   existsSync(resolve(HERE, 'map.svg')) ? readFileSync(resolve(HERE, 'map.svg'), 'utf8') : '',
@@ -359,5 +382,7 @@ writeFileSync(dest, '<meta charset="utf-8">\n' + out, 'utf8');
 const unfilled = (out.match(/class="fill"/g) || []).length;
 console.log(
   `uber-rfp-response.html: ${rates.screens.length} screens priced across ${cities.length} cities, ` +
-    `${wall.length} client marks, ${unfilled} rates left to fill, ${(out.length / 1024 / 1024).toFixed(2)} MB`,
+    `${wall.length} client marks, ${unfilled} rates left to fill, ` +
+    `${signed.length ? signed.join(' and ') + ' signed' : 'signature lines blank'}, ` +
+    `${(out.length / 1024 / 1024).toFixed(2)} MB`,
 );
