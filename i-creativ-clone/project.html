@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#15161b" />
+    <title>Project — Studio Paradigm</title>
+    <meta name="description" content="A case study from Studio Paradigm." />
+  </head>
+
+  <body class="isLoading" data-barba="wrapper">
+    <div data-curtain style="display: none"></div>
+    <nav class="main-navigation">
+      <a href="/" class="brand"><span class="brand__icon"></span>Studio Paradigm</a>
+      <ul class="main-nav-menu">
+        <li><a href="/projects">Work</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/vision">Vision</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" data-menu-toggle aria-label="Open menu"></button>
+    </nav>
+    <div data-menu-overlay>
+      <div class="menu-content">
+        <div class="menu-header">
+          <h2>Menu</h2>
+          <button class="menu-close" data-menu-close></button>
+        </div>
+        <nav class="menu-nav">
+          <a href="/projects" class="text-link" data-menu-link>Work</a>
+          <a href="/services" class="text-link" data-menu-link>Services</a>
+          <a href="/about" class="text-link" data-menu-link>About</a>
+          <a href="/vision" class="text-link" data-menu-link>Vision</a>
+          <a href="/contact" class="text-link" data-menu-link>Contact</a>
+        </nav>
+      </div>
+    </div>
+    <main style="margin-top: var(--header-height)">
+      <div class="page-content" data-barba="container" data-barba-namespace="project-detail">
+        <section class="section-header" data-reveal>
+          <div class="container">
+            <div style="max-width: 800px">
+              <h1 id="project-title">Global Vision Rebrand</h1>
+              <div style="display: flex; gap: 2rem; margin-top: 1rem">
+                <div>
+                  <p class="sub-text" style="margin-bottom: 0.5rem">Year</p>
+                  <p id="project-year">2024</p>
+                </div>
+                <div>
+                  <p class="sub-text" style="margin-bottom: 0.5rem">Services</p>
+                  <p id="project-tags">Identity, Web</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div style="background: linear-gradient(135deg, rgba(107, 99, 181, 0.3), rgba(75, 78, 105, 0.3)); border-radius: 4px; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; min-height: 300px">
+              <span class="text-muted">Project Hero Image</span>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div style="max-width: 800px; margin: 0 auto">
+              <h2 style="margin-bottom: 1rem">The Challenge</h2>
+              <p>
+                Our client, a technology consultancy with a strong market presence but a dated visual identity, approached us to create a comprehensive rebranding that would position them as innovative leaders while maintaining their credibility with established clients.
+              </p>
+
+              <h2 style="margin: 2rem 0 1rem 0">Our Approach</h2>
+              <p>
+                We conducted interviews with clients, prospects, and the leadership team to understand the true brand promise. What emerged was a story of bringing order to complexity — turning data into insight, strategy into results.
+              </p>
+
+              <h2 style="margin: 2rem 0 1rem 0">The Solution</h2>
+              <p>
+                A comprehensive identity system built on geometric principles that suggest both logic and creativity. The wordmark uses a custom typeface modification. The color palette bridges the technical (cool grays and blues) with human warmth (amber and rose). Every application, from business cards to the website, reinforces the core message.
+              </p>
+
+              <h2 style="margin: 2rem 0 1rem 0">The Results</h2>
+              <p>
+                The rebrand successfully repositioned the client. Within six months of launch, they reported increased lead quality and improved conversion rates. The identity became a recruiting tool — top talent wanted to work for a brand that looked and felt modern.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div style="background: linear-gradient(135deg, rgba(75, 78, 105, 0.3), rgba(168, 218, 220, 0.3)); border-radius: 4px; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; min-height: 300px">
+              <span class="text-muted">Project Section Image</span>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container" style="text-align: center">
+            <h2 style="margin-bottom: 1rem">Next Project</h2>
+            <p class="text-large" style="margin-bottom: 1rem">
+              <a href="/projects/luminous-gallery-site" class="text-link">Luminous Gallery Site →</a>
+            </p>
+          </div>
+        </section>
+
+        <footer style="border-top: 1px solid var(--line-color); padding: 2rem; margin-top: 4rem">
+          <div class="container">
+            <p class="text-muted">&copy; 2024 Studio Paradigm. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

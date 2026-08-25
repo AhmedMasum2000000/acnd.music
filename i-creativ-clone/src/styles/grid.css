@@ -1,0 +1,76 @@
+.css-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: 100%;
+}
+
+.grid-item {
+  grid-column: span 12;
+}
+
+.grid-10 {
+  grid-column: span 10;
+}
+
+.grid-50,
+.xl-grid-50 {
+  grid-column: span 6;
+}
+
+.grid-33,
+.xl-grid-33 {
+  grid-column: span 4;
+}
+
+.grid-25,
+.xl-grid-25 {
+  grid-column: span 3;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .xl-grid-50 {
+    grid-column: span 12;
+  }
+
+  .xl-grid-33 {
+    grid-column: span 6;
+  }
+
+  .xl-grid-25 {
+    grid-column: span 4;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .css-grid-wrapper {
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .grid-50,
+  .grid-33,
+  .grid-25,
+  .xsm-grid-50,
+  .xsm-grid-33,
+  .xsm-grid-25 {
+    grid-column: span 12;
+  }
+
+  .xsm-grid-50 {
+    grid-column: span 6;
+  }
+
+  .xsm-grid-33 {
+    grid-column: span 4;
+  }
+
+  .xsm-grid-25 {
+    grid-column: span 3;
+  }
+
+  .xsm-grid-100 {
+    grid-column: span 12;
+  }
+}

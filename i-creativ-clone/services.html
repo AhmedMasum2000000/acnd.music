@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#15161b" />
+    <meta name="color-scheme" content="dark" />
+    <title>Services — Studio Paradigm</title>
+    <meta name="description" content="Branding, web design, design strategy, and design systems." />
+  </head>
+
+  <body class="isLoading" data-barba="wrapper">
+    <div data-curtain style="display: none"></div>
+
+    <nav class="main-navigation">
+      <a href="/" class="brand"><span class="brand__icon"></span>Studio Paradigm</a>
+      <ul class="main-nav-menu">
+        <li><a href="/projects">Work</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/vision">Vision</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" data-menu-toggle aria-label="Open menu"></button>
+    </nav>
+
+    <div data-menu-overlay>
+      <div class="menu-content">
+        <div class="menu-header">
+          <h2>Menu</h2>
+          <button class="menu-close" data-menu-close></button>
+        </div>
+        <nav class="menu-nav">
+          <a href="/projects" class="text-link" data-menu-link>Work</a>
+          <a href="/services" class="text-link" data-menu-link>Services</a>
+          <a href="/about" class="text-link" data-menu-link>About</a>
+          <a href="/vision" class="text-link" data-menu-link>Vision</a>
+          <a href="/contact" class="text-link" data-menu-link>Contact</a>
+        </nav>
+      </div>
+    </div>
+
+    <main style="margin-top: var(--header-height)">
+      <div class="page-content" data-barba="container" data-barba-namespace="services">
+        <section class="section-header" data-reveal>
+          <div class="container">
+            <h1>Our Services</h1>
+            <p class="text-large">End-to-end design solutions from strategy to implementation</p>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div class="alt-section">
+              <div>
+                <span class="sub-text">Service One</span>
+                <h2>Branding & Identity</h2>
+                <p>We develop distinctive brand identities that resonate with your audience. Our process encompasses strategy, visual design, verbal identity, and implementation guidelines.</p>
+                <a href="/contact" class="text-link" style="display: inline-block; margin-top: 1rem">Get started</a>
+              </div>
+              <div style="background: linear-gradient(135deg, rgba(107, 99, 181, 0.3), rgba(75, 78, 105, 0.3)); border-radius: 4px; min-height: 300px"></div>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div class="alt-section reverse">
+              <div>
+                <span class="sub-text">Service Two</span>
+                <h2>Web Design & Development</h2>
+                <p>We create websites that are as beautiful as they are functional. From design through development, we build digital experiences that tell your story.</p>
+                <a href="/contact" class="text-link" style="display: inline-block; margin-top: 1rem">Get started</a>
+              </div>
+              <div style="background: linear-gradient(135deg, rgba(168, 218, 220, 0.3), rgba(107, 99, 181, 0.3)); border-radius: 4px; min-height: 300px"></div>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div class="alt-section">
+              <div>
+                <span class="sub-text">Service Three</span>
+                <h2>Design Strategy</h2>
+                <p>Design without strategy is aesthetics. We approach every project with research, analysis, and clear thinking about your market and competition.</p>
+                <a href="/contact" class="text-link" style="display: inline-block; margin-top: 1rem">Get started</a>
+              </div>
+              <div style="background: linear-gradient(135deg, rgba(75, 78, 105, 0.3), rgba(168, 218, 220, 0.3)); border-radius: 4px; min-height: 300px"></div>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div class="alt-section reverse">
+              <div>
+                <span class="sub-text">Service Four</span>
+                <h2>Design Systems</h2>
+                <p>We build design systems that enable teams to work faster and maintain consistency. Scalable, maintainable visual frameworks.</p>
+                <a href="/contact" class="text-link" style="display: inline-block; margin-top: 1rem">Get started</a>
+              </div>
+              <div style="background: linear-gradient(135deg, rgba(107, 99, 181, 0.3), rgba(168, 218, 220, 0.3)); border-radius: 4px; min-height: 300px"></div>
+            </div>
+          </div>
+        </section>
+
+        <footer style="border-top: 1px solid var(--line-color); padding: 2rem; margin-top: 4rem">
+          <div class="container">
+            <p class="text-muted">&copy; 2024 Studio Paradigm. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

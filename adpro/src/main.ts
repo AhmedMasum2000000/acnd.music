@@ -1,0 +1,70 @@
+/**
+ * Boot sequence.
+ *
+ * Order matters: viewport units before anything measures, scroll before the
+ * curtain (which locks it), and the WebGL layer last because it is the only
+ * part that is allowed to fail.
+ */
+
+import '@fontsource/bebas-neue/400.css';
+import '@fontsource-variable/inter';
+// Two weights only. The mono face carries specifications — dimensions,
+// resolutions, on-air windows — where a figure has to line up with the figure
+// above it, and where the register should read as technical rather than
+// promotional. It is not used for prose anywhere.
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+
+import './styles/tokens.css';
+import './styles/grid.css';
+import './styles/typography.css';
+import './styles/global.css';
+import './styles/components.css';
+// The viewfinder sits over the composition rather than inside it, so it loads
+// after the components it frames.
+import './styles/chrome.css';
+// Last, so the small-screen layer overrides the composition above it.
+import './styles/mobile.css';
+
+import { initViewport } from './lib/viewport';
+import { initBarba, mountPage } from './motion/barba';
+import { initCursorFollower } from './motion/cursorFollower';
+import { initPointerTrail } from './motion/ascii';
+import { playIntro } from './motion/curtain';
+import { initHud } from './motion/hud';
+import { initMenu } from './motion/menu';
+import { initScroll } from './motion/scroll';
+import { initField } from './motion/wgl';
+import { initCookieNotice } from './ui/cookieNotice';
+
+function boot(): void {
+  initViewport();
+  initScroll();
+
+  // Shell-level modules live for the session; only page modules are remounted
+  // by Barba.
+  initMenu();
+  // The viewfinder and its two live readouts. Shell-level: the instrument does
+  // not blink out and rebuild on every navigation, which is the point of it.
+  initHud();
+  initCursorFollower();
+  // Shell-level: the trail follows the pointer across navigations rather than
+  // being torn down and rebuilt with each page.
+  initPointerTrail();
+  initCookieNotice();
+  initBarba();
+
+  mountPage(document);
+
+  void playIntro();
+
+  // Decorative — kicked off without blocking the intro, and its failure is
+  // not the site's failure.
+  initField();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot, { once: true });
+} else {
+  boot();
+}
