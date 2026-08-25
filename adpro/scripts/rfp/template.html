@@ -263,13 +263,27 @@
     .flow li { margin-bottom: 3.5mm; }
     .flow b { font-size: 10pt; }
     .flow span { font-size: 8.5pt; }
-    /* Only two page breaks in this document are editorial. The rest of it
-       packs, because a proposal that leaves a sheet one-tenth inked reads as
-       one assembled out of parts rather than written. */
+    /* Nothing that reads as one object is allowed to straddle a sheet. A table
+       cut in half, a panel with its last two lines overleaf, a city heading
+       parted from its rates: each reads as a fault rather than a layout. Paper
+       is cheaper than that, so these hold together and the document takes the
+       pages it needs.
+
+       `break-inside: avoid` is a request, not a guarantee. Where a block is
+       genuinely taller than one sheet, and the Dhaka rate card at thirty-four
+       screens is, the engine breaks it anyway rather than clipping it. That is
+       the only place in this document a table is allowed to split. */
     @page { margin: 22mm 15mm 19mm; }
     .page.flow { break-after: auto; }
-    table, .caps, .flow, .answer { break-inside: auto; }
+    /* Atomic: a thing a reader takes in as one object. */
+    table, .answer, .block, .signoff, figure { break-inside: avoid; }
+    /* Not atomic: containers of many independent items, which may flow across
+       a sheet so long as no single item is cut. Making these atomic pushed
+       whole pages to a fifth full. */
     tr, .flow li, .caps > div { break-inside: avoid; }
+    .block--long, .block--long table { break-inside: auto; }
+    thead { break-after: avoid; }
+    h2, h3, h4, .rail, .label { break-after: avoid; }
 
     /* The annexure list, the contact block and the signature are one thing a
        reader takes in at once, and a signature stranded on its own sheet reads
@@ -277,10 +291,6 @@
        it, whatever the sections above it happen to leave. */
     .sheet--own { break-before: page; }
 
-    /* A table short enough to fit one sheet should not leave a header and a
-       single row stranded at the foot of the previous one. Chromium ignores
-       `orphans` on table rows, so the short tables say so themselves. */
-    table.keep { break-inside: avoid; }
     .opener { margin-bottom: 5mm; aspect-ratio: 64 / 13; }
     .opener__tag { padding: 2mm 4mm 2.2mm; }
     .opener__tag b { font-size: 8.5pt; }
@@ -442,7 +452,7 @@
             <tr><td>Incorporated</td><td>31 October 2019, Registrar of Joint Stock Companies &amp; Firms, Dhaka</td></tr>
             <tr><td>Registration no.</td><td>C-156601/2019</td></tr>
             <tr><td>Trade licence</td><td>TRAD/DSCC/312741/2019, Dhaka South City Corporation (FY 2025–26)</td></tr>
-            <tr><td>Managing Director</td><td>A. H. Al-Maruf Sunny</td></tr>
+            <tr><td>Chief Executive Officer</td><td>ABM Zakaria Habib</td></tr>
             <tr><td>Nature of business</td><td>Advertising agency, marketing, event management, import and export</td></tr>
             <tr><td>Registered office</td><td>37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
             <tr><td>Operating office</td><td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
@@ -674,7 +684,7 @@
         <p class="tnote">
           Named individuals and CVs for the assigned team will be provided on award.
           Uber's Operations Manager, Bangladesh has a direct line to the Account Director
-          and to the Managing Director for escalation.
+          and to the Chief Executive Officer for escalation.
         </p>
       </div>
     </section>
@@ -1052,27 +1062,13 @@
             <tr><td>Details of production, installation, maintenance and reporting capabilities</td><td>4.5 and 4.8, end to end from brief to closure report</td></tr>
           </tbody>
         </table>
-        <h3 style="margin-top: 1.7rem">Point of contact for this submission</h3>
-        <table style="margin-top: 0.6rem">
-          <tbody>
-            <tr><td style="width: 18%">Commercial and bid</td>
-                <td>Sales &amp; Marketing desk, +880 1958 503755, mkt.adpro@gmail.com</td></tr>
-            <tr><td>General and escalation</td>
-                <td>+880 1763 924619, info@adpro.com.bd</td></tr>
-            <tr><td>Accounts and invoicing</td>
-                <td>+880 1958 503760</td></tr>
-            <tr><td>Correspondence address</td>
-                <td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
-            <tr><td>Contracting entity</td>
-                <td>AD PRO Communications Ltd., registered at 37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
-          </tbody>
-        </table>
       </div>
     </section>
 
-    <section class="sheet--own">
+    <section>
       <div class="rail"><span class="rail__num">A</span><span class="rail__name">Annexures and declaration</span></div>
       <div class="body-col" style="max-width: none">
+        <div class="block">
         <h2>What is enclosed, and who to ask.</h2>
 
         <p class="lede" style="max-width: 74ch">
@@ -1106,6 +1102,22 @@
           quotation it came from without a further request.
         </p>
 
+        <h3 style="margin-top: 1.5rem">Point of contact for this submission</h3>
+        <table style="margin-top: 0.6rem">
+          <tbody>
+            <tr><td style="width: 18%">Commercial and bid</td>
+                <td>Sales &amp; Marketing desk, +880 1958 503755, mkt.adpro@gmail.com</td></tr>
+            <tr><td>General and escalation</td>
+                <td>+880 1763 924619, info@adpro.com.bd</td></tr>
+            <tr><td>Accounts and invoicing</td>
+                <td>+880 1958 503760</td></tr>
+            <tr><td>Correspondence address</td>
+                <td>House #99 (1st floor), Road #10/2, Block D, Niketon, Gulshan 1, Dhaka 1212</td></tr>
+            <tr><td>Contracting entity</td>
+                <td>AD PRO Communications Ltd., registered at 37/2 Purana Paltan (9th floor), Fayanaz Apartment, Dhaka 1000</td></tr>
+          </tbody>
+        </table>
+
 
         <div class="signoff">
           <p class="tnote" style="margin-top: 1.2rem">
@@ -1121,13 +1133,14 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.4rem">
             <div>
               <div style="border-bottom: 1px solid var(--navy); height: 1.9rem"></div>
-              <p class="tnote" style="margin-top: 0.4rem">A. H. Al-Maruf Sunny<br>Managing Director<br>Ad Pro Communications Ltd.</p>
+              <p class="tnote" style="margin-top: 0.4rem">ABM Zakaria Habib<br>Chief Executive Officer<br>Ad Pro Communications Ltd.</p>
             </div>
             <div>
               <div style="border-bottom: 1px solid var(--line); height: 1.9rem"></div>
               <p class="tnote" style="margin-top: 0.4rem">Date and company seal</p>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>

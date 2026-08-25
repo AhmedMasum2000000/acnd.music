@@ -130,12 +130,21 @@ const rateCard = cities
           `<td>${esc(s.schedule)}</td><td class="num">${bdt(s.rate)}</td></tr>`,
       )
       .join('');
+    // A city's name and its rates are one block. Wrapped so the print
+    // stylesheet can hold them on the same sheet: a heading at the foot of one
+    // page with its table on the next reads as two different things.
     return (
+      // A city with more rows than a sheet holds cannot be kept whole, and
+      // asking for it only pushes the block to the next page before breaking it
+      // anyway, leaving the page it came from a third full. Dhaka is the only
+      // one, at thirty-four screens.
+      `<div class="${byCity.get(city).length > 18 ? 'block block--long' : 'block'}">` +
       `<h3 style="margin-top:1.3rem;font-size:0.8125rem;font-weight:500;letter-spacing:0.13em;` +
       `text-transform:uppercase;color:var(--blue)">${esc(city)} · ${byCity.get(city).length} screens</h3>` +
       `<table style="margin-top:0.5rem"><thead><tr><th>Site</th><th style="width:15%">Dimension</th>` +
       `<th style="width:8%">Pitch</th><th style="width:15%">On air</th>` +
-      `<th class="num" style="width:16%">BDT / min / day</th></tr></thead><tbody>${rows}</tbody></table>`
+      `<th class="num" style="width:16%">BDT / min / day</th></tr></thead><tbody>${rows}</tbody></table>` +
+      `</div>`
     );
   })
   .join('');

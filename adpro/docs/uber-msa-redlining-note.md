@@ -1,6 +1,6 @@
 # Uber MSA + SOW — contract review
 
-**For:** A. H. Al-Maruf Sunny, Managing Director
+**For:** ABM Zakaria Habib, Chief Executive Officer
 **Re:** Uber Bangladesh Limited standard Services Agreement and Statement of Work
 **Date:** 25 August 2026
 
@@ -109,7 +109,7 @@ from contracting, and it means the scope on the contract is the scope we wrote.
    the trade licence carry. Confirm whether the MSA should use the same or the
    Gulshan operating office.
 2. **Authorised signatory.** Uber needs a full name and email address to raise
-   DocuSign. Confirm this is the Managing Director and supply the email.
+   DocuSign. Confirm this is the Chief Executive Officer and supply the email.
 3. **Insurance.** Clause 7 requires us to carry our own insurance as required by
    law, and Uber's insurance never covers us. Confirm current public-liability
    and workmen's cover for installation at height before the first job.
