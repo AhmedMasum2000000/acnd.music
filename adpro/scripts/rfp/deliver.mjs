@@ -17,6 +17,9 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const OUT = resolve(ROOT, 'deliverables');
 
 const FILES = [
+  // The email that carries the rest. It lives with them so nobody has to
+  // reconstruct what the covering note said when the thread is picked up again.
+  ['scripts/rfp/submission-email.txt', 'AD PRO Communications Ltd - Uber Bangladesh - Submission Email.txt'],
   ['uber-cover-letter.pdf', 'AD PRO Communications Ltd - Uber Bangladesh - Cover Letter.pdf'],
   ['uber-rfp-response.pdf', 'AD PRO Communications Ltd - Uber Bangladesh - Strategic Plan and Commercial Proposal.pdf'],
   ['uber-presentation.pptx', 'AD PRO Communications Ltd - Uber Bangladesh - Presentation.pptx'],
