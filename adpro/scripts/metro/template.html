@@ -1,0 +1,287 @@
+<title>Motijheel Metro Rail Station: LED media proposal</title>
+
+<style>
+/*@SHARED-CSS*/
+
+  /* Three sheets, each laid out to the millimetre rather than left to flow.
+     A proposal this short reads as designed only if every page is: the cover,
+     the screens, the rates. The letterhead and folio are stamped onto pages
+     two and three by scripts/rfp/pdf.py, the same as the Uber response, so the
+     top 22mm and bottom 19mm of those sheets are left clear for them. */
+
+  @page { size: A4; margin: 0; }
+
+  html, body { background: #e9eef5; }
+  body { font-size: 9.5pt; line-height: 1.6; }
+
+  .pg {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto 8mm;
+    padding: 22mm 15mm 19mm;
+    background: var(--paper);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media print {
+    html, body { background: var(--paper); }
+    .pg { margin: 0; break-after: page; }
+    .pg:last-child { break-after: auto; }
+  }
+
+  .label { font-size: 6.5pt; }
+  h2 { font-size: 19pt; line-height: 1.18; font-weight: 300; margin: 1.5mm 0 4mm; }
+
+  .sec { display: flex; align-items: baseline; gap: 3mm; }
+  .sec .label:first-child { color: var(--blue); }
+
+  .prose { max-width: 150mm; }
+  .prose p { color: var(--ink-soft); }
+  .prose p + p { margin-top: 2.5mm; }
+  .prose strong { color: var(--navy); font-weight: 600; }
+
+  /* --- cover -------------------------------------------------------------- */
+
+  .pg--cover { padding: 18mm 15mm 0; }
+
+  .pg--cover .cover__mark { margin-bottom: 16mm; }
+  .pg--cover h1 {
+    font-size: 30pt; line-height: 1.08; font-weight: 300; max-width: 150mm;
+    margin: 3mm 0 5mm;
+  }
+  .pg--cover h1 em { font-style: normal; font-weight: 500; color: var(--blue); }
+  .pg--cover .lede { font-size: 11pt; max-width: 135mm; }
+
+  .shot { margin: 9mm 0 0; background: var(--navy); overflow: hidden; }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .pg--cover .shot { height: 110mm; }
+
+  .figs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6mm;
+    margin: 8mm 0 0;
+    padding-top: 5mm;
+    border-top: 1px solid var(--line);
+  }
+  .figs b {
+    display: block; font-size: 26pt; font-weight: 300; line-height: 1;
+    letter-spacing: -0.03em; color: var(--navy); font-variant-numeric: lining-nums tabular-nums;
+  }
+  .figs b small { font-size: 11pt; letter-spacing: 0; margin-right: 1mm; color: var(--grey); }
+  .figs span { display: block; margin-top: 2mm; font-size: 8pt; color: var(--ink-soft); line-height: 1.4; }
+
+  .strip {
+    margin: auto -15mm 0;
+    background: var(--navy);
+    padding: 5mm 15mm;
+    display: flex;
+    justify-content: space-between;
+  }
+  .strip span {
+    font-size: 6.5pt; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* --- screens ------------------------------------------------------------ */
+
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin: 7mm 0 0; }
+  .pair figure { margin: 0; }
+  .pair .shot { margin: 0; aspect-ratio: 4 / 5; }
+  .pair figcaption { margin-top: 2.5mm; font-size: 8pt; color: var(--ink-soft); line-height: 1.45; }
+  .pair figcaption b { display: block; color: var(--navy); font-weight: 600; font-size: 9pt; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
+  th {
+    text-align: left; font-size: 6.5pt; font-weight: 500; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--grey);
+    padding: 0 2.5mm 1.8mm 0; border-bottom: 1px solid var(--navy); vertical-align: bottom;
+  }
+  td { padding: 2mm 2.5mm 2mm 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:last-child, th:last-child { padding-right: 0; }
+  td b { color: var(--navy); font-weight: 600; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tot td { border-bottom: 0; border-top: 1px solid var(--navy); font-weight: 600; color: var(--navy); }
+  tbody tr:last-child td { border-bottom: 0; }
+  .tnote { font-size: 7.5pt; color: var(--ink-soft); margin-top: 2mm; line-height: 1.55; }
+
+  .spaced { margin-top: 8mm; }
+
+  /* --- rates -------------------------------------------------------------- */
+
+  .offer {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 8mm;
+    align-items: center;
+    background: var(--navy);
+    padding: 6mm 7mm;
+    margin-top: 6mm;
+  }
+  .offer .label { color: var(--sky); }
+  .offer h3 { color: #fff; font-size: 13pt; font-weight: 400; line-height: 1.25; margin-top: 1.5mm; }
+  .offer p { color: rgba(255, 255, 255, 0.78); font-size: 8pt; margin-top: 2mm; line-height: 1.5; }
+  .offer__n { text-align: right; color: #fff; }
+  .offer__n b { display: block; font-size: 30pt; font-weight: 300; line-height: 1; letter-spacing: -0.03em; }
+  .offer__n b small { font-size: 11pt; letter-spacing: 0; color: var(--sky); margin-right: 1mm; }
+  .offer__n span { display: block; margin-top: 2mm; font-size: 7.5pt; color: rgba(255, 255, 255, 0.72); }
+
+  .terms { list-style: none; margin: 3mm 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 8mm; }
+  .terms li { display: grid; grid-template-columns: 5mm 1fr; font-size: 8pt; line-height: 1.5; color: var(--ink); }
+  .terms i { font-style: normal; font-weight: 500; font-size: 7pt; color: var(--blue); padding-top: 0.3mm; font-variant-numeric: tabular-nums; }
+  .terms strong { color: var(--navy); font-weight: 600; }
+
+  .contact {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 8mm;
+    align-items: center;
+    padding-top: 5mm;
+    border-top: 2px solid var(--navy);
+  }
+  .contact .cover__mark { margin: 0; }
+  .contact .cover__logo { width: 10mm; height: 10mm; }
+  .contact .cover__wordmark { font-size: 11pt; }
+  .contact p { font-size: 8pt; line-height: 1.6; color: var(--ink-soft); }
+  .contact p b { color: var(--navy); font-weight: 600; }
+</style>
+
+<!-- =============================== COVER =============================== -->
+<div class="pg pg--cover">
+  <div class="cover__mark"><!--@LOGO-->
+    <span class="cover__wordmark">AD&nbsp;PRO<span class="cover__sub">Communications Ltd.</span></span>
+  </div>
+
+  <p class="label" style="color: var(--blue)">Media proposal &nbsp;/&nbsp; Dhaka Metro Rail, MRT Line 6</p>
+  <h1>LED screen advertising at <em>Motijheel</em> Metro Rail Station.</h1>
+  <p class="lede">
+    Every LED screen in the station, on one booking: {{n_total}} screens where
+    Dhaka's banking and business district starts and ends its working day.
+  </p>
+
+  <div class="shot"><!--@PHOTO:cover--></div>
+
+  <div class="figs">
+    <div><b>{{n_total}}</b><span>LED screens in the station</span></div>
+    <div><b>{{n_large}}</b><span>Large landscape screens</span></div>
+    <div><b>{{n_std}}</b><span>Standard portrait screens</span></div>
+    <div><b><small>BDT</small>{{pkg_rate}}</b><span>Per minute per screen, full-station package</span></div>
+  </div>
+
+  <div class="strip">
+    <span>AD PRO Communications Ltd.</span>
+    <span>{{date}}</span>
+    <span>Minimum booking {{min_months}} months</span>
+  </div>
+</div>
+
+<!-- ============================== SCREENS ============================== -->
+<div class="pg">
+  <div class="sec"><span class="label">01</span><span class="label">The station</span></div>
+  <h2>One station, every screen in it.</h2>
+  <div class="prose">
+    <p>
+      Motijheel is Dhaka's commercial and banking centre: the central bank, the
+      head offices of most of the country's banks and insurers, and the offices
+      that serve them. Its metro station brings in the people who work there,
+      every working day, and sends them home again.
+    </p>
+    <p>
+      The station carries <strong>{{n_total}} LED screens</strong>: {{n_large_word}} large
+      landscape screens on the concourse walls and {{n_std_word}} standard portrait
+      screens on the columns along the passenger routes. Book the screens you
+      need, or take the whole station at the package rate.
+    </p>
+  </div>
+
+  <div class="pair">
+    <figure>
+      <div class="shot"><!--@PHOTO:big--></div>
+      <figcaption><b>Large screen &middot; {{n_large}} in the station</b>Landscape, wall-mounted on the concourse, seen full-on from the approach.</figcaption>
+    </figure>
+    <figure>
+      <div class="shot"><!--@PHOTO:small--></div>
+      <figcaption><b>Standard screen &middot; {{n_std}} in the station</b>Portrait, column-mounted along the concourse and the routes to the gates.</figcaption>
+    </figure>
+  </div>
+
+  <table class="spaced">
+    <thead><tr>
+      <th>Format</th><th class="num" style="width:14%">Screens</th>
+      <th style="width:18%">Orientation</th><th style="width:40%">Placement</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><b>Large LED</b></td><td class="num">{{n_large}}</td><td>Landscape</td><td>Concourse walls</td></tr>
+      <tr><td><b>Standard LED</b></td><td class="num">{{n_std}}</td><td>Portrait</td><td>Concourse columns and passenger routes</td></tr>
+      <tr class="tot"><td>Motijheel Metro Rail Station</td><td class="num">{{n_total}}</td><td colspan="2">Digital, full-motion video</td></tr>
+    </tbody>
+  </table>
+  <p class="tnote">Creative specifications are sent with the booking confirmation.</p>
+</div>
+
+<!-- =============================== RATES =============================== -->
+<div class="pg">
+  <div class="sec"><span class="label">02</span><span class="label">Rates</span></div>
+  <h2>Simple rates, per minute of airtime.</h2>
+
+  <table style="margin-top: 2mm">
+    <thead><tr>
+      <th>Format</th><th class="num" style="width:13%">Screens</th>
+      <th class="num" style="width:24%">BDT / min / screen</th>
+      <th class="num" style="width:26%">BDT / min, all screens</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><b>Large LED</b></td><td class="num">{{n_large}}</td><td class="num">{{r_large}}</td><td class="num">{{m_large}}</td></tr>
+      <tr><td><b>Standard LED</b></td><td class="num">{{n_std}}</td><td class="num">{{r_std}}</td><td class="num">{{m_std}}</td></tr>
+      <tr class="tot"><td>Whole station at card rates</td><td class="num">{{n_total}}</td><td class="num"></td><td class="num">{{m_card}}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="offer">
+    <div>
+      <span class="label">Full-station package</span>
+      <h3>Book all {{n_total}} screens together and every screen is BDT {{pkg_rate}} a minute.</h3>
+      <p>BDT {{m_pkg}} a minute across the station instead of {{m_card}}: {{save_pct}}&nbsp;per&nbsp;cent below card rates.</p>
+    </div>
+    <div class="offer__n">
+      <b><small>BDT</small>{{pkg_rate}}</b>
+      <span>per minute per screen, all {{n_total}} screens</span>
+    </div>
+  </div>
+
+  <table class="spaced">
+    <thead><tr>
+      <th>Example: {{ex_min}} minutes a day on every screen, {{min_months}} months</th>
+      <th class="num" style="width:22%">Card rates</th>
+      <th class="num" style="width:22%">Package</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Airtime, {{ex_minutes}} minutes per screen ({{ex_days}} days)</td><td class="num">{{ex_card}}</td><td class="num">{{ex_pkg}}</td></tr>
+      <tr><td>VAT at {{vat_pct}} per cent</td><td class="num">{{ex_card_vat}}</td><td class="num">{{ex_pkg_vat}}</td></tr>
+      <tr class="tot"><td>Total payable in advance, BDT</td><td class="num">{{ex_card_tot}}</td><td class="num">{{ex_pkg_tot}}</td></tr>
+    </tbody>
+  </table>
+  <p class="tnote">Illustrative. Any number of minutes a day can be booked; the campaign is priced at the rates above.</p>
+
+  <div class="sec spaced"><span class="label">03</span><span class="label">Terms</span></div>
+  <ul class="terms">
+    <li><i>1</i><span>Rates are in BDT per minute of airtime per screen and <strong>exclude VAT</strong>. VAT at {{vat_pct}} per cent is added to every invoice.</span></li>
+    <li><i>2</i><span><strong>Minimum booking {{min_months}} months.</strong></span></li>
+    <li><i>3</i><span><strong>100 per cent advance payment</strong> with the work order, before the campaign goes on air.</span></li>
+    <li><i>4</i><span>The package rate of BDT {{pkg_rate}} applies when all {{n_total}} screens are booked together for the same period.</span></li>
+    <li><i>5</i><span>All content is subject to approval by the station authority before it goes on air.</span></li>
+    <li><i>6</i><span>This proposal is valid for 30 days from {{date}}.</span></li>
+  </ul>
+
+  <div class="contact">
+    <div class="cover__mark"><!--@LOGO-->
+      <span class="cover__wordmark">AD&nbsp;PRO<span class="cover__sub">Communications Ltd.</span></span>
+    </div>
+    <p>House #99 (1st floor), Road #10/2<br>Block D, Niketon, Gulshan 1<br>Dhaka 1212</p>
+    <p><b>To book</b><br>+880 1958 503755<br>mkt.adpro@gmail.com</p>
+  </div>
+</div>

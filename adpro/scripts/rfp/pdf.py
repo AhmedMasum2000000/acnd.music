@@ -16,9 +16,10 @@ photographs are re-encoded as JPEG afterwards; the client marks are left
 exactly as they are, since JPEG rings around flat colour and hard edges and
 a logo is nothing but flat colour and hard edges.
 
-    python3 scripts/profile/pdf.py
+    python3 scripts/rfp/pdf.py [stem]
 
-Writes uber-rfp-response.pdf beside the HTML.
+Writes <stem>.pdf beside the HTML, uber-rfp-response.pdf by default. The
+Motijheel metro proposal goes through here too, as motijheel-metro-proposal.
 """
 
 from pathlib import Path
@@ -45,7 +46,15 @@ OUT = ROOT / f"{STEM}.pdf"
 # back cover are photographs to their edges and take neither.
 RUNNER = "AD PRO COMMUNICATIONS LTD.   \u00b7   OUTDOOR ADVERTISING AGENCY IN BANGLADESH"
 HEAD_L = "AD PRO COMMUNICATIONS LTD."
-HEAD_R = "UBER BANGLADESH   \u00b7   STRATEGIC PLAN AND PROPOSAL"
+# What each document carries at the right of its letterhead, and whether it
+# closes on a full-bleed back cover, which takes no stamp any more than the
+# front one does.
+DOCS = {
+    "uber-rfp-response": ("UBER BANGLADESH   \u00b7   STRATEGIC PLAN AND PROPOSAL", True),
+    "uber-cover-letter": ("UBER BANGLADESH   \u00b7   STRATEGIC PLAN AND PROPOSAL", True),
+    "motijheel-metro-proposal": ("MOTIJHEEL METRO RAIL STATION   \u00b7   LED MEDIA PROPOSAL", False),
+}
+HEAD_R, BACK_COVER = DOCS.get(STEM, DOCS["uber-rfp-response"])
 MM = 72 / 25.4
 
 # What separates a photograph from a client mark here: the marks are all
@@ -128,7 +137,7 @@ def stamp(writer: PdfWriter) -> None:
         })
     )
 
-    inside = writer.pages[1:-1]
+    inside = writer.pages[1:-1] if BACK_COVER else writer.pages[1:]
     total = len(writer.pages)
 
     for n, page in enumerate(inside, start=2):
