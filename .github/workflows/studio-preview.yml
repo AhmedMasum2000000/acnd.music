@@ -1,0 +1,105 @@
+name: Deploy studio preview
+
+# A repository has exactly one Pages site, and the ACND artist site already
+# owns it. So this builds BOTH and publishes them into one artifact — the
+# artist site at the root, unchanged, and the studio template beneath /studio/.
+# Publishing only the template would take the artist site offline.
+
+on:
+  push:
+    branches:
+      - claude/acnd-artist-portfolio-m55z21
+      - claude/ad-pro-setup-300xyq
+    paths:
+      - 'adpro/**'
+      - '.github/workflows/studio-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Shares the `pages` group with deploy.yml so the two can never publish over
+# each other mid-run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      # --- the existing artist site, rebuilt exactly as deploy.yml does it ---
+      - name: Install site dependencies
+        run: npm ci
+
+      - name: Build artist site
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: npm run build
+
+      # --- the studio template, nested one level deeper ---
+      - name: Install template dependencies
+        run: npm ci
+        working-directory: adpro
+
+      - name: Build studio template
+        env:
+          # A project site reports "/repo" and a user site reports "/", so
+          # joining naively would produce "//studio/" on the latter. Collapse
+          # any repeated slash rather than assuming one shape.
+          PAGES_BASE: ${{ steps.pages.outputs.base_path }}
+        run: |
+          BASE_PATH=$(printf '%s/studio/' "$PAGES_BASE" | sed 's|//*|/|g')
+          echo "Building template with BASE_PATH=$BASE_PATH"
+          BASE_PATH="$BASE_PATH" npm run build
+        working-directory: adpro
+
+      - name: Combine into one artifact
+        run: |
+          mkdir -p dist/studio
+          cp -R adpro/dist/. dist/studio/
+          test -f dist/index.html
+          test -f dist/studio/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      # A plain downloadable copy as well. The `github-pages` environment only
+      # accepts deployments from the default branch, so on a feature branch the
+      # deploy job below is skipped — this keeps the built preview reachable
+      # from the run page regardless.
+      - name: Upload downloadable preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-preview
+          path: dist/studio
+          retention-days: 14
+
+  deploy:
+    needs: build
+    # Publishing to Pages replaces the live site, and the `github-pages`
+    # environment restricts that to the default branch. Attempting it from a
+    # feature branch fails before the job starts, so gate rather than fail.
+    if: github.ref == 'refs/heads/claude/acnd-artist-portfolio-m55z21'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

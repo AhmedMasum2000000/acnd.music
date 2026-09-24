@@ -1,0 +1,48 @@
+:root {
+  --bg-color: #15161b;
+  --text-color: #d7d9dc;
+  --grey-dark-color: #656565;
+  --lightalpha-color: #d7d5c6;
+  --darkalpha-color: rgba(21, 22, 27, 0.75);
+
+  --h1-size: clamp(1.6rem, 10vw + 1rem, 7.32rem);
+  --h1-strong-size: clamp(3rem, 15vw + 1rem, 15.32rem);
+  --h2-size: clamp(1.2rem, 3vw + 1rem, 3rem);
+  --h3-size: clamp(1rem, 2vw + 0.5rem, 1.8rem);
+  --p-size: clamp(0.95rem, 1vw + 0.5rem, 1.1rem);
+  --sub-size: clamp(0.85rem, 0.8vw + 0.4rem, 0.95rem);
+
+  --size-vh100: calc(var(--vh, 1vh) * 100);
+  --size-vw100: calc(var(--vw, 1vw) * 100);
+
+  --marquee-size: 20vw;
+  --move-initial: 0;
+  --move-final: calc(var(--marquee-size) * 2);
+
+  --header-height: 4.75rem;
+  --tap: 44px;
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+
+  --transition-fast: 0.2s ease-out;
+  --transition-normal: 0.4s ease-out;
+  --transition-slow: 0.6s ease-out;
+
+  --line-color: rgba(215, 217, 220, 0.1);
+  --scrollY: 0px;
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0s;
+    --transition-normal: 0s;
+    --transition-slow: 0s;
+  }
+}

@@ -1,0 +1,32 @@
+name: ad-pro
+
+on:
+  push:
+    paths:
+      - 'ad-pro/**'
+      - '.github/workflows/ad-pro.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ad-pro/package-lock.json
+
+      - run: npm ci
+        working-directory: ad-pro
+
+      - run: npm run typecheck
+        working-directory: ad-pro
+
+      - run: npm test
+        working-directory: ad-pro
+
+      - run: npm run build
+        working-directory: ad-pro
