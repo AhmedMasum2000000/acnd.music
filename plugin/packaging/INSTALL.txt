@@ -1,0 +1,56 @@
+ACND OBSERVATEUR
+Free, forever. Made by ACND.
+
+Drive, space and width in one gesture: warm saturation, a deep stereo
+reverb and a width control, built to sit on anything from a vocal to a
+full mix bus.
+
+------------------------------------------------------------------------
+INSTALL
+------------------------------------------------------------------------
+
+Copy the formats your DAW uses into the folders below, then rescan
+plugins in your DAW (or restart it).
+
+WINDOWS
+  ACND Observateur.vst3   ->  C:\Program Files\Common Files\VST3\
+  ACND Observateur.clap   ->  C:\Program Files\Common Files\CLAP\
+  ACND Observateur.exe    ->  anywhere (standalone app, no DAW needed)
+
+MACOS
+  ACND Observateur.vst3       ->  ~/Library/Audio/Plug-Ins/VST3/
+  ACND Observateur.component  ->  ~/Library/Audio/Plug-Ins/Components/   (Logic, GarageBand)
+  ACND Observateur.clap       ->  ~/Library/Audio/Plug-Ins/CLAP/
+  ACND Observateur.app        ->  /Applications/   (standalone app)
+
+  If macOS says the plugin "can't be opened" or your DAW skips it, open
+  Terminal and run:
+
+    xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"ACND Observateur.vst3"
+    xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/Components/"ACND Observateur.component"
+    xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/CLAP/"ACND Observateur.clap"
+
+LINUX
+  ACND Observateur.vst3  ->  ~/.vst3/
+  ACND Observateur.clap  ->  ~/.clap/
+  ACND Observateur.lv2   ->  ~/.lv2/
+
+------------------------------------------------------------------------
+CONTROLS
+------------------------------------------------------------------------
+
+  DRIVE   Warm, tape-like saturation. 0 adds none at all.
+  SPACE   How much of the reverb you hear. The big one.
+  SIZE    How long the reverb rings, from a small room to near-infinite.
+  TONE    Darker or brighter reverb.
+  WIDTH   0% mono, 100% as it was, 200% extra wide.
+  OUT     Output level.
+
+  Drag up/down to turn a knob. Double-click to reset it.
+  Hold Ctrl (Windows/Linux) or Cmd (macOS) while dragging for fine control.
+  Drag the window corner to resize.
+
+------------------------------------------------------------------------
+
+VST is a registered trademark of Steinberg Media Technologies GmbH.
+Third-party licences are in the licenses folder.

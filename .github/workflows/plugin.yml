@@ -1,0 +1,146 @@
+name: Plugin
+
+# Builds ACND Observateur for Windows, macOS (universal) and Linux, runs the
+# DSP tests, validates the plugins the way hosts will load them, and packages
+# one zip per platform. Pushing a tag like `observateur-v0.1.0` also publishes
+# a draft GitHub release with the three zips attached.
+
+on:
+  push:
+    branches: [main]
+    tags: ['observateur-v*']
+    paths: ['plugin/**', '.github/workflows/plugin.yml']
+  pull_request:
+    paths: ['plugin/**', '.github/workflows/plugin.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plugin-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            os: windows-latest
+          - name: macOS
+            os: macos-latest
+            # One download for every Mac: Apple Silicon and Intel.
+            osx-architectures: arm64;x86_64
+          - name: Linux
+            # The oldest supported image, so the binaries load on older distros too.
+            os: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libasound2-dev libjack-jackd2-dev ladspa-sdk \
+            libfreetype-dev libfontconfig1-dev \
+            libx11-dev libxcomposite-dev libxcursor-dev libxext-dev libxinerama-dev \
+            libxrandr-dev libxrender-dev libxi-dev \
+            libglu1-mesa-dev mesa-common-dev libegl-dev \
+            xvfb zip
+
+      - name: Configure
+        run: |
+          args=(-S plugin -B build -DCMAKE_BUILD_TYPE=Release)
+          if [ -n "${{ matrix.osx-architectures }}" ]; then
+            args+=("-DCMAKE_OSX_ARCHITECTURES=${{ matrix.osx-architectures }}")
+          fi
+          cmake "${args[@]}"
+
+      - name: Build
+        run: cmake --build build --config Release --parallel 4
+
+      - name: DSP tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Fetch pluginval
+        run: |
+          case "$RUNNER_OS" in
+            Windows) asset=pluginval_Windows.zip ;;
+            macOS)   asset=pluginval_macOS.zip ;;
+            Linux)   asset=pluginval_Linux.zip ;;
+          esac
+          curl -sSfL -o pluginval.zip "https://github.com/Tracktion/pluginval/releases/download/v1.0.4/$asset"
+          unzip -q pluginval.zip -d pluginval
+
+      - name: Validate VST3 with pluginval
+        run: |
+          vst3="build/Observateur_artefacts/Release/VST3/ACND Observateur.vst3"
+          case "$RUNNER_OS" in
+            Windows) ./pluginval/pluginval.exe --strictness-level 10 --validate-in-process --validate "$vst3" ;;
+            macOS)   ./pluginval/pluginval.app/Contents/MacOS/pluginval --strictness-level 10 --validate-in-process --validate "$vst3" ;;
+            Linux)   xvfb-run -a ./pluginval/pluginval --strictness-level 10 --validate-in-process --validate "$vst3" ;;
+          esac
+
+      - name: Package
+        id: package
+        run: |
+          zip="$(plugin/scripts/package.sh "${{ matrix.name }}" build/Observateur_artefacts/Release dist)"
+          echo "zip=$zip" >> "$GITHUB_OUTPUT"
+
+      - name: Validate AU with auval
+        if: runner.os == 'macOS'
+        run: |
+          # Validate the signed copy from the package, as a user would install it.
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          unzip -q "${{ steps.package.outputs.zip }}" -d unpacked
+          cp -R unpacked/*/"ACND Observateur.component" ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar 2>/dev/null || true
+          auval -a > /dev/null
+          auval -v aufx Obsv Acnd
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ACND-Observateur-${{ matrix.name }}
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/observateur-v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the version in CMakeLists.txt
+        run: |
+          version="$(sed -n 's/^project(ACND_OBSERVATEUR VERSION \([0-9.]*\).*/\1/p' plugin/CMakeLists.txt)"
+          if [ "$GITHUB_REF_NAME" != "observateur-v$version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match project version $version" >&2
+            exit 1
+          fi
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip \
+            --draft \
+            --title "ACND Observateur ${GITHUB_REF_NAME#observateur-v}" \
+            --notes "Free, forever. Download the zip for your system and follow INSTALL.txt inside it."
