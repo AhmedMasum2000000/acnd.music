@@ -13,6 +13,9 @@ npm run build    # -> dist/
 npm run preview  # serve the production build
 ```
 
+**There is also a free ACND audio plugin, Observateur**, in [`plugin/`](plugin/): VST3, AU, CLAP,
+LV2 and standalone, for Windows, macOS and Linux. See [`plugin/README.md`](plugin/README.md).
+
 ---
 
 ## Editing the content

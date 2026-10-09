@@ -9,3 +9,7 @@ dist/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
 .verify/
+
+# Plugin builds
+build/
+plugin/build/
