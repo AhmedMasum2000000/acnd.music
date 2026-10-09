@@ -7,7 +7,7 @@ name: Plugin
 
 on:
   push:
-    branches: [main]
+    branches: [main, claude/acnd-artist-portfolio-m55z21]
     tags: ['observateur-v*']
     paths: ['plugin/**', '.github/workflows/plugin.yml']
   pull_request:
