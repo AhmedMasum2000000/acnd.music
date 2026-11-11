@@ -67,8 +67,11 @@ QUALITY = 76
 
 
 def find_chrome() -> str:
+    # Playwright's Chromium, whatever build number the container has, before
+    # anything on PATH.
+    bundled = sorted(Path("/opt/pw-browsers").glob("chromium-*/chrome-linux*/chrome"))
     for c in (
-        "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
+        *(str(b) for b in reversed(bundled)),
         shutil.which("chromium"),
         shutil.which("google-chrome"),
     ):

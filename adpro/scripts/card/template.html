@@ -1,0 +1,194 @@
+<title>Visiting card: {{name}}, AD PRO Communications Ltd.</title>
+
+<style>
+/*@FONT*/
+
+  /* A standard Bangladeshi visiting card, 3.5 x 2 in (88.9 x 50.8 mm),
+     printed with 3 mm of bleed on every side. Each side is one PDF page at
+     the bleed size, so what the printer gets is exactly what gets cut.
+
+     Three boxes, all in millimetres:
+       .side  the bleed, 94.9 x 56.8; colour that runs off the edge fills it
+       .trim  where the guillotine falls, 3 mm in
+       .safe  4 mm inside the trim; no text sits outside it, because a cut
+              can wander a millimetre or two and take a line with it */
+
+  :root {
+    /* Sampled from the logo artwork, so the card and the mark agree. */
+    --navy: #1f4678;
+    --blue: #1f62ae;
+    --sky: #0073bd;
+    --ink: #23304a;
+    --grey: #6b778a;
+    --line: rgba(31, 70, 120, 0.18);
+  }
+
+  @page { size: 94.9mm 56.8mm; margin: 0; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #dfe5ee; }
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .side {
+    position: relative;
+    width: 94.9mm;
+    height: 56.8mm;
+    overflow: hidden;
+    background: #fff;
+    margin: 6mm auto;
+  }
+
+  @media print {
+    html, body { background: #fff; }
+    .side { margin: 0; break-after: page; }
+    .side:last-child { break-after: auto; }
+  }
+
+  .safe { position: absolute; inset: 7mm; }
+
+  /* The edge band: navy with a run of the brighter blue, the one element the
+     old card had that is worth keeping. It bleeds off the bottom. */
+  .band {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 5.6mm;               /* 3 mm bleed + 2.6 mm on the card */
+    background: linear-gradient(90deg, var(--navy) 0 68%, var(--sky) 68% 100%);
+  }
+
+  /* --- front ---------------------------------------------------------------- */
+
+  .front .safe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2.4mm;
+  }
+
+  .front .lockup { width: 52mm; height: auto; display: block; }
+
+  .front .lines {
+    margin-top: 4.6mm;
+    padding-top: 2.4mm;
+    border-top: 0.25mm solid var(--line);
+    font-size: 5.4pt;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+
+  .front .lines i { font-style: normal; color: var(--sky); margin: 0 0.9mm; }
+
+  .front .web {
+    margin-top: 1.3mm;
+    font-size: 5.6pt;
+    letter-spacing: 0.04em;
+    color: var(--grey);
+  }
+
+  /* --- back ----------------------------------------------------------------- */
+
+  .back .safe {
+    display: grid;
+    grid-template-columns: 1fr 17mm;
+    grid-template-rows: auto 1fr;
+    column-gap: 4mm;
+    bottom: 8.6mm;               /* clear of the band */
+  }
+
+  .who b {
+    display: block;
+    font-size: 10.5pt;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    color: var(--navy);
+  }
+
+  .who .role {
+    display: block;
+    margin-top: 0.9mm;
+    font-size: 5.2pt;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+
+  .who .direct {
+    margin-top: 1.9mm;
+    font-size: 6.4pt;
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mark { justify-self: end; width: 8.5mm; height: auto; display: block; }
+
+  .rows {
+    align-self: end;
+    list-style: none;
+    padding-top: 1.8mm;
+    border-top: 0.25mm solid var(--line);
+  }
+
+  .rows li {
+    display: grid;
+    grid-template-columns: 3.2mm 1fr;
+    align-items: start;
+    font-size: 5.7pt;
+    line-height: 1.5;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rows li + li { margin-top: 0.35mm; }
+  .rows svg { width: 2.1mm; height: 2.1mm; margin-top: 0.35mm; color: var(--blue); }
+
+  .qr { align-self: end; justify-self: end; text-align: center; }
+  .qr svg { width: 17mm; height: 17mm; display: block; }
+  .qr span {
+    display: block;
+    margin-top: 0.7mm;
+    font-size: 4.3pt;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+</style>
+
+<!-- ================================ FRONT ================================ -->
+<div class="side front">
+  <div class="safe">
+    <!--@LOCKUP-->
+    <p class="lines">{{lines}}</p>
+    <p class="web">{{web}}</p>
+  </div>
+  <div class="band"></div>
+</div>
+
+<!-- ================================= BACK ================================ -->
+<div class="side back">
+  <div class="safe">
+    <div class="who">
+      <b>{{name}}</b>
+      <span class="role">{{title}}</span>
+      <p class="direct">{{cell}}<br>{{email}}</p>
+    </div>
+    <!--@MARK-->
+
+    <ul class="rows">{{rows}}</ul>
+    <div class="qr"><!--@QR--><span>Save contact</span></div>
+  </div>
+  <div class="band"></div>
+</div>
