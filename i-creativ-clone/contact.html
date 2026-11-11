@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#15161b" />
+    <title>Contact — Studio Paradigm</title>
+    <meta name="description" content="Get in touch with Studio Paradigm. We'd love to hear about your project." />
+  </head>
+
+  <body class="isLoading" data-barba="wrapper">
+    <div data-curtain style="display: none"></div>
+    <nav class="main-navigation">
+      <a href="/" class="brand"><span class="brand__icon"></span>Studio Paradigm</a>
+      <ul class="main-nav-menu">
+        <li><a href="/projects">Work</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/vision">Vision</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" data-menu-toggle aria-label="Open menu"></button>
+    </nav>
+    <div data-menu-overlay>
+      <div class="menu-content">
+        <div class="menu-header">
+          <h2>Menu</h2>
+          <button class="menu-close" data-menu-close></button>
+        </div>
+        <nav class="menu-nav">
+          <a href="/projects" class="text-link" data-menu-link>Work</a>
+          <a href="/services" class="text-link" data-menu-link>Services</a>
+          <a href="/about" class="text-link" data-menu-link>About</a>
+          <a href="/vision" class="text-link" data-menu-link>Vision</a>
+          <a href="/contact" class="text-link" data-menu-link>Contact</a>
+        </nav>
+      </div>
+    </div>
+    <main style="margin-top: var(--header-height)">
+      <div class="page-content" data-barba="container" data-barba-namespace="contact">
+        <section class="section-header" data-reveal>
+          <div class="container">
+            <h1>Get in Touch</h1>
+            <p class="text-large">We'd love to hear about your project</p>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container">
+            <div style="max-width: 600px; margin: 0 auto">
+              <div class="form-group">
+                <label for="name">Your name</label>
+                <input type="text" id="name" placeholder="Tell us who you are" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="hello@example.com" />
+              </div>
+              <div class="form-group">
+                <label for="project">Tell us about your project</label>
+                <textarea id="project" placeholder="What are we building together?"></textarea>
+              </div>
+              <a href="mailto:hello@studioparadigm.studio?subject=Project%20Inquiry" class="btn" style="width: 100%; justify-content: center; margin-top: 1rem" data-add-hover>Send message</a>
+            </div>
+          </div>
+        </section>
+
+        <section data-reveal>
+          <div class="container" style="text-align: center">
+            <h2 style="margin-bottom: 1rem">Direct Contact</h2>
+            <p>
+              Email: <a href="mailto:hello@studioparadigm.studio" class="text-link">hello@studioparadigm.studio</a>
+            </p>
+            <p style="margin-top: 0.5rem">
+              Phone: <a href="tel:+15551234567" class="text-link">+1 (555) 123-4567</a>
+            </p>
+          </div>
+        </section>
+
+        <footer style="border-top: 1px solid var(--line-color); padding: 2rem; margin-top: 4rem">
+          <div class="container">
+            <p class="text-muted">&copy; 2024 Studio Paradigm. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#15161b" />
+    <meta name="color-scheme" content="dark" />
+    <title>Studio Paradigm — Design & Strategy</title>
+    <meta name="description" content="Award-winning design studio specializing in brand identity, web design, and strategic design systems." />
+  </head>
+
+  <body class="isLoading" data-barba="wrapper">
+    <!-- Curtain Loader -->
+    <div data-curtain>
+      <div class="curtain-item"></div>
+      <div class="curtain-item"></div>
+      <div class="curtain-item"></div>
+      <div class="curtain-item"></div>
+      <div class="curtain-logo">P</div>
+    </div>
+
+    <!-- WebGL Canvas -->
+    <canvas id="wgl_canvas" aria-hidden="true"></canvas>
+
+    <!-- Navigation -->
+    <nav class="main-navigation">
+      <a href="/" class="brand">
+        <span class="brand__icon"></span>
+        Studio Paradigm
+      </a>
+      <ul class="main-nav-menu">
+        <li><a href="/projects">Work</a></li>
+        <li><a href="/services">Services</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/vision">Vision</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" data-menu-toggle aria-label="Open menu" aria-expanded="false">
+        <span class="menu-toggle__line"></span>
+        <span class="menu-toggle__line"></span>
+        <span class="menu-toggle__line"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div data-menu-overlay>
+      <div class="menu-content">
+        <div class="menu-header">
+          <h2>Menu</h2>
+          <button class="menu-close" data-menu-close aria-label="Close menu">
+            <span class="menu-close__icon"></span>
+          </button>
+        </div>
+        <nav class="menu-nav">
+          <a href="/projects" class="text-link" data-menu-link>Work</a>
+          <a href="/services" class="text-link" data-menu-link>Services</a>
+          <a href="/about" class="text-link" data-menu-link>About</a>
+          <a href="/vision" class="text-link" data-menu-link>Vision</a>
+          <a href="/contact" class="text-link" data-menu-link>Contact</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <div class="page-content" data-barba="container" data-barba-namespace="home">
+        <!-- Hero Section -->
+        <header class="main-header">
+          <div class="slider-wrapper">
+            <div class="slider-track">
+              <section class="slide is-active" data-slide aria-roledescription="slide">
+                <div class="slide__media" style="background: linear-gradient(135deg, #4a4e69 0%, #22223b 100%)" aria-hidden="true"></div>
+                <div class="slider-text">
+                  <article class="slider-article">
+                    <span class="sub-text">Design Studio</span>
+                    <h1 data-add-hover>Design that shapes perception</h1>
+                    <p class="text-large">
+                      We craft visual identities and digital experiences that move culture forward. Strategy, design, and storytelling under one roof.
+                    </p>
+                    <div class="btn-group" style="margin-top: 2rem">
+                      <a href="/projects" class="btn" data-add-hover>See our work</a>
+                      <a href="/contact" class="btn secondary" data-add-hover>Get in touch</a>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <section class="slide" data-slide aria-roledescription="slide">
+                <div class="slide__media" style="background: linear-gradient(135deg, #6b63b5 0%, #4a4e69 100%)" aria-hidden="true"></div>
+                <div class="slider-text">
+                  <article class="slider-article">
+                    <span class="sub-text">Award-winning work</span>
+                    <h1>Recognized globally for excellence</h1>
+                    <p class="text-large">
+                      Design that solves problems and earns recognition. D&AD, Red Dot, Creative Circle — our work speaks for itself.
+                    </p>
+                    <div class="btn-group" style="margin-top: 2rem">
+                      <a href="/about" class="btn" data-add-hover>Our story</a>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              <section class="slide" data-slide aria-roledescription="slide">
+                <div class="slide__media" style="background: linear-gradient(135deg, #a8dadc 0%, #6b63b5 100%)" aria-hidden="true"></div>
+                <div class="slider-text">
+                  <article class="slider-article">
+                    <span class="sub-text">Collaboration</span>
+                    <h1>Let's create something remarkable</h1>
+                    <p class="text-large">
+                      From founders to established brands, we partner with visionaries who believe design is the solution.
+                    </p>
+                    <div class="btn-group" style="margin-top: 2rem">
+                      <a href="/services" class="btn" data-add-hover>Our services</a>
+                    </div>
+                  </article>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="slider-nav" data-slideshow-controls>
+            <button class="slideshow-control isPlaying" type="button" data-play-pause aria-pressed="true">
+              <span class="slideshow-control__icon" aria-hidden="true"></span>
+              <span class="slideshow-control__label visually-hidden">Pause</span>
+            </button>
+            <span class="slideshow-control_num" role="status" aria-live="off" data-slide-counter>01 / 03</span>
+          </div>
+        </header>
+
+        <!-- Intro Section -->
+        <section class="section-header" data-reveal>
+          <div class="container">
+            <h2>We combine strategic thinking with creative excellence</h2>
+            <p class="text-large">
+              Every project starts with understanding. We research your market, study your audience, and distill the core truth of what you do. Then we design around it.
+            </p>
+          </div>
+        </section>
+
+        <!-- Services Preview -->
+        <section data-reveal>
+          <div class="container">
+            <h2 style="margin-bottom: 2rem">What we do</h2>
+            <div class="card-grid">
+              <div class="card">
+                <h3>Branding & Identity</h3>
+                <p>From concept to comprehensive visual language — strategy, design, and implementation guidelines that ensure consistency.</p>
+              </div>
+              <div class="card">
+                <h3>Web Design & Development</h3>
+                <p>Digital experiences that engage and convert. Beautiful, functional websites built on strong creative foundations.</p>
+              </div>
+              <div class="card">
+                <h3>Design Strategy</h3>
+                <p>Strategic thinking at every scale. Research, analysis, and clear thinking about your market and competitive landscape.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Featured Work -->
+        <section data-reveal>
+          <div class="container">
+            <h2 style="margin-bottom: 2rem">Featured work</h2>
+            <div class="alt-section">
+              <div>
+                <h3>Global Vision Rebrand</h3>
+                <p class="text-muted" style="margin-bottom: 1rem">2024 • Identity, Web</p>
+                <p>A comprehensive identity redesign for a technology consultancy. Logo, color system, and digital presence that positions them as industry thought leaders.</p>
+                <a href="/projects/global-vision-rebrand" class="text-link" style="display: inline-block; margin-top: 1rem">View project</a>
+              </div>
+              <div style="background-color: rgba(107, 99, 181, 0.2); border-radius: 4px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center">
+                <span class="text-muted">Project image</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section data-reveal>
+          <div class="container" style="text-align: center; padding: 4rem 2rem">
+            <h2>Ready to work together?</h2>
+            <p class="text-large" style="margin: 1rem 0">
+              Let's talk about your project. We're always interested in new challenges and unique collaborations.
+            </p>
+            <a href="/contact" class="btn" style="margin-top: 2rem" data-add-hover>Start a conversation</a>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="border-top: 1px solid var(--line-color); padding: 2rem">
+          <div class="container">
+            <p class="text-muted">&copy; 2024 Studio Paradigm. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
